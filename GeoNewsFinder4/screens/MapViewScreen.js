@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Button, Modal } from 'react-native';
-import MapView from '../components/mapview';
-import BottomSheet from '../components/bottomSheet'; 
+import MapView from '../components/MapView';
+import BottomSheet from '../components/BottomSheet'; 
 
 
 const PROVIDER_GOOGLE = 'google';
@@ -19,6 +19,7 @@ const MapViewScreen = () => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+
   };
   return (
     <View style={styles.container}>

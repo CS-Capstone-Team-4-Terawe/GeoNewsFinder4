@@ -6,7 +6,7 @@ const BottomSheet = ({ closeModal }) => {
 
     const navigation = useNavigation();
     
-    const handleNavigateToOtherScreen = () => {
+    const navigateToArticleSynopsisScreen = () => {
         navigation.navigate('ArticlePage');
         closeModal();
     }
@@ -14,7 +14,7 @@ const BottomSheet = ({ closeModal }) => {
   return (
     <View style={styles.bottomSheetContainer}>
       <Text style={styles.modalText}>Heather and Jai need to put articles in here</Text>
-      <TouchableOpacity onPress={handleNavigateToOtherScreen} style={styles.openPageButton}>
+      <TouchableOpacity onPress={navigateToArticleSynopsisScreen} style={styles.openPageButton}>
         <Text style={styles.openPageButtonText}>Open 3 tab view page</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
