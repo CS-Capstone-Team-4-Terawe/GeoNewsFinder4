@@ -1,32 +1,31 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
-import MapView from './components/mapview';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MapViewScreen from './screens/MapViewScreen';
 
-const PROVIDER_GOOGLE = 'google';
-const INITIAL_LOCATION = {
-  latitude: 34.413,
-  longitude: -119.86,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421
-}
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <MapView style={styles.map} defaultZoom={15} provider={PROVIDER_GOOGLE} region={INITIAL_LOCATION} />
-    </View>
-  )
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={{
+          headerShown: true,
+          headerMode: 'screen',
+          headerTintColor: 'white',
+          headerStyle: { backgroundColor: 'teal' },
+        }}
+      >
+        <Stack.Screen
+          name='Home'
+          component={ MapViewScreen }
+          options={{
+            title: 'GeoNewsFinder4',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
