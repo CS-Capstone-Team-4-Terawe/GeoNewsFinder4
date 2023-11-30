@@ -8,8 +8,8 @@ import BottomSheet from '../components/BottomSheet';
 
 const PROVIDER_GOOGLE = 'google';
 
-const { width:deviceWidth, height:deviceHeight } = Dimensions.get('window');
-const ASPECT_RATIO = deviceWidth / deviceHeight;
+const { width:DEVICE_WIDTH, height:DEVICE_HEIGHT } = Dimensions.get('window');
+const ASPECT_RATIO = DEVICE_WIDTH / DEVICE_HEIGHT;
 
 const INITIAL_LOCATION = {
   latitude: 26.385784,  
