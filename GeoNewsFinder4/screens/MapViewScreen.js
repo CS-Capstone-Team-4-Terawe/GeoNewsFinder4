@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Button, Modal } from 'react-native';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
-
+import SearchBar from '../components/SearchBar';
 
 const PROVIDER_GOOGLE = 'google';
 const INITIAL_LOCATION = {
@@ -12,21 +12,29 @@ const INITIAL_LOCATION = {
   longitudeDelta: 0.0421
 }  
 
-
-
 const MapViewScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-
   };
+
+  const [searchText, onSearchSubmit] = useState('');
+
+  const handleSearchText = (text) => {
+    onSearchSubmit(text);
+  };
+
   return (
     <View style={styles.container}>
       <MapView style={styles.map} defaultZoom={15} provider={PROVIDER_GOOGLE} region={INITIAL_LOCATION} />
 
       <View style={styles.buttonContainer}>
         <Button title="This is a hotspot" onPress={toggleModal} />
+      </View>
+
+      <View style={styles.searchBarContainer}>
+        <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
       </View>
 
       <Modal
@@ -56,6 +64,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 300,
     left: 100,
+  },
+  searchBarContainer: {
+    position: 'absolute',
+    top: 10,
+    alignItems: 'center', 
+    justifyContent: 'center',
   },
 });
 
