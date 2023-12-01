@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
-function ArticleSynopsisView() {
+function ArticleSynopsisView({ route, navigation }) {
   return (
     <View style={styles.container}>
+      <Text style={styles.openPageButtonText}>{route.params.name}</Text>
     </View>
   );
 }
