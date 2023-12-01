@@ -7,11 +7,6 @@ const BottomSheet = ({ closeModal }) => {
 
     const navigation = useNavigation();
 
-    // const navigateToArticleSynopsisScreen = (param) => {
-    //     navigation.navigate('ArticlePage', {name: 'Article Synopsis'});
-    //     closeModal();
-    // }
-
     const [newsData, setData] = useState([]);
 
     const getAPIdata = async () => {
@@ -51,12 +46,10 @@ const BottomSheet = ({ closeModal }) => {
       <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
         <Text style={styles.closeButtonText}>Close Bottom Sheet</Text>
       </TouchableOpacity>
-
-      <Text style={styles.modalText}>Heather and Jai need to put articles in here</Text>
       <FlatList
         style={styles.container2}
         data={newsData}
-        keyExtractor={(index) => index.toString()}
+        keyExtractor={(item) => item.url}
         numColumns={2}
         renderItem={({ item }) => (
           <TouchableOpacity 
