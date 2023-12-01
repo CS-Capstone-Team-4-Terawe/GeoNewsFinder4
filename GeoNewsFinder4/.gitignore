@@ -30,6 +30,11 @@ yarn-error.*
 
 # local env files
 .env*.local
-
+.env
 # typescript
 *.tsbuildinfo
+
+# testing files
+testSummary.js
+./utils/openAIGPTFunctions.js
+openAIGPTFunctions.js
