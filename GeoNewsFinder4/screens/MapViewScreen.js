@@ -4,7 +4,7 @@ import { Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
-
+import SearchBar from '../components/SearchBar';
 
 const PROVIDER_GOOGLE = 'google';
 
@@ -17,8 +17,6 @@ const INITIAL_LOCATION = {
   latitudeDelta: 90,
   longitudeDelta: 90 * ASPECT_RATIO
 }  
-
-
 
 const MapViewScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -52,6 +50,13 @@ const MapViewScreen = () => {
   const toggleModal = (hotspotId) => {
     setSelectedHotspotId(hotspotId);
     setModalVisible(!isModalVisible);
+  };
+
+  const [searchText, onSearchSubmit] = useState('');
+
+  const handleSearchText = (val) => {
+    onSearchSubmit(val.nativeEvent.text);
+    console.log(val.nativeEvent.text);
   };
 
   return (
@@ -94,6 +99,10 @@ const MapViewScreen = () => {
         }
       </MapView>
 
+      <View style={styles.searchBarContainer}>
+        <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
+      </View>
+
       <Modal
         transparent={true}
         animationType="slide"
@@ -121,6 +130,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 300,
     left: 100,
+  },
+  searchBarContainer: {
+    position: 'absolute',
+    top: 10,
+    alignItems: 'center', 
+    justifyContent: 'center',
   },
 });
 
