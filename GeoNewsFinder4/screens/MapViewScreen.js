@@ -51,8 +51,9 @@ const MapViewScreen = () => {
 
   const [searchText, onSearchSubmit] = useState('');
 
-  const handleSearchText = (text) => {
-    onSearchSubmit(text);
+  const handleSearchText = (val) => {
+    onSearchSubmit(val.nativeEvent.text);
+    console.log(val.nativeEvent.text);
   };
 
   return (
