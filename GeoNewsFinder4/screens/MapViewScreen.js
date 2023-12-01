@@ -52,12 +52,17 @@ const MapViewScreen = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const [searchText, onSearchSubmit] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   const handleSearchText = (val) => {
-    onSearchSubmit(val.nativeEvent.text);
+    setSearchText(val.nativeEvent.text);
     console.log(val.nativeEvent.text);
   };
+
+  // const clearSearchText = () => {
+  //   onSearchSubmit('');
+  //   console.log("clearing?");
+  // };
 
   return (
     <View style={styles.container}>
