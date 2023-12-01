@@ -23,6 +23,8 @@ const INITIAL_LOCATION = {
 const MapViewScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const [selectedHotspotId, setSelectedHotspotId] = useState(null);
+
   const [hotspots, setHotspots] = useState([
     {
       _id: 'san diego',
@@ -47,7 +49,8 @@ const MapViewScreen = () => {
     }
   ]);
 
-  const toggleModal = () => {
+  const toggleModal = (hotspotId) => {
+    setSelectedHotspotId(hotspotId);
     setModalVisible(!isModalVisible);
   };
 
@@ -70,7 +73,7 @@ const MapViewScreen = () => {
               );
   
               if (distance <= hotspot.radius) {
-                toggleModal();
+                toggleModal(hotspot._id);
               }
           })
       }}
@@ -97,7 +100,7 @@ const MapViewScreen = () => {
         visible={isModalVisible}
         onRequestClose={toggleModal}
       >
-        <BottomSheet closeModal={toggleModal} />
+        <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} />
       </Modal>
     </View>
   );
