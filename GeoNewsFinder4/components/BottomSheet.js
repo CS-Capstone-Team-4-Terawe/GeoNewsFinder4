@@ -56,7 +56,7 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
         renderItem={({ item }) => (
           <TouchableOpacity 
             onPress={ () => {
-              navigation.navigate('ArticlePage', {name: item.title});
+              navigation.navigate('ArticlePage', {name: item});
               closeModal();
             }} 
             style={styles.container2}>

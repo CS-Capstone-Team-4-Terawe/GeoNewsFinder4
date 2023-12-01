@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, useWindowDimensions} from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Text, Image } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import OverviewRoute from '../components/Overview';
 import AskGPTRoute from '../components/AskGPT';
 import RelatedArticlesRoute from '../components/RelatedArticles';
 
-function ArticleSynopsisView() {
+function ArticleSynopsisView( {route, navigation} ) {
   const renderScene = SceneMap({
     first: OverviewRoute,
     second: AskGPTRoute,
@@ -29,9 +29,14 @@ function ArticleSynopsisView() {
       labelStyle={styles.tabBarLabel}
     />
   );
+  console.log(route.params.name.title);
 
   return (
     <View style={styles.container}>
+      <View style={styles.title}>
+        <Text>{route.params.name.title}</Text>
+        <Image source={{ uri: route.params.name.urlToImage }} style={styles.image} />
+      </View>
       <View style={styles.tabViewContainer}>
         <TabView
           navigationState={{ index, routes }}
@@ -45,6 +50,12 @@ function ArticleSynopsisView() {
   );
 }
 const styles = StyleSheet.create({
+    title: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '35%',
+    },
     container: {
       flex: 1,
       backgroundColor: '#fff',
@@ -68,6 +79,11 @@ const styles = StyleSheet.create({
     tabBarLabel: {
       fontSize: 12,
     },
+    image: {
+      width: '100%',
+      height: 150,
+      borderRadius: 8,
+    }
   });
 
 export default ArticleSynopsisView;
