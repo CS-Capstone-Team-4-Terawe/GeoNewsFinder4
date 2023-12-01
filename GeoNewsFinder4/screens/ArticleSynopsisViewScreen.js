@@ -1,24 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, useWindowDimensions} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import OverviewRoute from '../components/Overview';
+import AskGPTRoute from '../components/AskGPT';
+import RelatedArticlesRoute from '../components/RelatedArticles';
 
 function ArticleSynopsisView() {
-  const OverviewRoute = () => (
-    <View style={styles.overviewContainer} />
-  );
-  
-  const ChatBotRoute = () => (
-    <View style={styles.chatBotContainer} />
-  );
-
-  const RelatedTilesRoute = () => (
-    <View style={styles.relatedTilesContainer} />
-  );
-  
   const renderScene = SceneMap({
     first: OverviewRoute,
-    second: ChatBotRoute,
-    third: RelatedTilesRoute,
+    second: AskGPTRoute,
+    third: RelatedArticlesRoute,
   });
 
   const layout = useWindowDimensions();
@@ -76,18 +67,6 @@ const styles = StyleSheet.create({
     },
     tabBarLabel: {
       fontSize: 12,
-    },
-    overviewContainer: {
-      flex: 1,
-      backgroundColor: 'grey',
-    },
-    chatBotContainer: {
-      flex: 1,
-      backgroundColor: 'red',
-    },
-    relatedTilesContainer: {
-      flex: 1,
-      backgroundColor: 'blue',
     },
   });
 
