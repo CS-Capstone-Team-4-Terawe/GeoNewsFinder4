@@ -3,14 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
-const BottomSheet = ({ closeModal }) => {
+const BottomSheet = ({ closeModal, hotspotId }) => {
 
     const navigation = useNavigation();
 
     const [newsData, setData] = useState([]);
 
     const getAPIdata = async () => {
-      const topic = 'Apple';
+      const topic = hotspotId || 'Apple';
       const searchIn = 'description';   // parameters: title, description, content
       const domains = '';               // example: bbc.co.uk,techcrunch.com
       const excludeDomains = '';
@@ -36,9 +36,11 @@ const BottomSheet = ({ closeModal }) => {
       result = await result.json();
       setData(result.articles);
     }
-    useEffect (() => {
-      getAPIdata();
-    }, []);
+    useEffect(() => {
+      if(hotspotId) {
+        getAPIdata();
+      }
+    }, [hotspotId]);
     console.log(newsData);
 
   return (
