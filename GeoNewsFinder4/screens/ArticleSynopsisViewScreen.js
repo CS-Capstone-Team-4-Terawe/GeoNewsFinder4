@@ -15,6 +15,7 @@ function ArticleSynopsisView( {route, navigation} ) {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
+
   const [routes] = React.useState([
     { key: 'first', title: 'Overview' },
     { key: 'second', title: 'Chat Bot' },
@@ -27,8 +28,14 @@ function ArticleSynopsisView( {route, navigation} ) {
       style={styles.tabBar}
       indicatorStyle={styles.tabBarIndicator}
       labelStyle={styles.tabBarLabel}
+      renderLabel={({ route, focused }) => (
+        <Text style={[styles.tabBarLabel, { color: focused ? 'blue' : 'grey' }]}>
+          {route.title}
+        </Text>
+      )}
     />
   );
+
   console.log(route.params.name.title);
 
   return (
@@ -70,14 +77,17 @@ const styles = StyleSheet.create({
       height: '65%',
     },
     tabBar: {
-      backgroundColor: 'teal',
-      height: '9%',
+      backgroundColor: 'white',
+      height: '8%',
+      borderBottomWidth: 1,
+      borderColor: 'grey',
     },
     tabBarIndicator: {
-      backgroundColor: 'white',
+      backgroundColor: 'blue',
     },
     tabBarLabel: {
       fontSize: 12,
+      color: 'black',
     },
     image: {
       width: '100%',
