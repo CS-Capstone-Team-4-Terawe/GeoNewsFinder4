@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
       top: 0,
       left: 0,
       height: '35%',
+      padding: 5,
     },
     container: {
       flex: 1,
