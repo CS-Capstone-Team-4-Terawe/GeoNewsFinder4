@@ -37,6 +37,7 @@ const SearchBar = ({ onSearchSubmit }) => {
       width: 325,
       margin: 0,
       padding: 10,
+      fontSize: 17,
       borderRadius: 20,
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
@@ -44,7 +45,7 @@ const SearchBar = ({ onSearchSubmit }) => {
       shadowColor: 'black', 
       shadowOffset: { width: 2, height: 4 },
       shadowOpacity: 0.5, 
-      shadowRadius: 1, 
+      shadowRadius: 1,
     },
     searchContainer: {
       flexDirection: 'row',
