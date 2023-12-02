@@ -41,10 +41,10 @@ const SearchBar = ({ onSearchSubmit }) => {
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
       backgroundColor: 'white',
-      shadowColor: 'black', // Shadow color
-      shadowOffset: { width: 3, height: 3 }, // Shadow offset
-      shadowOpacity: 0.6, // Shadow opacity
-      shadowRadius: 2, // Shadow radius
+      shadowColor: 'black', 
+      shadowOffset: { width: 2, height: 4 },
+      shadowOpacity: 0.5, 
+      shadowRadius: 1, 
     },
     searchContainer: {
       flexDirection: 'row',
@@ -60,9 +60,9 @@ const SearchBar = ({ onSearchSubmit }) => {
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0,
       shadowColor: 'black', 
-      shadowOffset: { width: 3, height: 3 }, 
-      shadowOpacity: 0.6, 
-      shadowRadius: 2, 
+      shadowOffset: { width: 2, height: 4 }, 
+      shadowOpacity: 0.5, 
+      shadowRadius: 1, 
       alignItems: 'center',
       justifyContent: 'center',
     },
