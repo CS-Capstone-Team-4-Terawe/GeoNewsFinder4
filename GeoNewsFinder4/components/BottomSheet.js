@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import getAPIdata from '../utils/getAPIdata';
 
 const BottomSheet = ({ closeModal, hotspotId }) => {
 
@@ -9,38 +10,19 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
 
     const [newsData, setData] = useState([]);
 
-    const getAPIdata = async () => {
-      const topic = hotspotId || 'Apple';
-      const searchIn = 'description';   // parameters: title, description, content
-      const domains = '';               // example: bbc.co.uk,techcrunch.com
-      const excludeDomains = '';
-      const fromDate = '2023-11-27';    // format: YYYY-MM-DD
-      const toDate = '';                // format: YYYY-MM-DD
-      const language = '';              // example: ar, de, en, es, fr
-      const sortBy = 'popularity';      // parameters: relevancy, popularity, publishedAt
-      const newsURL = 'https://newsapi.org/v2/everything?' +
-      `q=${topic}&` +
-      `searchIn=${searchIn}&` +
-      `domains=${domains}&` +
-      `excludeDomains=${excludeDomains}&` +
-      `from=${fromDate}&` +
-      `to=${toDate}&` +
-      `language=${language}&` +
-      `sortBy=${sortBy}&` +
-      'pageSize=10&' +
-      'apiKey=e9c4617558cd4256a90396d505f17666';
-
-      console.log(newsURL)
-
-      let result = await fetch(newsURL);
-      result = await result.json();
-      setData(result.articles);
-    }
     useEffect(() => {
-      if(hotspotId) {
-        getAPIdata();
-      }
-    }, [hotspotId]);
+      const fetchData = async () => {
+        console.log("fetching data")
+        if (hotspotId) {
+          console.log(hotspotId);
+          const data = await getAPIdata(hotspotId);
+          console.log("data");
+          console.log(data);
+          setData(data);
+        }
+      };
+      fetchData();
+    }, [hotspotId]);  
     console.log(newsData);
 
   return (
