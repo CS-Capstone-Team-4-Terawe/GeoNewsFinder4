@@ -7,9 +7,9 @@ import RelatedArticlesRoute from '../components/RelatedArticles';
 
 function ArticleSynopsisView( {route, navigation} ) {
   const renderScene = SceneMap({
-    first: OverviewRoute,
-    second: AskGPTRoute,
-    third: RelatedArticlesRoute,
+    first: () => <OverviewRoute />,
+    second: () => <AskGPTRoute />,
+    third: () => <RelatedArticlesRoute route={route} />,
   });
 
   const layout = useWindowDimensions();
@@ -35,8 +35,6 @@ function ArticleSynopsisView( {route, navigation} ) {
       )}
     />
   );
-
-  console.log(route.params.name.title);
 
   return (
     <View style={styles.container}>
