@@ -12,15 +12,12 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
 
     useEffect(() => {
       const fetchData = async () => {
-        console.log("fetching data")
         if (hotspotId) {
-          console.log(hotspotId);
           await getAPIdata(hotspotId, setData);
         }
       };
       fetchData();
     }, [hotspotId]);  
-    console.log(newsData);
 
   return (
     <View style={styles.bottomSheetContainer}>

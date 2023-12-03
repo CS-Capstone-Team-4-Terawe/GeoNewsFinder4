@@ -29,7 +29,6 @@ function ArticleSynopsisView( {route, navigation} ) {
       labelStyle={styles.tabBarLabel}
     />
   );
-  console.log(route.params.name.title);
 
   return (
     <View style={styles.container}>

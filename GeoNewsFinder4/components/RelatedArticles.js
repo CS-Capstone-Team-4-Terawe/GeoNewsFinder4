@@ -8,9 +8,7 @@ const RelatedArticlesRoute = ({ route }) => {
   const [newsData, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      console.log("fetching data")
       if (route.params.hotspot) {
-        console.log(route.params.hotspot);
         await getAPIdata(route.params.hotspot, setData);
       }
     };
