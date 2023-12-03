@@ -13,7 +13,7 @@ export default function App() {
       <Stack.Navigator
         initialRouteName='Home'
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           headerMode: 'screen',
           headerTintColor: 'white',
           headerStyle: { backgroundColor: 'teal' },
@@ -23,14 +23,17 @@ export default function App() {
           name='Home'
           component={ MapViewScreen }
           options={{
-            title: 'GeoNewsFinder4',
+            title: ' ',
           }}
         />
         <Stack.Screen
           name='ArticlePage'
           component={ ArticleSynopsisView }
           options={{
-            title: 'Article Synopsis',
+            title: '',
+            headerShown: true,
+            headerTintColor: 'black',
+            headerStyle: { backgroundColor: 'white' },
           }}
         />
       </Stack.Navigator>

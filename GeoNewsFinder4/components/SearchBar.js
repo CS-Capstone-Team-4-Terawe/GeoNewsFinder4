@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, Image} from 'react-native';
 
 const SearchBar = ({ onSearchSubmit }) => {
   const [searchInput, setSearchInput] = useState('');
@@ -17,13 +17,13 @@ const SearchBar = ({ onSearchSubmit }) => {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Search location/topic..."
+            placeholder="Search..."
             onSubmitEditing={onSearchSubmit}
             onChangeText={handlSearchInput}
             value={searchInput}
           />
           <TouchableOpacity style={styles.clearButton} onPress={clearSearchInput}>
-            <Text>X</Text>
+            <Image source={require('../assets/X.png')} style={styles.xImage} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -33,32 +33,44 @@ const SearchBar = ({ onSearchSubmit }) => {
   
   const styles = StyleSheet.create({
     input: {
-      height: 40,
+      height: 45,
       width: 300,
       margin: 0,
-      padding: 10,
-      borderWidth: 1,
-      borderRightWidth: 0,
-      borderRadius: 15,
+      padding: 20,
+      fontSize: 17,
+      borderRadius: 20,
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
       backgroundColor: 'white',
+      shadowColor: 'black', 
+      shadowOffset: { width: 2, height: 4 },
+      shadowOpacity: 0.5, 
+      shadowRadius: 1,
     },
     searchContainer: {
       flexDirection: 'row',
       alignItems: 'center',
+      marginTop: 15,
     },
     clearButton: {
       margin: 0,
-      height: 40,
+      height: 45,
       padding: 10,
       backgroundColor: 'white',
-      borderWidth: 1,
-      borderLeftWidth: 0,
-      borderRadius: 15,
+      borderRadius: 20,
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0,
+      shadowColor: 'black', 
+      shadowOffset: { width: 2, height: 4 }, 
+      shadowOpacity: 0.5, 
+      shadowRadius: 1, 
+      alignItems: 'center',
+      justifyContent: 'center',
     },
+    xImage: {
+      height: 30,
+      width: 30,
+    }
   });
   
   export default SearchBar;

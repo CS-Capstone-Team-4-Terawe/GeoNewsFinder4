@@ -59,11 +59,6 @@ const MapViewScreen = () => {
     console.log(val.nativeEvent.text);
   };
 
-  // const clearSearchText = () => {
-  //   onSearchSubmit('');
-  //   console.log("clearing?");
-  // };
-
   return (
     <View style={styles.container}>
       <MapView 
