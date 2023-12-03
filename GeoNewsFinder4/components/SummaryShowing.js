@@ -1,149 +1,70 @@
-// import React, { useState, useEffect } from 'react';
-// import { View, StyleSheet, Text, Button } from 'react-native';
-// import { ask, summarize, NewsArticle } from '../utils/openAIGPTFunctions'; 
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Button } from 'react-native';
+import { ask, summarizeArticle, NewsArticle } from '../utils/openAIGPTFunctions.js'; 
+import axios from 'axios';
 
-// let article = new NewsArticle(
-//   "A potential Las Vegas workers strike could throw a wrench in the upcoming F1 race",
-//   ["Hernandez", "Joe"],
-//   "Monday, November 6, 2023 • 5:00 AM EST",
-//   "Tens of thousands of L... construction-related traffic jams"
-// );
+// const openai = new OpenAI({ apiKey: 'myapi key' });
 
-// async function tempo() {
-//   let response = await summarize(article);
-//   // console.log("tempo"+response.message.content)
-//   return response.message.content;
-// }
+let news_article = new NewsArticle(
+  "A potential Las Vegas workers strike could throw a wrench in the upcoming F1 race",
+  ["Hernandez", "Joe"],
+  "Monday, November 6, 2023 • 5:00 AM EST",
+  "Tens of thousands of Las Vegas hospitality workers may walk off the job this Friday if their union is unable to reach a contract deal with the casinos, hotels and restaurants that employ them. What could possibly be the largest hospitality worker strike in U.S. history comes as the city is being transformed into a giant racetrack ahead of the Formula 1 Las Vegas Grand Prix scheduled to take place later this month — the first time the sport is returning to the entertainment capital in more than four decades. The Culinary and Bartenders Union said 35,000 of its members at 18 properties would go on strike the morning of Nov. 10 if no deal was reached with MGM Resorts, Caesars Entertainment and Wynn Resorts. The labor group said it had been negotiating with the hospitality giants in good faith for seven months — and working under an expired contract since Sept. 15 — but believed its workers deserved more than what the companies were offering. Their current proposal on the table is historic, but it's not enough and workers deserve to have record contracts - especially after these giant corporations are enjoying their record profits, Culinary Union secretary-treasurer Ted Pappageorge said in a statement. Related Story: Formula 1's new fandom; plus, Christian Horner is always on the offense Michael Weaver, chief communications and marketing officer for Wynn Resorts, said the company 'will save our comments regarding negotiations for the bargaining table.' MGM Resorts and Caesars Entertainment did not immediately reply to NPR's request for comment. Complicating the possibility of a massive strike on the Las Vegas Strip is the Formula 1 grand prix weekend scheduled to begin on Nov. 16 and expected to pack the city with tourists. Formula 1 announced last year that it would be adding the Las Vegas race — in addition to contests already held in Miami and Austin — as the sport sees surging popularity across the U.S. Two Formula 1 races were hosted in Las Vegas in 1981 and 1982, but this year's track will be the first one to incorporate the vistas of the city's iconic Strip, with the circuit passing landmarks such as Caesars Palace, the Bellagio and the Venetian. The Culinary Union is asking race attendees not to cross any picket or strike lines and to refrain from patronizing hotels and casinos where there is a labor dispute. Formula 1 did not immediately reply to NPR's request for comment. Race organizers have also been dealing with some local backlash over how Formula 1 has been preparing for the grand prix — what a Las Vegas Review-Journal columnist called the city's 'love-hate relationship' with the race. While many cheered the boost to the local economy, others have complained about some of the work being done. Formula 1 said it added visual barriers to pedestrian walkways for safety reasons, though some annoyed residents tore them down. Others have complained about trees being chopped down at the Bellagio and construction-related traffic jams"
+  // "Tens of thousands of Las Vegas hospitality workers ...  the Bellagio and construction-related traffic jams"
+);
+let user_name = "Ethan"
 
-// let summary = tempo();
+let conversation = [
+  { role: "system", content: "You are a helpful assistant who specializes in news summaries and always starts a conversation by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also absolutely refuse to answer any questions unrelated to the topics mentioned in the article."}
+];
 
-
-
-// function ArticleSynopsisView() {
-//   const [summary, setSummary] = useState('Loading...');
-
-//   const getSummary = async () => {
-//     let response = await summarize(article);
-    
-//     setSummary(response);
-//   }
-
-//   // useEffect(() => {
-//   //   getSummary();
-//   // }, []);
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.modalText}>{summary}</Text>
-//       <Button
-// 				buttonColor="bg-blue-600"
-// 				textColor="text-white"
-// 				onPress={async () => {
-// 					await getSummary(); 
-// 				}}
-//         title="Y0"
-// 			/>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       backgroundColor: '#fff',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//     },
-//   });
-
-// export default ArticleSynopsisView;
-
-
-import React, { useState } from "react";
-import { Image, Text, View } from "react-native";
-import { Button } from "@digital-art-dealers/react-native-component-lib";
-
-import useLocalize from "../hooks/useLocalize";
-import { TRANSLATIONS } from "../utils/translations/translations";
-import { useLayoutEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-
-import  { Configuration, OpenAIApi } from "openai"; 
-import { TextInput } from "react-native-gesture-handler";
-
-const configuration = new Configuration({
-	apiKey: process.env.OPEN_AI_API_KEY
-});
-
-
-const HomeScreen = () => {
-	const navigation = useNavigation();
-	const { translate } = useLocalize();
-	const openai = new OpenAIApi(configuration);
-
-
-	const [image, setImage] = useState(null);
-	const [imagePrompt, setImagePrompt] = useState(null);
+const SummaryShowing = () => {
 	const [isLoading, setIsLoading] = useState(null); 
-
 	const [error, setError] = useState(null);
-
-	const generateImage = async () => {
-		setIsLoading(true);
+  	const [summary, setSummary] = useState('Loading...');
+  	const summarize =  async () => {
+    setIsLoading(true);
 		setError(null);
-		try{
-			const response = await openai.createImage({
-				prompt: imagePrompt,
-				n: 1,
-				size: "1024x1024",
-			});
-			setImage(response.data.data[0].url);
+    try{
+      let articleSummary = await summarizeArticle(news_article);
+		setSummary(articleSummary);
+      	console.log("Summarize 1")
+      	console.log(articleSummary);
+      	// conversation.push({ role: "assistant", content: articleSummary });
 		}catch(e){
 			setError(e?.message || "Something went wrong");
 		} finally {
 			setIsLoading(false);
 		}
-	};
-
-	// TODO: This can be removed or changed according to project needs
-	useLayoutEffect(() => {
-		navigation.setOptions({
-			headerTitle: translate(TRANSLATIONS.MAIN)
-		});
-	}, [navigation]);
-
-	return (
-		<View className="h-full w-full justify-center px-4">
-			<Text className="text-2l py-4 text-center mt-8">Image Generated Open AI on React Native</Text>
-			<View>
-
-				<Image
-					source={{ uri: image }}
-					className="w-full h-64 rounded-lg shadow-lg mb-4 bg-slate-200"
-				/>
-
-			</View>
-			
-			<TextInput
-				value={imagePrompt}
-				onChangeText={setImagePrompt}
-				className="w-full p-4 bg-white rounded-lg shadow-lg mb-4"
-				placeholder="Enter a prompt"
-				placeholderTextColor={"gray"}
-			/>
-			{error && <Text className="text-red-400 text-sm">{error}</Text>}
-			<Button
-				buttonColor="bg-blue-600"
-				textColor="text-white"
-				onPress={async () => {
-					await generateImage(); 
-				}}
-				disabled={isLoading}
-				isLoading={isLoading}
-				label={translate(TRANSLATIONS.CHANGE_BUTTON)}
-			/>
-		</View>
-	);
+    };
+    return (
+      <View style={styles.container}>
+       <Text style={styles.modalText}>{summary}</Text>
+        {error && <Text className="text-red-400 text-sm">{error}</Text>}
+        <Button
+          buttonColor="bg-blue-600"
+          textColor="text-white"
+          onPress={async () => {
+            await summarize(); 
+          }}
+          disabled={isLoading}
+          isLoading={isLoading}
+          title="Summarize This Article(its abt vegas f1 strike)"
+        />
+      </View>
+      
+    );
 };
 
-export default HomeScreen;
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
+export default SummaryShowing;

@@ -10,12 +10,28 @@ const BottomSheet = ({ closeModal }) => {
         navigation.navigate('ArticlePage');
         closeModal();
     }
+    const navigateToSummaryShowing = () => {
+      navigation.navigate('ArticleSummary');
+      closeModal();
+    }
+    const navigateToChatBot = () => {
+      navigation.navigate('AskQuestionsHere');
+      closeModal();
+    }
+
+
 
   return (
     <View style={styles.bottomSheetContainer}>
       <Text style={styles.modalText}>Heather and Jai need to put articles in here</Text>
       <TouchableOpacity onPress={navigateToArticleSynopsisScreen} style={styles.openPageButton}>
         <Text style={styles.openPageButtonText}>Open 3 tab view page</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={navigateToSummaryShowing} style={styles.closeButton}>
+        <Text style={styles.openPageButtonText}>Go To Summary Generation Page</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={navigateToChatBot} style={styles.closeButton}>
+        <Text style={styles.openPageButtonText}>Go to ChatBot(only do this after generating summary or it won't have context)</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
         <Text style={styles.closeButtonText}>Close Bottom Sheet</Text>
