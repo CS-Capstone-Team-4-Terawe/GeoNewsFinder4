@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     title: {
       position: 'absolute',
       top: 0,
-      left: 0,
       height: '35%',
+      width: '90%',
       padding: 5,
     },
     container: {

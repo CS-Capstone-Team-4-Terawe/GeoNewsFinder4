@@ -17,7 +17,7 @@ const SearchBar = ({ onSearchSubmit }) => {
         <View style={styles.searchContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Search location/topic..."
+            placeholder="Search..."
             onSubmitEditing={onSearchSubmit}
             onChangeText={handlSearchInput}
             value={searchInput}
@@ -34,9 +34,9 @@ const SearchBar = ({ onSearchSubmit }) => {
   const styles = StyleSheet.create({
     input: {
       height: 45,
-      width: 325,
+      width: 300,
       margin: 0,
-      padding: 10,
+      padding: 20,
       fontSize: 17,
       borderRadius: 20,
       borderTopRightRadius: 0,
