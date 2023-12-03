@@ -1,43 +1,44 @@
-import React from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native'; 
+import { React, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
+import { Card } from 'react-native-elements';
+import getAPIdata from '../utils/getAPIdata';
 
 const RelatedArticlesRoute = ({ route }) => {
 
-  console.log(route.params.name.title)
-  return (
-    <View style={styles.bottomSheetContainer}>
-      {/* <Text>Related Articles</Text> */}
-      <Text>{route.params.parameter}</Text>
-    </View>
+  const [newsData, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("fetching data")
+      if (route.params.hotspot) {
+        console.log(route.params.hotspot);
+        await getAPIdata(route.params.hotspot, setData);
+      }
+    };
+    fetchData();
+  }, [route.params.hotspot]);
 
-    // <View style={styles.bottomSheetContainer}>
-    //   <FlatList
-    //     style={styles.container2}
-    //     data={newsData}
-    //     keyExtractor={(item) => item.url}
-    //     numColumns={2}
-    //     renderItem={({ item }) => (
-    //       <TouchableOpacity 
-    //         onPress={ () => {
-    //           navigation.navigate('ArticlePage', {name: item});
-    //           closeModal();
-    //         }} 
-    //         style={styles.container2}>
-    //         <Card containerStyle={styles.card}>
-    //           <Image source={{ uri: item.urlToImage }} style={styles.image} />
-    //           <Text style={styles.title}>{item.title}</Text>
-    //         </Card>
-    //       </TouchableOpacity>
-    //     ) }
-    //   />
-    // </View>
+  return (
+    <View style={styles.relatedArticlesContainer}>
+      <FlatList
+        style={styles.container2}
+        data={newsData}
+        keyExtractor={(item) => item.url}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <Card containerStyle={styles.card}>
+            <Image source={{ uri: item.urlToImage }} style={styles.image} />
+            <Text style={styles.title}>{item.title}</Text>
+          </Card>
+          // TODO: when clicked, open the article in a chrome/safari
+        ) }
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
     relatedArticlesContainer: {
         flex: 1,
-        backgroundColor: 'blue',
     },
     container2: {
       width: '100%',

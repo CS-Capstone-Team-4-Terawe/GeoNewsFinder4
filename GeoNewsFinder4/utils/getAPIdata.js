@@ -1,4 +1,4 @@
-const getAPIdata = async (hotspotId) => {
+const getAPIdata = async (hotspotId, setData) => {
     const topic = hotspotId || 'Apple';
     const searchIn = 'description';   // parameters: title, description, content
     const domains = '';               // example: bbc.co.uk,techcrunch.com

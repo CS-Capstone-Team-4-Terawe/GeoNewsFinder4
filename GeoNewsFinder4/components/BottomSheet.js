@@ -15,10 +15,7 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
         console.log("fetching data")
         if (hotspotId) {
           console.log(hotspotId);
-          const data = await getAPIdata(hotspotId);
-          console.log("data");
-          console.log(data);
-          setData(data);
+          await getAPIdata(hotspotId, setData);
         }
       };
       fetchData();
@@ -38,7 +35,7 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
         renderItem={({ item }) => (
           <TouchableOpacity 
             onPress={ () => {
-              navigation.navigate('ArticlePage', {name: item});
+              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId});
               closeModal();
             }} 
             style={styles.container2}>
