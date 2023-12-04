@@ -6,12 +6,6 @@ import AskGPTRoute from '../components/AskGPT';
 import RelatedArticlesRoute from '../components/RelatedArticles';
 
 function ArticleSynopsisView( {route, navigation} ) {
-  const renderScene = SceneMap({
-    first: () => <OverviewRoute />,
-    second: () => <AskGPTRoute />,
-    third: () => <RelatedArticlesRoute route={route} />,
-  });
-
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -21,6 +15,17 @@ function ArticleSynopsisView( {route, navigation} ) {
     { key: 'second', title: 'Chat Bot' },
     { key: 'third', title: 'Related' },
   ]);
+
+  // Memoize the tab components to prevent re-creation
+  const tabComponents = React.useMemo(() => ({
+    first: <OverviewRoute />,
+    second: <AskGPTRoute />,
+    third: <RelatedArticlesRoute route={route} />,
+  }), [route]);
+
+  const renderScene = ({ route }) => {
+    return tabComponents[route.key];
+  };
 
   const renderTabBar = (props) => (
     <TabBar

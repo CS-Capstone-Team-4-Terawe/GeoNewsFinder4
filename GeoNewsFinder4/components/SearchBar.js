@@ -22,9 +22,11 @@ const SearchBar = ({ onSearchSubmit }) => {
             onChangeText={handlSearchInput}
             value={searchInput}
           />
-          <TouchableOpacity style={styles.clearButton} onPress={clearSearchInput}>
-            <Image source={require('../assets/X.png')} style={styles.xImage} />
-          </TouchableOpacity>
+          <View style={styles.buttonView}>
+            <TouchableOpacity onPress={clearSearchInput}>
+              <Image source={require('../assets/X.png')} style={styles.xImage} />
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -52,7 +54,7 @@ const SearchBar = ({ onSearchSubmit }) => {
       alignItems: 'center',
       marginTop: 15,
     },
-    clearButton: {
+    buttonView: {
       margin: 0,
       height: 45,
       padding: 10,
