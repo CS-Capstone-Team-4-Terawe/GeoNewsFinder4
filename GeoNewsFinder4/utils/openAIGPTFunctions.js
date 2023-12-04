@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_KEY = 'API KEY GOES HERE'
+const API_KEY = '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'
 
 export class NewsArticle {
     constructor(title, authors, date, content) {
@@ -10,10 +10,10 @@ export class NewsArticle {
     }
 }
 
-let user_name = "Ethan"
+let user_name = "Matthew Nguyen"
 
 let conversation = [
-    { role: "system", content: "You are a helpful assistant who specializes in news summaries and always starts a conversation by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also absolutely refuse to answer any questions unrelated to the topics mentioned in the article. You also only answer in one brief sentence."}
+    { role: "system", content: "You are a helpful assistant who specializes in news summaries and always starts a conversation by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also absolutely refuse to answer any questions unrelated to the topics mentioned in the article."}
 ];
 
 export async function summarizeArticle(news_article) {
@@ -29,7 +29,7 @@ export async function ask(question) {
         {
         messages: conversation,
         max_tokens: 500,
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo-1106",
       },
       {
         headers: {
