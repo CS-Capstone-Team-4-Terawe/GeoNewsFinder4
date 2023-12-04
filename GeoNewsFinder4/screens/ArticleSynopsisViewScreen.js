@@ -7,7 +7,7 @@ import RelatedArticlesRoute from '../components/RelatedArticles';
 
 function ArticleSynopsisView( {route, navigation} ) {
   const renderScene = SceneMap({
-    first: () => <OverviewRoute />,
+    first: () => <OverviewRoute route = {route} />,
     second: () => <AskGPTRoute />,
     third: () => <RelatedArticlesRoute route={route} />,
   });
