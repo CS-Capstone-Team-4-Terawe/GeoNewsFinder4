@@ -17,17 +17,15 @@ const OverviewRoute = () => {
 
     useEffect(() => {
       const fetchSummary = async () => {
-        setIsLoading(true);
         setError(null);
         try {
           let articleSummary = await summarizeArticle(news_article);
           setSummary(articleSummary);
-          console.log("Summarize 1")
-          console.log(articleSummary);
+          // console.log("Summarize 1")
+          // console.log(articleSummary);
         } catch(e){
           setError(e?.message || "Something went wrong");
         } finally {
-          setIsLoading(false);
         }
       }
       fetchSummary();
