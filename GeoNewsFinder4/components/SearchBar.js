@@ -38,7 +38,7 @@ const SearchBar = ({ onSearchSubmit }) => {
       height: 45,
       width: 300,
       margin: 0,
-      padding: 20,
+      paddingLeft: 20,
       fontSize: 17,
       borderRadius: 20,
       borderTopRightRadius: 0,
