@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_KEY = 'PUT API KEY HERE'
+const API_KEY = 'INSERT API KEY HERE'
 
 export class NewsArticle {
     constructor(title, authors, date, content) {
@@ -13,7 +13,7 @@ export class NewsArticle {
 let user_name = "Matthew Nguyen"
 
 let conversation = [
-    { role: "system", content: "You are a helpful assistant who specializes in news summaries and always starts a conversation by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also absolutely refuse to answer any questions unrelated to the topics mentioned in the article."}
+    { role: "system", content: "You are a helpful assistant who specializes in news summaries and always starts a conversation by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also absolutely refuse to answer any questions unrelated to the topics or types of things mentioned in the article."}
 ];
 
 export async function summarizeArticle(news_article) {

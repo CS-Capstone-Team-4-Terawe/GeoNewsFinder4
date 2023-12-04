@@ -17,7 +17,6 @@ const OverviewRoute = () => {
 
     useEffect(() => {
       const fetchSummary = async () => {
-        setIsLoading(true);
         setError(null);
         try {
           let articleSummary = await summarizeArticle(news_article);
@@ -27,7 +26,6 @@ const OverviewRoute = () => {
         } catch(e){
           setError(e?.message || "Something went wrong");
         } finally {
-          setIsLoading(false);
         }
       }
       fetchSummary();
