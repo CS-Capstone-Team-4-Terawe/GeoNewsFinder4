@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 
 const AskGPTRoute = () => {
@@ -30,7 +30,10 @@ const AskGPTRoute = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container} 
+      automaticallyAdjustKeyboardInsets={true}>
+        
       <View style={styles.chatTextView}>
         <Text style={styles.chatText}>{answer}</Text>
       </View>
@@ -49,7 +52,7 @@ const AskGPTRoute = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </ScrollView>
 
   );
 };
