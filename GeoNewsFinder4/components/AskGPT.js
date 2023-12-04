@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   chatText: {
     fontSize: 16,
+    lineHeight: 25,
   },
   chatTextView: {
     flexDirection: 'row', 
