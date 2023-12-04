@@ -13,11 +13,11 @@ export class NewsArticle {
 let user_name = "Ethan"
 
 let conversation = [
-    { role: "system", content: "You are a helpful assistant who specializes in summarizing news articles."}
+  { role: "system", content: "You are a helpful assistant who specializes in summarizing news articles but you absolutely refuse to discuss any unrelated topics."}
 ];
 
 let followUpStart = 
-  { role: "system", content: "You are a helpful assistant who specializes in summarizing news articles and always starts an answer by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You also refuse to answer questions unrelated to the topics or types of things mentioned in the article."}
+{ role: "system", content: "You are a helpful assistant who specializes in summarizing news articles and always starts an answer by refering to a user by their name, " + user_name + ". You also are able to answer any questions I have about related topics to the article. You absolutely refuse to answer questions unrelated to the topics or types of things mentioned in the article."}
 ;
 
 export async function summarizeArticle(news_article) {
