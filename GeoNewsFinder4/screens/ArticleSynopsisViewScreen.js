@@ -6,12 +6,6 @@ import AskGPTRoute from '../components/AskGPT';
 import RelatedArticlesRoute from '../components/RelatedArticles';
 
 function ArticleSynopsisView( {route, navigation} ) {
-  // const renderScene = SceneMap({
-  //   first: () => <OverviewRoute />,
-  //   second: () => <AskGPTRoute />,
-  //   third: () => <RelatedArticlesRoute route={route} />,
-  // });
-
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
