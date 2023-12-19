@@ -3,57 +3,70 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView 
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 
 const AskGPTRoute = () => {
-
   const [GPTQuestion, setQuestion] = useState(''); 
+  const [conversationHistory, setConversationHistory] = useState([]);
   const [error, setError] = useState(null);
-  const [answer, setAnswer] = useState('Feel free to ask any clarifying questions!');
 
   const askGPT =  async () => {
       setError(null);
       let question = GPTQuestion;
-      try{
+      try {
           let response = await ask(question)
-          setAnswer(response)
-          }catch(e){
-              setError(e?.message || "Something went wrong");
-          } finally {
-          }
+          setConversationHistory(prevHistory => [...prevHistory, { question, answer: response }]);
+      } catch (e) {
+          setError(e?.message || "Something went wrong");
+      } finally {
+          setQuestion('');
+      }
   };
 
-  const handlQuestionInput = (text) => {
+  const handleQuestionInput = (text) => {
     setQuestion(text)
   };
 
   const askQuestion = async () => {
     await askGPT()
-    setQuestion('')
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container} 
-      automaticallyAdjustKeyboardInsets={true}>
-        
-      <View style={styles.chatTextView}>
-        <Text style={styles.chatText}>{answer}</Text>
-      </View>
-      
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.chatTextView}>
+          {conversationHistory.map(({ question, answer }, index) => (
+            <View key={index} style={styles.messageContainer}>
+              <View style={styles.messageHeader}>
+                <Image source={require('../assets/mrCheddaPFP.png')} style={styles.profilePic} />
+                <Text style={styles.messageFrom}>User</Text>
+              </View>
+              <View style={styles.questionBubble}>
+                <Text style={styles.questionText}>{question}</Text>
+              </View>
+
+              <View style={styles.messageHeader}>
+                <Image source={require('../assets/chatBotPFP.png')} style={styles.profilePic} />
+                <Text style={styles.messageFrom}>ChatBot</Text>
+              </View>
+              <View style={styles.answerBubble}>
+                <Text style={styles.answerText}>{answer}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
           placeholder="Message ChatGPT..."
           onSubmitEditing={askQuestion}
-          onChangeText={handlQuestionInput}
+          onChangeText={handleQuestionInput}
           value={GPTQuestion}
         />
-        <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.submitButton} onPress={askQuestion}>
-            <Image source={require('../assets/upArrow.png')} style={styles.xImage} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.submitButton} onPress={askQuestion}>
+          <Image source={require('../assets/upArrow.png')} style={styles.xImage} />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
-
+    </View>
   );
 };
 
@@ -61,29 +74,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  input: {
-    height: 45,
-    width: 300,
-    margin: 0,
-    paddingLeft: 20,
-    fontSize: 17,
-    borderRadius: 20,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderColor: 'rgb(184,184,184)',
+  scrollView: {
+    flex: 1,
+  },
+  chatTextView: {
+    padding: 25,
+    paddingTop: 15,
+    paddingBottom: 15,
   },
   searchContainer: {
+    marginBottom: 10,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 15,
-    position: 'absolute',
-    bottom: 50,
+    padding: 15,
+    borderTopWidth: 1,
+    borderColor: 'rgb(184,184,184)',
   },
   buttonView: {
     margin: 0,
@@ -99,6 +106,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  input: {
+    flex: 1, 
+    height: 45,
+    paddingLeft: 20,
+    fontSize: 17,
+    borderRadius: 20,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'rgb(184,184,184)',
+  },
+  submitButton: {
+    marginLeft: 10, 
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   xImage: {
     height: 30,
     width: 30,
@@ -107,17 +129,52 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 25,
   },
-  chatTextView: {
-    flexDirection: 'row', 
-    alignItems: 'start',  
-    position: 'absolute',
-    top: 0,
-    height: '75%',
-    width: '100%',
-    padding: 25,
-    paddingTop: 15,
-    paddingBottom: 15,
+  messageContainer: {
+    marginBottom: 10,
   },
+  messageHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  profilePic: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  messageFrom: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  questionBubble: {
+    // alignSelf: 'flex-end', // iMessage style(on right)
+    alignSelf: 'flex-start', 
+    // backgroundColor: '#007bff', // iMessage style
+    borderRadius: 20,
+    // padding: 10, // iMessage style
+    padding: 5,
+    marginBottom: 5,
+    // maxWidth: '80%', // iMessage style
+    maxWidth: '100%',
+  },
+  questionText: {
+    // color: 'white', // iMessage style
+    fontSize: 16,
+  },
+  answerBubble: {
+    alignSelf: 'flex-start',
+    // backgroundColor: '#f0f0f0', // iMessage style
+    borderRadius: 20,
+    // padding: 10, // iMessage style
+    padding: 5,
+    marginBottom: 5,
+    // maxWidth: '80%', // iMessage style
+    maxWidth: '100%', 
+  },
+  answerText: {
+    fontSize: 16,
+  },
+
 });
 
 export default AskGPTRoute;
