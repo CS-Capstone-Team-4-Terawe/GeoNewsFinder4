@@ -3,7 +3,7 @@ const getAPIdata = async (hotspotId, setData) => {
     const searchIn = 'description';   // parameters: title, description, content
     const domains = '';               // example: bbc.co.uk,techcrunch.com
     const excludeDomains = '';
-    const fromDate = '2023-11-27';    // format: YYYY-MM-DD
+    const fromDate = '2023-12-27';    // format: YYYY-MM-DD
     const toDate = '';                // format: YYYY-MM-DD
     const language = '';              // example: ar, de, en, es, fr
     const sortBy = 'popularity';      // parameters: relevancy, popularity, publishedAt
