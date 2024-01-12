@@ -5,6 +5,7 @@ import { getDistance } from 'geolib';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
+import LoginButton from '../components/LoginButton';
 
 const PROVIDER_GOOGLE = 'google';
 
@@ -103,6 +104,10 @@ const MapViewScreen = () => {
         <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
       </View>
 
+      <View style={styles.loginButtonContainer}>
+        <LoginButton></LoginButton>
+      </View>
+
       <Modal
         transparent={true}
         animationType="slide"
@@ -137,6 +142,13 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center',
   },
+  loginButtonContainer: {
+    position: 'absolute',
+    bottom: 60,
+    right: 30,
+    alignItems: 'center', 
+    justifyContent: 'center',
+  }
 });
 
 export default MapViewScreen;
