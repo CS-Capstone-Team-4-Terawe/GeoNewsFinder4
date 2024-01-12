@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_KEY = 'PUT API KEY HERE'
+const API_KEY = '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'
 
 export class NewsArticle {
     constructor(title, authors, date, content) {

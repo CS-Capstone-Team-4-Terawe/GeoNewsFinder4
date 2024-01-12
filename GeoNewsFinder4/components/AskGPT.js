@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 
 const AskGPTRoute = () => {
@@ -29,7 +29,9 @@ const AskGPTRoute = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container} 
+      automaticallyAdjustKeyboardInsets={true}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.chatTextView}>
           {conversationHistory.map(({ question, answer }, index) => (
@@ -54,7 +56,8 @@ const AskGPTRoute = () => {
         </View>
       </ScrollView>
 
-      <View style={styles.searchContainer}>
+      <View style={styles.searchContainer}
+      automaticallyAdjustKeyboardInsets={true}>
         <TextInput
           style={styles.input}
           placeholder="Message ChatGPT..."
@@ -66,7 +69,7 @@ const AskGPTRoute = () => {
           <Image source={require('../assets/upArrow.png')} style={styles.xImage} />
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
