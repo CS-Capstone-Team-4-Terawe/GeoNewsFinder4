@@ -58,7 +58,7 @@ const AskGPTRoute = () => {
         <TextInput
           style={styles.input}
           placeholder="Message ChatGPT..."
-          onSubmitEditing={askQuestion}
+          // onSubmitEditing={askQuestion}
           onChangeText={handleQuestionInput}
           value={GPTQuestion}
         />
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     height: 45,
     paddingLeft: 20,
+    paddingRight: 20,
     fontSize: 17,
     borderRadius: 20,
     backgroundColor: 'white',
