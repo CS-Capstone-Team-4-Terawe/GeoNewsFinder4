@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MapViewScreen from './screens/MapViewScreen';
 import ArticleSynopsisView from './screens/ArticleSynopsisViewScreen';
+import LoginView from './screens/LoginViewScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +22,8 @@ export default function App() {
       >
         <Stack.Screen
           name='Home'
-          component={ MapViewScreen }
+          // component={ MapViewScreen }
+          component={LoginView}
           options={{
             title: ' ',
           }}

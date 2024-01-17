@@ -18,7 +18,8 @@
       "config" : {
         "googleMapsApiKey" : "AIzaSyBzqOAEFXewORNVWDH8UKRueMF9boPygbs"
       },
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.GeoNewsFinder4"
     },
     "android": {
       "config" : {
@@ -27,7 +28,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.GeoNewsFinder4"
     },
     "web": {
       "favicon": "./assets/favicon.png"
