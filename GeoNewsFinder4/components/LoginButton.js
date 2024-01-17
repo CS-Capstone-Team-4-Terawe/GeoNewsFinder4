@@ -1,9 +1,14 @@
 import React from 'react';
-import { TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, StyleSheet} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginButton = () => {
+    const navigation = useNavigation();
     return (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+        onPress={ () => {
+            navigation.navigate('ProfileView');
+          }} >
             <Image source={require('../assets/gear.png')} style={styles.gearImage}/>
         </TouchableOpacity>
     );
