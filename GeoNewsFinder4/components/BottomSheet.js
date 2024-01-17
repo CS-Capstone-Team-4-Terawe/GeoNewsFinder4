@@ -17,7 +17,8 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
         }
       };
       fetchData();
-    }, [hotspotId]);  
+    }, [hotspotId]);
+    console.log(newsData);
 
   return (
     <View style={styles.bottomSheetContainer}>

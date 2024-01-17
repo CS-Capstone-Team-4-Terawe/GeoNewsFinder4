@@ -1,9 +1,11 @@
+import { extract } from '@extractus/article-extractor';
+
 const getAPIdata = async (hotspotId, setData) => {
     const topic = hotspotId || 'Apple';
     const searchIn = 'description';   // parameters: title, description, content
     const domains = '';               // example: bbc.co.uk,techcrunch.com
     const excludeDomains = '';
-    const fromDate = '2023-11-27';    // format: YYYY-MM-DD
+    const fromDate = '2023-12-27';    // format: YYYY-MM-DD
     const toDate = '';                // format: YYYY-MM-DD
     const language = '';              // example: ar, de, en, es, fr
     const sortBy = 'popularity';      // parameters: relevancy, popularity, publishedAt
@@ -24,6 +26,17 @@ const getAPIdata = async (hotspotId, setData) => {
     let result = await fetch(newsURL);
     result = await result.json();
     setData(result.articles);
+
+
+    const input = 'https://www.cnet.com/tech/services-and-software/texans-vs-colts-livestream-how-to-watch-nfl-week-18-online-today/'
+
+    // here we use top-level await, assume current platform supports it
+    try {
+        const article = await extract(input)
+        console.log(article)
+    } catch (err) {
+        console.error(err)
+    }
 }
 
 export default getAPIdata;
