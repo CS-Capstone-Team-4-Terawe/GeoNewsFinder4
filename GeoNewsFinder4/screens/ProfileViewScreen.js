@@ -1,14 +1,18 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileView = () =>{
+const navigation = useNavigation();
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
             <Image source={require('../assets/favicon.png')} style={styles.profilePic}/>
             <Text style={styles.name}>Mr. Cheddah</Text>
             <Text style={styles.email}>cheddah@ucsb.edu</Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} 
+            onPress={() => {navigation.navigate('Home');}}
+            >
                 <Text style={styles.buttonText}>Manage your Google Account</Text>
             </TouchableOpacity>
         </View>

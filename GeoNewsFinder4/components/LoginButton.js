@@ -7,7 +7,7 @@ const LoginButton = () => {
     return (
         <TouchableOpacity style={styles.button}
         onPress={ () => {
-            navigation.navigate('ProfileView');
+            navigation.navigate('LoginView');
           }} >
             <Image source={require('../assets/gear.png')} style={styles.gearImage}/>
         </TouchableOpacity>

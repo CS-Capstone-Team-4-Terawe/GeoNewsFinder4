@@ -24,7 +24,6 @@ export default function App() {
         <Stack.Screen
           name='Home'
           component={ MapViewScreen }
-          // component={LoginView}
           options={{
             title: ' ',
           }}
@@ -42,6 +41,16 @@ export default function App() {
         <Stack.Screen
           name='ProfileView'
           component={ ProfileView }
+          options={{
+            title: '',
+            headerShown: true,
+            headerTintColor: 'black',
+            headerStyle: { backgroundColor: 'white' },
+          }}
+        />
+        <Stack.Screen
+          name='LoginView'
+          component={ LoginView }
           options={{
             title: '',
             headerShown: true,
