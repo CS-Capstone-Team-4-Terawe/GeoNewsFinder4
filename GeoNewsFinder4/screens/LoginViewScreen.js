@@ -1,37 +1,44 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword  } from '../firebase';
+import { auth } from '../firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
 
 function LoginView() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const handleSignUp = async (email, password) => {
-    try {
-      console.log("register pressed")
-      await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      alert(error.code);
-      // alert(error.message);
-    }
-    console.log("creating bye")
+  const handleSignIn = () => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then(userCredentials => {
+      const user = userCredentials.user;
+      console.log("Signed in with: ", user?.email);
+      navigation.navigate('UserInfoView');
+    })
+    .catch(error => {
+      alert(error.message);
+    })
   }
 
-  const handleSignIn = async (email, password) => {
-    try {
-      console.log("Sign in pressed")
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      // alert(error.code);
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then(userCredentials => {
+      const user = userCredentials.user;
+      console.log("Registered with: ", user?.email);
+      navigation.navigate('UserInfoView');
+    })
+    .catch(error => {
       alert(error.message);
-    }
-    console.log("signed in bye")
+    })
   }
+
+
   
   return (
     <KeyboardAvoidingView style={styles.container}>
+      <Text style={styles.title}>GeoNewsFinder4</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Email'
@@ -50,17 +57,9 @@ function LoginView() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={styles.loginButton}
-          onPress={() => {
-            navigation.navigate('ProfileView');
-          }}
-          >
-            <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.registerButton}
           onPress={ handleSignIn }
           >
-            <Text style={styles.registerButtonText}>Login With Google</Text>
+            <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.registerButton}
@@ -80,10 +79,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+    // paddingBottom: 150,
   },
   inputContainer: {
     width: '80%',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   input: {
     backgroundColor: 'white',
@@ -121,6 +121,12 @@ const styles = StyleSheet.create({
   registerButtonText: {
     fontSize: 16,
     color: '#1C75CF',
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    position: 'absolute',
+    top: 150,
   }
   });
 
