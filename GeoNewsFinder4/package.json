@@ -23,6 +23,7 @@
     "geolib": "^3.3.4",
     "html-encoding-sniffer": "^4.0.0",
     "jsdom": "^24.0.0",
+    "jsdom-jscore": "^0.1.0",
     "openai": "^4.20.1",
     "path": "^0.12.7",
     "react": "18.2.0",

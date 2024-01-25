@@ -1,11 +1,11 @@
-import articleExtraction from '../utils/articleExtraction';
+import getArticleContent from '../utils/articleExtraction';
 
 const getAPIdata = async (hotspotId, setData) => {
     const topic = hotspotId || 'Apple';
     const searchIn = 'description';   // parameters: title, description, content
     const domains = '';               // example: bbc.co.uk,techcrunch.com
     const excludeDomains = '';
-    const fromDate = '2023-11-27';    // format: YYYY-MM-DD
+    const fromDate = '2023-12-27';    // format: YYYY-MM-DD
     const toDate = '';                // format: YYYY-MM-DD
     const language = '';              // example: ar, de, en, es, fr
     const sortBy = 'popularity';      // parameters: relevancy, popularity, publishedAt
@@ -21,14 +21,12 @@ const getAPIdata = async (hotspotId, setData) => {
     'pageSize=10&' +
     'apiKey=e9c4617558cd4256a90396d505f17666';
 
-    console.log(newsURL)
-
+    getArticleContent(newsURL);
     let result = await fetch(newsURL);
     result = await result.json();
     setData(result.articles);
 
 
-    articleExtraction(newsURL);
 }
 
 export default getAPIdata;

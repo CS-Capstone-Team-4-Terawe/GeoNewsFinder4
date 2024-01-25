@@ -1,30 +1,29 @@
 import axios from 'axios';
-import JSDOM from 'jsdom';
-const { Readability } = require('@mozilla/readability');
 
 export async function getArticleContent(url) {
-    const article = await axios.get(url).then(function(r1) {
+    try {
+        const response = await axios.get(url);
+        console.log("HERE")
+        console.log(url)
+        console.log("BYE")
+        const articles = response.data.articles;
 
-        // At this point we will have some search results from the API. Take the first search result...
-        let firstResult = r1.data.articles[0];
-      
-        // ...and download the HTML for it, again with axios
-        axios.get(firstResult.url).then(function(r2) {
-      
-          // We now have the article HTML, but before we can use Readability to locate the article content we need jsdom to convert it into a DOM object
-          let dom = new JSDOM(r2.data, {
-            url: firstResult.url
-          });
-      
-          // now pass the DOM document into readability to parse
-          let article = new Readability(dom.window.document).parse();
-      
-          // Done! The article content is in the textContent property
-          console.log(article.textContent);
-        })
-      }).catch((err) => { console.error(err); return "api call error"});
+        if (articles && articles.length > 0) {
+            const firstArticleUrl = articles[0].url;
+            const articleResponse = await axios.get(firstArticleUrl);
 
-    return article;
+            let textContent = articleResponse.data;
+            textContent = textContent.replace(/<script[^>]*>([\S\s]*?)<\/script>/gi, '');
+            textContent = textContent.replace(/<style[^>]*>([\S\s]*?)<\/style>/gi, '');
+            textContent = textContent.replace(/<\/?[^>]+(>|$)/g, '');
+            textContent = textContent.replace(/\s+/g, ' ').trim();
+            console.log(textContent);
+            return textContent;
+        }
+    } catch (err) {
+        console.error(err);
+        return "API call error";
+    }
 }
 
 export default getArticleContent;
