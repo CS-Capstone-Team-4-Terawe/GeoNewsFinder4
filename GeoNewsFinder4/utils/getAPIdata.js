@@ -1,3 +1,5 @@
+import articleExtraction from '../utils/articleExtraction';
+
 const getAPIdata = async (hotspotId, setData) => {
     const topic = hotspotId || 'Apple';
     const searchIn = 'description';   // parameters: title, description, content
@@ -24,6 +26,9 @@ const getAPIdata = async (hotspotId, setData) => {
     let result = await fetch(newsURL);
     result = await result.json();
     setData(result.articles);
+
+
+    articleExtraction(newsURL);
 }
 
 export default getAPIdata;
