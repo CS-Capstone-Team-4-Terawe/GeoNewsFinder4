@@ -62,6 +62,7 @@ const MapViewScreen = () => {
 
   const handleButtonTap = async () => {
     try {
+      // fetches the entire Articles table - AWS dynamodb. view amplify/backend/function/ArticlesLambda
       const responseData = await API.get('articlesApi', '/articles');
       console.log(responseData);
     } catch (e) {
@@ -113,7 +114,7 @@ const MapViewScreen = () => {
         <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
       </View>
 
-      <Button title="test" onPress={handleButtonTap}/>
+      {/* <Button title="test" onPress={handleButtonTap}/> */}
 
       <Modal
         transparent={true}
