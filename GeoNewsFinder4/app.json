@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "plugins": [
+        "./ios-build-plugin.js"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,14 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "config" : {
-        "googleMapsApiKey" : "AIzaSyBzqOAEFXewORNVWDH8UKRueMF9boPygbs"
+      "config": {
+        "googleMapsApiKey": "AIzaSyBzqOAEFXewORNVWDH8UKRueMF9boPygbs"
       },
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.GeoNewsFinder4"
     },
     "android": {
-      "config" : {
-        "googleMapsApiKey" : "AIzaSyBzqOAEFXewORNVWDH8UKRueMF9boPygbs"
+      "config": {
+        "googleMapsApiKey": "AIzaSyBzqOAEFXewORNVWDH8UKRueMF9boPygbs"
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

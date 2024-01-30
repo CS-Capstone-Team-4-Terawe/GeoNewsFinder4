@@ -10,6 +10,23 @@
       "StackName": "amplify-geonewsfinder4-dev-115947",
       "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-115947/f5556470-bee0-11ee-88e0-06692e496f73",
       "AmplifyAppId": "dbxh4hq7mcokm"
+    },
+    "categories": {
+      "auth": {
+        "geonewsfinder4f33570c4": {}
+      },
+      "function": {
+        "articlesLambda": {
+          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
+          "s3Key": "amplify-builds/articlesLambda-48673251693043576932-build.zip"
+        }
+      },
+      "api": {
+        "articlesApi": {}
+      },
+      "storage": {
+        "geonewsDynamoDb": {}
+      }
     }
   }
 }
