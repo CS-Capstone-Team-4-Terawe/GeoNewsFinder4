@@ -4,6 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import MapViewScreen from './screens/MapViewScreen';
 import ArticleSynopsisView from './screens/ArticleSynopsisViewScreen';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './src/amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
 
 const Stack = createStackNavigator();
 
