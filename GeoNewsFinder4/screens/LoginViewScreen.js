@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 
 function LoginView() {
@@ -11,27 +9,11 @@ function LoginView() {
   const [password, setPassword] = React.useState('');
 
   const handleSignIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log("Signed in with: ", user?.email);
-      navigation.navigate('UserInfoView');
-    })
-    .catch(error => {
-      alert(error.message);
-    })
+    navigation.navigate('UserInfoView');
   }
 
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log("Registered with: ", user?.email);
-      navigation.navigate('UserInfoView');
-    })
-    .catch(error => {
-      alert(error.message);
-    })
+    navigation.navigate('UserInfoView');
   }
 
 
