@@ -114,7 +114,7 @@ const MapViewScreen = () => {
         <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
       </View>
 
-      {/* <Button title="test" onPress={handleButtonTap}/> */}
+      {<Button title="test" onPress={handleButtonTap}/> }
 
       <Modal
         transparent={true}
