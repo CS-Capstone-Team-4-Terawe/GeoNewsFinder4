@@ -8,6 +8,10 @@ import LoginView from './screens/LoginViewScreen';
 import ProfileView from './screens/ProfileViewScreen';
 import UserInfoView from './screens/UserInfoViewScreen';
 import UserPreferencesView from './screens/UserPreferencesViewScreen';
+import { Amplify } from 'aws-amplify';
+import amplifyconfig from './src/amplifyconfiguration.json';
+
+Amplify.configure(amplifyconfig);
 
 const Stack = createStackNavigator();
 

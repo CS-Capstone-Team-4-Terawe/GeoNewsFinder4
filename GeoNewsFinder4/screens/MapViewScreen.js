@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
 import { Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
+import { API } from 'aws-amplify';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
@@ -60,6 +61,16 @@ const MapViewScreen = () => {
     console.log(val.nativeEvent.text);
   };
 
+  const handleButtonTap = async () => {
+    try {
+      // fetches the entire Articles table - AWS dynamodb. view amplify/backend/function/ArticlesLambda
+      const responseData = await API.get('articlesApi', '/articles');
+      console.log(responseData);
+    } catch (e) {
+      console.error('error fetching articles:', e);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <MapView 
@@ -107,6 +118,7 @@ const MapViewScreen = () => {
       <View style={styles.loginButtonContainer}>
         <LoginButton></LoginButton>
       </View>
+      {/* <Button title="test" onPress={handleButtonTap}/> */}
 
       <Modal
         transparent={true}
