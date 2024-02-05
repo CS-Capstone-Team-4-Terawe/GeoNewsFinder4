@@ -6,6 +6,7 @@ import { API } from 'aws-amplify';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
+import LoginButton from '../components/LoginButton';
 
 const PROVIDER_GOOGLE = 'google';
 
@@ -114,6 +115,9 @@ const MapViewScreen = () => {
         <SearchBar onSearchSubmit={handleSearchText}></SearchBar>
       </View>
 
+      <View style={styles.loginButtonContainer}>
+        <LoginButton></LoginButton>
+      </View>
       {/* <Button title="test" onPress={handleButtonTap}/> */}
 
       <Modal
@@ -150,6 +154,13 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center',
   },
+  loginButtonContainer: {
+    position: 'absolute',
+    bottom: 60,
+    right: 30,
+    alignItems: 'center', 
+    justifyContent: 'center',
+  }
 });
 
 export default MapViewScreen;
