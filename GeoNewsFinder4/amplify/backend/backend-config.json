@@ -16,7 +16,7 @@
     }
   },
   "auth": {
-    "geonewsfinder4f33570c4": {
+    "GeoNewsFinder4": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -29,7 +29,11 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "BIRTHDATE",
+          "NAME",
+          "GENDER",
+          "LOCALE"
         ],
         "socialProviders": [],
         "usernameAttributes": [
@@ -62,6 +66,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "geonewsfinder4getNewsData": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer"
     }
   },
   "parameters": {
@@ -78,6 +87,22 @@
         {
           "category": "function",
           "resourceName": "articlesLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_geonewsfinder4getNewsData_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "geonewsfinder4getNewsData"
+        }
+      ]
+    },
+    "AMPLIFY_function_geonewsfinder4getNewsData_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "geonewsfinder4getNewsData"
         }
       ]
     }
