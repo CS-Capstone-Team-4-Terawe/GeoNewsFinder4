@@ -8,6 +8,8 @@ import LoginView from './screens/LoginViewScreen';
 import ProfileView from './screens/ProfileViewScreen';
 import UserInfoView from './screens/UserInfoViewScreen';
 import UserPreferencesView from './screens/UserPreferencesViewScreen';
+import SignUpView from './screens/SignUpViewScreen';
+import ConfirmView from './screens/ConfirmViewScreen';
 import { Amplify } from 'aws-amplify';
 import amplifyconfig from './src/amplifyconfiguration.json';
 
@@ -77,6 +79,26 @@ function App() {
         <Stack.Screen
           name='UserPreferencesView'
           component={ UserPreferencesView }
+          options={{
+            title: '',
+            headerShown: true,
+            headerTintColor: 'black',
+            headerStyle: { backgroundColor: 'white' },
+          }}
+        />
+        <Stack.Screen
+          name='SignUpView'
+          component={ SignUpView }
+          options={{
+            title: '',
+            headerShown: true,
+            headerTintColor: 'black',
+            headerStyle: { backgroundColor: 'white' },
+          }}
+        />
+        <Stack.Screen
+          name='ConfirmView'
+          component={ ConfirmView }
           options={{
             title: '',
             headerShown: true,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
 
 
 function LoginView() {
@@ -9,14 +10,22 @@ function LoginView() {
   const [password, setPassword] = React.useState('');
 
   const handleSignIn = () => {
-    navigation.navigate('UserInfoView');
+    signIn();
   }
 
   const handleSignUp = () => {
-    navigation.navigate('UserInfoView');
+    navigation.navigate('SignUpView');
   }
 
-
+  async function signIn() {
+    try {
+      const user = await Auth.signIn(email, password);
+      console.log('Signed in as: ', user.attributes.name)
+      navigation.navigate('UserInfoView');
+    } catch (error) {
+      console.log('error signing in', error);
+    }
+  }
   
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -55,16 +64,14 @@ function LoginView() {
 }
 const styles = StyleSheet.create({
   container: {
-    // height: '100%',
-    // width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // paddingBottom: 150,
   },
   inputContainer: {
     width: '80%',
+
     marginBottom: 30,
   },
   input: {
