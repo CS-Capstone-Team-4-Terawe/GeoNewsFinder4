@@ -16,7 +16,7 @@
     }
   },
   "auth": {
-    "geonewsfinder4f33570c4": {
+    "GeoNewsFinder4": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -29,7 +29,11 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "BIRTHDATE",
+          "NAME",
+          "GENDER",
+          "LOCALE"
         ],
         "socialProviders": [],
         "usernameAttributes": [

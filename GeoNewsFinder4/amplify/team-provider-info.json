@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "geonewsfinder4f33570c4": {}
+        "geonewsfinder4f33570c4": {},
+        "GeoNewsFinder4": {}
       },
       "function": {
         "articlesLambda": {
