@@ -13,12 +13,18 @@
     },
     "categories": {
       "auth": {
-        "geonewsfinder4f33570c4": {}
+        "geonewsfinder4f33570c4": {},
+        "GeoNewsFinder4": {}
       },
       "function": {
         "articlesLambda": {
           "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
           "s3Key": "amplify-builds/articlesLambda-48673251693043576932-build.zip"
+        },
+        "gptAPIFunctions": {
+          "openaiApiKey": "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",
+          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
+          "s3Key": "amplify-builds/gptAPIFunctions-766f71534f727346752f-build.zip"
         }
       },
       "api": {

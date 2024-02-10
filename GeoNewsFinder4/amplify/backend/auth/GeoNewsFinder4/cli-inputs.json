@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "geonewsfinder4f33570c4_identitypool_f33570c4",
+    "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "geonewf33570c4",
-    "userPoolName": "geonewsfinder4f33570c4_userpool_f33570c4",
+    "resourceNameTruncated": "geonewa894d32d",
+    "userPoolName": "GeoNewsFinder4",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,28 +20,32 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "birthdate",
+      "name",
+      "gender",
+      "locale"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-      "email"
-    ],
-    "userpoolClientReadAttributes": [
-      "email"
-    ],
-    "userpoolClientLambdaRole": "geonewf33570c4_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
+    "userpoolClientLambdaRole": "GeoNewa894d32d_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "f33570c4",
-    "resourceName": "geonewsfinder4f33570c4",
+    "sharedId": "a894d32d",
+    "resourceName": "GeoNewsFinder4",
     "authSelections": "identityPoolAndUserPool",
-    "useDefault": "default",
+    "serviceName": "Cognito",
     "usernameAttributes": [
       "email"
     ],
+    "useDefault": "manual",
+    "userPoolGroups": false,
     "userPoolGroupList": [],
-    "serviceName": "Cognito",
+    "adminQueries": false,
+    "thirdPartyAuth": false,
+    "authProviders": [],
     "usernameCaseSensitive": false,
     "useEnabledMfas": true
   }

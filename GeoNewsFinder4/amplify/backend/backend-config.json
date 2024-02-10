@@ -16,7 +16,7 @@
     }
   },
   "auth": {
-    "geonewsfinder4f33570c4": {
+    "GeoNewsFinder4": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -29,7 +29,11 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "BIRTHDATE",
+          "NAME",
+          "GENDER",
+          "LOCALE"
         ],
         "socialProviders": [],
         "usernameAttributes": [
@@ -62,6 +66,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "gptAPIFunctions": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -78,6 +87,30 @@
         {
           "category": "function",
           "resourceName": "articlesLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_gptAPIFunctions_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gptAPIFunctions"
+        }
+      ]
+    },
+    "AMPLIFY_function_gptAPIFunctions_openaiApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gptAPIFunctions"
+        }
+      ]
+    },
+    "AMPLIFY_function_gptAPIFunctions_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gptAPIFunctions"
         }
       ]
     }
