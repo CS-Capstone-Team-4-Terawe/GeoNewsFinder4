@@ -24,9 +24,6 @@ export type AmplifyDependentResourcesAttributes = {
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
-    },
-    "geonewsfinder4getNewsData": {
-      "Arn": "string"
     }
   },
   "storage": {
