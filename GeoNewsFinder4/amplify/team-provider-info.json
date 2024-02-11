@@ -24,6 +24,10 @@
         "geonewsfinder4getNewsData": {
           "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
           "s3Key": "amplify-builds/geonewsfinder4getNewsData-LambdaLayerVersion910256e6-build.zip"
+        },
+        "gptAPIFunctions": {
+          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
+          "s3Key": "amplify-builds/gptAPIFunctions-766f71534f727346752f-build.zip"
         }
       },
       "api": {

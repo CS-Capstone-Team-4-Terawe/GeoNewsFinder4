@@ -67,10 +67,10 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "geonewsfinder4getNewsData": {
+    "gptAPIFunctions": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer"
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -103,6 +103,22 @@
         {
           "category": "function",
           "resourceName": "geonewsfinder4getNewsData"
+        }
+      ]
+    },
+    "AMPLIFY_function_gptAPIFunctions_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gptAPIFunctions"
+        }
+      ]
+    },
+    "AMPLIFY_function_gptAPIFunctions_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "gptAPIFunctions"
         }
       ]
     }
