@@ -27,6 +27,7 @@ function serializeUser(user) {
         birthdate: user.birthdate,
         email: user.email,
         gender: user.gender,
+        locale: user.locale,
     }
 }
 

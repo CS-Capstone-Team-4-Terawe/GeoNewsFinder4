@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const ProfileView = () =>{
 const navigation = useNavigation();
+const user = useSelector(state => state.user);
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
             <Image source={require('../assets/favicon.png')} style={styles.profilePic}/>
-            <Text style={styles.name}>Mr. Cheddah</Text>
-            <Text style={styles.email}>cheddah@ucsb.edu</Text>
+            <Text style={styles.name}>{user.name}</Text>
+            <Text style={styles.email}>{user.email}</Text>
             <TouchableOpacity style={styles.button} 
             onPress={() => {navigation.navigate('Home');}}
             >
@@ -22,36 +24,35 @@ const navigation = useNavigation();
         <View style={styles.infoItem}>
             <View style={styles.idk}>
                 <Text style={styles.label}>NAME</Text>
-                <Text style={styles.text}>Mr. Cheddah</Text>
+                <Text style={styles.text}>{user.name}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>BIRTHDAY</Text>
-                <Text style={styles.text}>January 1990</Text>
+                <Text style={styles.text}>{user.birthdate}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>GENDER</Text>
-                <Text style={styles.text}>Rat</Text>
+                <Text style={styles.text}>{user.gender}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>EMAIL</Text>
-                <Text style={styles.text}>cheddah@ucsb.edu</Text>
-                <Text style={styles.text}>mr.rat@gmail.com</Text>
+                <Text style={styles.text}>{user.email}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>LOCATION</Text>
-                <Text style={styles.text}>your mom's house</Text>
+                <Text style={styles.text}>{user.locale}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>

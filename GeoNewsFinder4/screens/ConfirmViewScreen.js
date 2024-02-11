@@ -2,13 +2,18 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { logIn, setUser } from '../redux/action';
 
 
 function ConfirmView() {
   const navigation = useNavigation();
   const route = useRoute();
   const email = route.params?.email;
+  const password = route.params?.password;
   const [code, setCode] = React.useState('');
+
+  const dispatch = useDispatch();
 
   const handleConfimation = () => {
     confirmSignUp();
@@ -16,7 +21,11 @@ function ConfirmView() {
 
 async function confirmSignUp() {
   try {
-    await Auth.confirmSignUp(email, code);
+    await Auth.confirmSignUp(email, code);    
+    const user = await Auth.signIn(email, password);
+    console.log(user);
+    dispatch(logIn());
+    dispatch(setUser(user.attributes));
     navigation.navigate('UserInfoView');
   } catch (error) {
     console.log('error confirming sign up', error);

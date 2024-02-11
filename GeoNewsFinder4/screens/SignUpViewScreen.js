@@ -2,10 +2,10 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
-import DateTimePicker from 'react-native-ui-datepicker';
 import DatePicker from '@dietime/react-native-date-picker';
-import dayjs from 'dayjs';
 import { Auth } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { logIn, setUser } from '../redux/action';
 
 
 function SignUpView() {
@@ -14,7 +14,6 @@ function SignUpView() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [gender, setGender] = React.useState(null);
-    // const [date, setDate] = React.useState(dayjs());
     const [date, setDate] = React.useState('');
     const [displayDate, setDisplayDate] = React.useState('');
     const [selectedDate, setSelectedDate] = React.useState(null);
@@ -27,7 +26,6 @@ function SignUpView() {
     const handleConfirmDate = () => {
         setDisplayDate('');
         splitDate = date.toDateString().slice(4, 15).split(' ');
-        console.log(splitDate);
         month = monthMap[splitDate[0]];
         tempDate = splitDate[2] + '-' + month + '-' + splitDate[1];
         setDate(tempDate);
@@ -75,10 +73,9 @@ function SignUpView() {
         }
       });
       console.log(user);
-      navigation.navigate('ConfirmView', { email });
+      navigation.navigate('ConfirmView', { email, password });
     } catch (error) {
       console.log('error signing up:', error);
-      navigation.navigate('ConfirmView', { email });
     }
   }
   
@@ -122,15 +119,9 @@ function SignUpView() {
         >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    {/* <DateTimePicker
-                        mode="single"
-                        date={date}
-                        onChange={(params) => setDate(params.date)}
-                    /> */}
                     <Text style={styles.test}>{date ? displayDate : "Select date..."}</Text>
                     <DatePicker
                         value={date}
-                        // onChange={(value) => setDate(value)}
                         onChange={(value) => handleDateChange(value)}
                         format="mm-dd-yyyy"
                     />
