@@ -1,20 +1,64 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import RNPickerSelect from 'react-native-picker-select';
+import DateTimePicker from 'react-native-ui-datepicker';
+import DatePicker from '@dietime/react-native-date-picker';
+import dayjs from 'dayjs';
 import { Auth } from 'aws-amplify';
 
 
 function SignUpView() {
-  const navigation = useNavigation();
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [gender, setGender] = React.useState('');
-  const [birthdate, setBirthdate] = React.useState('');
+    const navigation = useNavigation();
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [gender, setGender] = React.useState(null);
+    // const [date, setDate] = React.useState(dayjs());
+    const [date, setDate] = React.useState('');
+    const [displayDate, setDisplayDate] = React.useState('');
+    const [selectedDate, setSelectedDate] = React.useState(null);
+    const [modalVisible, setModalVisible] = React.useState(false);
+
+    const monthMap = {
+        "Jan": "01", "Feb": "02", "Mar": "03", "Apr": "04", "May": "05", "Jun": "06", "Jul": "07", "Aug": "08", "Sep": "09", "Oct": "10", "Nov": "11", "Dec": "12"
+    };
+
+    const handleConfirmDate = () => {
+        setDisplayDate('');
+        splitDate = date.toDateString().slice(4, 15).split(' ');
+        console.log(splitDate);
+        month = monthMap[splitDate[0]];
+        tempDate = splitDate[2] + '-' + month + '-' + splitDate[1];
+        setDate(tempDate);
+        setSelectedDate(tempDate);
+        setModalVisible(false);
+      };
+
+    const handleDateChange = (value) => {
+        setDate(value)
+        setDisplayDate(value.toDateString().slice(4, 15))
+    }
+  
+    const placeholder = {
+        label: 'Select gender...',
+        value: null,
+    };
+  
+    const genderOptions = [
+      { label: 'Male', value: 'male' },
+      { label: 'Female', value: 'female' },
+    ];
 
   const handleSignUp = () => {
     signUp();
   }
+
+  const openModal = () => {
+    setModalVisible(true);
+    setDate('');
+  }
+
   async function signUp() {
     try {
       const { user } = await Auth.signUp({
@@ -22,12 +66,11 @@ function SignUpView() {
         password,
         attributes: {
           name,
-          gender,   // Provide gender attribute
-          birthdate, // Provide birthdate attribute
+          gender,   
+          birthdate: date, 
           locale: 'en_US',
         },
         autoSignIn: {
-          // optional - enables auto sign in after user is confirmed
           enabled: true
         }
       });
@@ -35,6 +78,7 @@ function SignUpView() {
       navigation.navigate('ConfirmView', { email });
     } catch (error) {
       console.log('error signing up:', error);
+      navigation.navigate('ConfirmView', { email });
     }
   }
   
@@ -64,19 +108,47 @@ function SignUpView() {
           onChangeText={ text => setPassword(text)}
         />
         <Text style={styles.label}>Birthdate</Text>
-        <TextInput
-          placeholder='1990-01-05'
-          style={styles.input}
-          value = { birthdate }
-          onChangeText={ text => setBirthdate(text)}
-        />
+        <View style={styles.dateButtonContainer}>
+            <TouchableOpacity onPress={() => openModal()}>
+                <Text style={[styles.dateButton, selectedDate && styles.dateSelectedButton]}>{selectedDate ? selectedDate : 'Select Date'}</Text>
+            </TouchableOpacity>
+        </View>
+        
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+        >
+            <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                    {/* <DateTimePicker
+                        mode="single"
+                        date={date}
+                        onChange={(params) => setDate(params.date)}
+                    /> */}
+                    <Text style={styles.test}>{date ? displayDate : "Select date..."}</Text>
+                    <DatePicker
+                        value={date}
+                        // onChange={(value) => setDate(value)}
+                        onChange={(value) => handleDateChange(value)}
+                        format="mm-dd-yyyy"
+                    />
+                    <TouchableOpacity onPress={handleConfirmDate} style={styles.confirmButton}>
+                        <Text style={styles.confirmButtonText}>Confirm</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
         <Text style={styles.label}>Gender</Text>
-        <TextInput
-          placeholder='male'
-          style={styles.input}
-          value = { gender }
-          onChangeText={ text => setGender(text)}
-        />
+        <View style={styles.genderDropdown}>
+            <RNPickerSelect
+                placeholder={placeholder}
+                items={genderOptions}
+                onValueChange={(value) => setGender(value)}
+                value={gender}
+            />
+        </View>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
@@ -92,7 +164,7 @@ function SignUpView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
     backgroundColor: 'white',
   },
@@ -101,15 +173,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
+    marginTop: 50,
   },
   input: {
     backgroundColor: 'white',
     width: '80%',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    // borderWidth: 1,
     borderBottomWidth: 2,
-    // borderRadius: 10,
     marginTop: 10,
   },
   buttonContainer: {
@@ -135,6 +206,52 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  genderDropdown: {
+    width: '80%',
+    borderBottomWidth: 2, 
+    padding: 10,
+  },
+  datePicker: {
+    width: '80%',
+    marginTop: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  dateButton: {
+    color: '#CCCCCC',
+    fontSize: 14,
+  },
+  dateSelectedButton: {
+    color: 'black',
+    fontSize: 14,
+  },
+  dateButtonContainer: {
+    width: '80%',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderBottomWidth: 2,
+  },
+  test: {
+    padding: 20,
+    fontSize: 20,
+  },
+  confirmButton: {
+    padding: 10,
+  },
+  confirmButtonText: {
+    fontSize: 20,
+  }
   });
 
 export default SignUpView;

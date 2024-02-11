@@ -25,7 +25,7 @@ async function confirmSignUp() {
   
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Text style={styles.title}>GeoNewsFinder4</Text>
+      <Text style={styles.label}>A confirmation code has been sent to your email. Please enter the code below.</Text>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Confirmation Code'
@@ -48,7 +48,7 @@ async function confirmSignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
     backgroundColor: 'white',
   },
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderWidth: 1,
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: 20,
   },
   buttonContainer: {
     width: '60%',
@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
       fontSize: 16,
       color: 'white',
   },
-  title: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    position: 'absolute',
-    top: 150,
+  label: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 100,
+    paddingHorizontal: 15,
   }
   });
 

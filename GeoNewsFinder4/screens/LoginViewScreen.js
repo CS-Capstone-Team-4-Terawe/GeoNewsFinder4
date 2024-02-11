@@ -2,16 +2,20 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { logIn, setUser } from '../redux/action';
 
 
 function LoginView() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const dispatch = useDispatch();
+  
   const handleSignIn = () => {
     signIn();
   }
+
 
   const handleSignUp = () => {
     navigation.navigate('SignUpView');
@@ -20,7 +24,9 @@ function LoginView() {
   async function signIn() {
     try {
       const user = await Auth.signIn(email, password);
-      console.log('Signed in as: ', user.attributes.name)
+      console.log('Signed in as: ', user.attributes.name);
+      dispatch(logIn());
+      dispatch(setUser(user.attributes));
       navigation.navigate('UserInfoView');
     } catch (error) {
       console.log('error signing in', error);
