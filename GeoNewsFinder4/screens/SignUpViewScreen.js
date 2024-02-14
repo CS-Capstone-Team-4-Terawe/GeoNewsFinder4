@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from '@dietime/react-native-date-picker';
 import { Auth } from 'aws-amplify';
-import { useDispatch } from 'react-redux';
-import { logIn, setUser } from '../redux/action';
 
 
 function SignUpView() {

@@ -1,13 +1,20 @@
 import React from 'react';
 import { TouchableOpacity, Image, StyleSheet} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const LoginButton = () => {
     const navigation = useNavigation();
+    const isLoggedIn = useSelector(state => state.isLoggedIn);
     return (
         <TouchableOpacity style={styles.button}
         onPress={ () => {
-            navigation.navigate('LoginView');
+            if (isLoggedIn) {
+                navigation.navigate('ProfileView');
+            }
+            else {
+                navigation.navigate('LoginView');
+            }
           }} >
             <Image source={require('../assets/gear.png')} style={styles.gearImage}/>
         </TouchableOpacity>

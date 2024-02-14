@@ -23,7 +23,6 @@ async function confirmSignUp() {
   try {
     await Auth.confirmSignUp(email, code);    
     const user = await Auth.signIn(email, password);
-    console.log(user);
     dispatch(logIn());
     dispatch(setUser(user.attributes));
     navigation.navigate('UserInfoView');
