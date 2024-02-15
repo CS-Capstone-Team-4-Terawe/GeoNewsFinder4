@@ -16,7 +16,6 @@ function LoginView() {
     signIn();
   }
 
-
   const handleSignUp = () => {
     navigation.navigate('SignUpView');
   }
@@ -27,7 +26,7 @@ function LoginView() {
       console.log('Signed in as: ', user.attributes.name);
       dispatch(logIn());
       dispatch(setUser(user.attributes));
-      navigation.navigate('UserInfoView');
+      navigation.navigate('UserPreferencesView');
     } catch (error) {
       console.log('error signing in', error);
     }

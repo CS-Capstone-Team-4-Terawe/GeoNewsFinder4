@@ -6,7 +6,6 @@ import MapViewScreen from './screens/MapViewScreen';
 import ArticleSynopsisView from './screens/ArticleSynopsisViewScreen';
 import LoginView from './screens/LoginViewScreen';
 import ProfileView from './screens/ProfileViewScreen';
-import UserInfoView from './screens/UserInfoViewScreen';
 import UserPreferencesView from './screens/UserPreferencesViewScreen';
 import SignUpView from './screens/SignUpViewScreen';
 import ConfirmView from './screens/ConfirmViewScreen';
@@ -62,16 +61,6 @@ function App() {
           <Stack.Screen
             name='LoginView'
             component={ LoginView }
-            options={{
-              title: '',
-              headerShown: true,
-              headerTintColor: 'black',
-              headerStyle: { backgroundColor: 'white' },
-            }}
-          />
-          <Stack.Screen
-            name='UserInfoView'
-            component={ UserInfoView }
             options={{
               title: '',
               headerShown: true,
