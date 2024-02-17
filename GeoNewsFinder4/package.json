@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/react-native": "^1.0.13",
+    "@aws-sdk/client-dynamodb": "^3.514.0",
     "@dietime/react-native-date-picker": "^1.2.1",
     "@expo/webpack-config": "^19.0.0",
     "@gorhom/bottom-sheet": "^4.5.1",

@@ -1,40 +1,37 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-geonewsfinder4-dev-115947-authRole",
-      "UnauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-authRole",
+      "AuthRoleName": "amplify-geonewsfinder4-dev-193331-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-193331-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-193331-authRole",
       "Region": "us-west-1",
-      "DeploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-      "UnauthRoleName": "amplify-geonewsfinder4-dev-115947-unauthRole",
-      "StackName": "amplify-geonewsfinder4-dev-115947",
-      "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-115947/f5556470-bee0-11ee-88e0-06692e496f73",
-      "AmplifyAppId": "dbxh4hq7mcokm"
+      "DeploymentBucketName": "amplify-geonewsfinder4-dev-193331-deployment",
+      "UnauthRoleName": "amplify-geonewsfinder4-dev-193331-unauthRole",
+      "StackName": "amplify-geonewsfinder4-dev-193331",
+      "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-193331/28ddf570-cc7c-11ee-b6b9-02878d265e89",
+      "AmplifyAppId": "drrp3ftghfdb9"
     },
     "categories": {
       "auth": {
-        "geonewsfinder4f33570c4": {},
-        "GeoNewsFinder4": {}
-      },
-      "function": {
-        "articlesLambda": {
-          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-          "s3Key": "amplify-builds/articlesLambda-48673251693043576932-build.zip"
-        },
-        "geonewsfinder4getNewsData": {
-          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-          "s3Key": "amplify-builds/geonewsfinder4getNewsData-LambdaLayerVersion910256e6-build.zip"
-        },
-        "gptAPIFunctions": {
-          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-          "s3Key": "amplify-builds/gptAPIFunctions-766f71534f727346752f-build.zip"
+        "geonewsfinder4": {
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-authRole",
+          "authRoleName": "amplify-geonewsfinder4-dev-115947-authRole",
+          "identityPoolId": "us-west-1:2e0fb141-995e-4c87-86ec-68de064fbaa0",
+          "identityPoolName": "testAuthIdentityPool__dev",
+          "nativeClientId": "2duh9a706o7v5050q6bojb3h4v",
+          "unauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-unauthRole",
+          "unauthRoleName": "amplify-geonewsfinder4-dev-115947-unauthRole",
+          "userPoolId": "us-west-1_gMnjEsfqr",
+          "userPoolName": "GeoNewsFinder4-dev",
+          "webClientId": "3lmqhjg9tnli0i50uh27t3pj0f"
         }
       },
-      "api": {
-        "articlesApi": {}
-      },
       "storage": {
-        "geonewsDynamoDb": {}
+        "geonewsfinder446f29e16": {
+          "bucketName": "articles-for-demo",
+          "region": "us-west-1"
+        }
       }
     }
   }

@@ -2,10 +2,31 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { DynamoDBClient, dynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb'
 
 const ProfileView = () =>{
 const navigation = useNavigation();
 const user = useSelector(state => state.user);
+const ddbClient = new DynamoDBClient({region: 'us-west-1'});
+const getItem = async () => {
+    const params = {
+        TableName: 'GeoNewsFinder-UserPrefs',
+        Key: {
+            UserId: { S: '1'}
+        }
+    }
+    try {
+        const data = await ddbClient.send(new GetItemCommand(params));
+        console.log(data.item);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const handleConfimation = () => {
+    getItem();
+    navigation.navigate('Home');
+  }
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
@@ -13,7 +34,7 @@ const user = useSelector(state => state.user);
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.email}>{user.email}</Text>
             <TouchableOpacity style={styles.button} 
-            onPress={() => {navigation.navigate('Home');}}
+            onPress={ handleConfimation }
             >
                 <Text style={styles.buttonText}>Manage your Google Account</Text>
             </TouchableOpacity>
