@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-geonewsfinder4-dev-193331-unauthRole",
       "StackName": "amplify-geonewsfinder4-dev-193331",
       "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-193331/28ddf570-cc7c-11ee-b6b9-02878d265e89",
-      "AmplifyAppId": "drrp3ftghfdb9"
+      "AmplifyAppId": "drrp3ftghfdb9",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-geonewsfinder4-dev-193331-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -31,6 +32,13 @@
         "geonewsfinder446f29e16": {
           "bucketName": "articles-for-demo",
           "region": "us-west-1"
+        },
+        "userprefs": {
+          "tableName": "user-prefs",
+          "region": "us-west-1",
+          "arn": "arn:aws:dynamodb:us-west-1:730335238298:table/user-prefs",
+          "partitionKeyName": "userId",
+          "partitionKeyType": "S"
         }
       }
     }

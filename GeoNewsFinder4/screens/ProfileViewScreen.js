@@ -2,29 +2,24 @@ import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { DynamoDBClient, dynamoDBClient, GetItemCommand } from '@aws-sdk/client-dynamodb'
+import { API } from 'aws-amplify';
+
+
+const handleButtonTap = async () => {
+    try {
+      const responseData = await API.get('userPrefsAPI', '/userPrefs');
+      console.log(responseData);
+    } catch (err) {
+      console.error(err.response.data);
+    }
+  }
 
 const ProfileView = () =>{
 const navigation = useNavigation();
 const user = useSelector(state => state.user);
-const ddbClient = new DynamoDBClient({region: 'us-west-1'});
-const getItem = async () => {
-    const params = {
-        TableName: 'GeoNewsFinder-UserPrefs',
-        Key: {
-            UserId: { S: '1'}
-        }
-    }
-    try {
-        const data = await ddbClient.send(new GetItemCommand(params));
-        console.log(data.item);
-    } catch (err) {
-        console.log(err);
-    }
-}
 
 const handleConfimation = () => {
-    getItem();
+    handleButtonTap();
     navigation.navigate('Home');
   }
   return (

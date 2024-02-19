@@ -1,4 +1,5 @@
 {
+  "api": {},
   "auth": {
     "geonewsfinder4": {
       "customAuth": false,
@@ -8,6 +9,7 @@
       "serviceType": "imported"
     }
   },
+  "function": {},
   "parameters": {
     "AMPLIFY_auth_geonewsfinder4_allowUnauthenticatedIdentities": {
       "usedBy": [
@@ -112,6 +114,46 @@
           "resourceName": "geonewsfinder446f29e16"
         }
       ]
+    },
+    "AMPLIFY_storage_userprefs_arn": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "userprefs"
+        }
+      ]
+    },
+    "AMPLIFY_storage_userprefs_partitionKeyName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "userprefs"
+        }
+      ]
+    },
+    "AMPLIFY_storage_userprefs_partitionKeyType": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "userprefs"
+        }
+      ]
+    },
+    "AMPLIFY_storage_userprefs_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "userprefs"
+        }
+      ]
+    },
+    "AMPLIFY_storage_userprefs_tableName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "userprefs"
+        }
+      ]
     }
   },
   "storage": {
@@ -119,6 +161,12 @@
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3",
+      "serviceType": "imported"
+    },
+    "userprefs": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB",
       "serviceType": "imported"
     }
   }
