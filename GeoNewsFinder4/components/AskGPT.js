@@ -8,17 +8,29 @@ const AskGPTRoute = () => {
   const [error, setError] = useState(null);
   const [answer, setAnswer] = useState('Feel free to ask any clarifying questions!');
 
-  const askGPT =  async () => {
-      setError(null);
-      let question = GPTQuestion;
-      try{
-          let response = await ask(question)
-          setAnswer(response)
-          }catch(e){
-              setError(e?.message || "Something went wrong");
-          } finally {
-          }
-  };
+  const askGPT = async () => {
+    setError(null);
+    let question = GPTQuestion;
+    try {
+        // Example using fetch to call your API Gateway endpoint
+        const response = await fetch('https://m5a02eb6rj.execute-api.us-west-1.amazonaws.com', {
+            method: 'POST', // Or 'GET', depending on your setup
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ question: question }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        setAnswer(data.answer); // Assuming the Lambda response has an 'answer' field
+    } catch (e) {
+        setError(e.message || "Something went wrong");
+    }
+};
 
   const handlQuestionInput = (text) => {
     setQuestion(text)

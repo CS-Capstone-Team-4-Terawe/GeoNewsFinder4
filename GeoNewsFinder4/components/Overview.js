@@ -15,21 +15,49 @@ const OverviewRoute = () => {
 	const [error, setError] = useState(null);
   const [summary, setSummary] = useState('Loading...');
 
+    // useEffect(() => {
+    //   const fetchSummary = async () => {
+    //     setError(null);
+    //     try {
+    //       let articleSummary = await summarizeArticle(news_article);
+    //       setSummary(articleSummary);
+    //       // console.log("Summarize 1")
+    //       // console.log(articleSummary);
+    //     } catch(e){
+    //       setError(e?.message || "Something went wrong");
+    //     } finally {
+    //     }
+    //   }
+    //   fetchSummary();
+    // }, []);
     useEffect(() => {
       const fetchSummary = async () => {
-        setError(null);
-        try {
-          let articleSummary = await summarizeArticle(news_article);
-          setSummary(articleSummary);
-          // console.log("Summarize 1")
-          // console.log(articleSummary);
-        } catch(e){
-          setError(e?.message || "Something went wrong");
-        } finally {
-        }
-      }
+          setError(null);
+          try {
+              // Replace this URL with your actual API Gateway URL
+              console.log("API Gateway try");
+              const apiUrl = 'https://m5a02eb6rj.execute-api.us-west-1.amazonaws.com';
+              const response = await axios.post(apiUrl, {
+                  // Assuming your API expects the article as a JSON object
+                  // Adjust the payload as per your API's expected format
+                  article: news_article
+              });
+              console.log("API Gateway try after 2");
+  
+              if (response.data) {
+                  // Assuming your API returns the summary in the response's data
+                  setSummary(response.data.summary);
+              } else {
+                  // Handle case where API response does not contain expected data
+                  setError("Received unexpected response from the server");
+              }
+          } catch(e) {
+              setError(e?.message || "Something went wrong");
+          }
+      };
+  
       fetchSummary();
-    }, []);
+  }, []);
   
   return (
     <View style={styles.overviewContainer}>
