@@ -14,22 +14,47 @@ let news_article = new NewsArticle(
 const OverviewRoute = () => {
 	const [error, setError] = useState(null);
   const [summary, setSummary] = useState('Loading...');
-
     useEffect(() => {
       const fetchSummary = async () => {
-        setError(null);
-        try {
-          let articleSummary = await summarizeArticle(news_article);
-          setSummary(articleSummary);
-          // console.log("Summarize 1")
-          // console.log(articleSummary);
-        } catch(e){
-          setError(e?.message || "Something went wrong");
-        } finally {
-        }
-      }
+          setError(null);
+          try {
+              // Replace this URL with your actual API Gateway URL
+              console.log("API Gateway try");
+              const apiUrl = 'https://5vfzo8wbu2.execute-api.us-west-1.amazonaws.com/testDBGPT1';
+              const response = await axios.post(apiUrl, {
+                "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",
+                "isQuestion": false,
+                "question": "There is no question"
+                }
+              );
+              console.log("API Gateway try after 2");
+              // console.log(response.data)
+              if (response.data) {
+                // Assuming your API returns the summary inside the nested body as a JSON string
+                // First, parse the outer JSON if not already an object
+                const outerBody = typeof response.data.body === 'string' ? JSON.parse(response.data.body) : response.data.body;
+                // Then, parse the inner JSON to get the actual content object
+                const responseBody = typeof outerBody.body === 'string' ? JSON.parse(outerBody.body) : outerBody.body;
+                
+                // console.log(responseBody); // This should now log the parsed object
+            
+                // Now you can access responseContent directly
+                const responseContent = responseBody.responseContent;
+                console.log(responseContent); // This should log the actual content string
+            
+                setSummary(responseContent);
+              } else {
+                  // Handle case where API response does not contain expected data
+                  setError("Received unexpected response from the server");
+              }
+          } catch(e) {
+              // console.log("big oopsie error log");
+              setError(e?.message || "Something went wrong");
+          }
+      };
+  
       fetchSummary();
-    }, []);
+  }, []);
   
   return (
     <View style={styles.overviewContainer}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { ask } from '../utils/openAIGPTFunctions.js'; 
+import axios from 'axios';
 
 const AskGPTRoute = () => {
 
@@ -8,23 +9,43 @@ const AskGPTRoute = () => {
   const [error, setError] = useState(null);
   const [answer, setAnswer] = useState('Feel free to ask any clarifying questions!');
 
-  const askGPT =  async () => {
-      setError(null);
-      let question = GPTQuestion;
-      try{
-          let response = await ask(question)
-          setAnswer(response)
-          }catch(e){
-              setError(e?.message || "Something went wrong");
-          } finally {
-          }
-  };
+  const askGPT = async () => {
+    setError(null);
+    let question = GPTQuestion;
+
+    try {
+      // Replace this URL with your actual API Gateway URL
+      console.log("API Gateway try");
+      const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
+      const response = await axios.post(apiUrl, {
+        "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",         
+        "isQuestion": true,
+        "question": question
+      });
+      console.log("API Gateway try after 2");
+      // console.log(response.data)
+      if (response.data) {
+          // Assuming your API returns the summary in the response's data
+          const responseBody = JSON.parse(response.data.body);
+          setAnswer(responseBody.responseContent);
+          console.log(responseBody.responseContent);
+      } else {
+          // Handle case where API response does not contain expected data
+          setError("Received unexpected response from the server");
+      }
+  } catch(e) {
+      // console.log("big oopsie error log");
+      setError(e?.message || "Something went wrong");
+  }
+
+};
 
   const handlQuestionInput = (text) => {
     setQuestion(text)
   };
 
   const askQuestion = async () => {
+    console.log("Enter ask question");
     await askGPT()
     setQuestion('')
   };
