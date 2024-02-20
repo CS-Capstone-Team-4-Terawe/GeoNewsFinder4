@@ -1,19 +1,51 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { API } from 'aws-amplify';
 
 const ProfileView = () =>{
 const navigation = useNavigation();
+const user = useSelector(state => state.user);
+const [userInfo, setUserInfo] = React.useState({});
+
+const handleConfimation = () => {
+    handleButtonTap();
+    navigation.navigate('Home');
+}
+
+React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseData = await API.get('testAPI', '/test');
+        const name = user.email; 
+        const itemsWithName = responseData.filter(item => item.name === name);
+        setUserInfo(itemsWithName[0]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+const handleButtonTap = async () => {
+    try {
+        console.log(userInfo);
+    } catch (err) {
+        console.error(err.response.data);
+    }
+}
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
             <Image source={require('../assets/favicon.png')} style={styles.profilePic}/>
-            <Text style={styles.name}>Mr. Cheddah</Text>
-            <Text style={styles.email}>cheddah@ucsb.edu</Text>
+            <Text style={styles.name}>{user.name}</Text>
+            <Text style={styles.email}>{user.email}</Text>
             <TouchableOpacity style={styles.button} 
-            onPress={() => {navigation.navigate('Home');}}
+            onPress={ handleConfimation }
             >
-                <Text style={styles.buttonText}>Manage your Google Account</Text>
+                <Text style={styles.buttonText}>Back to Map View</Text>
             </TouchableOpacity>
         </View>
       <View style={styles.line}></View>
@@ -22,65 +54,59 @@ const navigation = useNavigation();
         <View style={styles.infoItem}>
             <View style={styles.idk}>
                 <Text style={styles.label}>NAME</Text>
-                <Text style={styles.text}>Mr. Cheddah</Text>
+                <Text style={styles.text}>{user.name}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>BIRTHDAY</Text>
-                <Text style={styles.text}>January 1990</Text>
+                <Text style={styles.text}>{user.birthdate}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>GENDER</Text>
-                <Text style={styles.text}>Rat</Text>
+                <Text style={styles.text}>{user.gender}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>EMAIL</Text>
-                <Text style={styles.text}>cheddah@ucsb.edu</Text>
-                <Text style={styles.text}>mr.rat@gmail.com</Text>
+                <Text style={styles.text}>{user.email}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>LOCATION</Text>
-                <Text style={styles.text}>your mom's house</Text>
+                <Text style={styles.text}>{user.locale}</Text>
             </View>
             <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
       </View>
       <View style={styles.line}></View>
+      {userInfo && (
         <View style={styles.infoSection}>
             <Text style={styles.title}>Interests</Text>
             <View style={styles.infoItem}>
                 <View>
-                    <Text style={styles.label}>SPORTS</Text>
-                    <Text style={styles.text}>tennis, cheeseeating, golf, yapping</Text>
+                    <Text style={styles.label}>Topic Preferences</Text>
+                    <Text style={styles.text}>{userInfo.topicPrefs}</Text>
                 </View>
                 <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
             <View style={styles.infoItem}>
                 <View>
-                    <Text style={styles.label}>TECHNOLOGY</Text>
-                    <Text style={styles.text}>AI, ALGORITHMS</Text>
-                </View>
-                <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
-            </View>
-            <View style={styles.infoItem}>
-                <View>
-                    <Text style={styles.label}>OCCUPATION</Text>
-                    <Text style={styles.text}>cheese eater</Text>
+                    <Text style={styles.label}>Location Preferences</Text>
+                    <Text style={styles.text}>{userInfo.locationPrefs}</Text>
                 </View>
                 <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
         </View>
+      )}
     </View>
   );
 }

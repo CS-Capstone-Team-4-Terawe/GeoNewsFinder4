@@ -1,22 +1,37 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
+import { useDispatch } from 'react-redux';
+import { logIn, setUser } from '../redux/action';
 
 
 function LoginView() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const dispatch = useDispatch();
+  
   const handleSignIn = () => {
-    navigation.navigate('UserInfoView');
+    signIn();
   }
 
   const handleSignUp = () => {
-    navigation.navigate('UserInfoView');
+    navigation.navigate('SignUpView');
   }
 
-
+  async function signIn() {
+    try {
+      const user = await Auth.signIn(email, password);
+      console.log('Signed in as: ', user.attributes.name);
+      dispatch(logIn());
+      dispatch(setUser(user.attributes));
+      navigation.navigate('ProfileView');
+      // navigation.navigate('UserPreferencesView');
+    } catch (error) {
+      console.log('error signing in', error);
+    }
+  }
   
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -55,16 +70,14 @@ function LoginView() {
 }
 const styles = StyleSheet.create({
   container: {
-    // height: '100%',
-    // width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // paddingBottom: 150,
   },
   inputContainer: {
     width: '80%',
+
     marginBottom: 30,
   },
   input: {
