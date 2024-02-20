@@ -26,7 +26,8 @@ function LoginView() {
       console.log('Signed in as: ', user.attributes.name);
       dispatch(logIn());
       dispatch(setUser(user.attributes));
-      navigation.navigate('UserPreferencesView');
+      navigation.navigate('ProfileView');
+      // navigation.navigate('UserPreferencesView');
     } catch (error) {
       console.log('error signing in', error);
     }

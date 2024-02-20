@@ -1,10 +1,14 @@
 import React,  { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, ScrollView  } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { API } from 'aws-amplify';
 
 const UserPreferencesView = () => {
     const navigation = useNavigation();
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    const user = useSelector(state => state.user);
+    const [selectedTopics, setSelectedTopics] = useState([]);
+    const [selectedLocations, setSelectedLocations] = useState([]);
     const [currentStep, setCurrentStep] = useState(1);
 
     const optionsList = {
@@ -72,23 +76,42 @@ const UserPreferencesView = () => {
     };
 
     const handleOptionToggle = (optionId) => {
-        if (selectedOptions.includes(optionId)) {
-          setSelectedOptions(selectedOptions.filter((id) => id !== optionId));
+      const option = optionsList[currentStep].find((opt) => opt.id === optionId);
+      if (!option) return;
+      if (currentStep < 3) {
+        if (selectedTopics.includes(option.label)) {
+          setSelectedTopics(selectedTopics.filter((label) => label !== option.label));
         } else {
-          setSelectedOptions([...selectedOptions, optionId]);
+          setSelectedTopics([...selectedTopics, option.label]);
         }
+      } else if (currentStep === 3) {
+        if (selectedLocations.includes(option.label)) {
+          setSelectedLocations(selectedLocations.filter((label) => label !== option.label));
+        } else {
+          setSelectedLocations([...selectedLocations, option.label]);
+        }
+      }
     };
 
-    const handleNextPage = () => {
-        console.log('Selected Options:', selectedOptions);
-        if (optionsList[currentStep + 1]) {
-          setCurrentStep(currentStep + 1);
-        } else {
-          console.log('Reached the last page');
+    const handleNextPage = async () => {
+      let selectedTopicsString = selectedTopics.join(", ");
+      let selectedLocationsString = selectedLocations.join(", ");
+      if (optionsList[currentStep + 1]) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        try {
+            await API.post("testAPI", "/test", {
+            body: {
+                name: user.email,
+                topicPrefs: selectedTopicsString,
+                locationPrefs: selectedLocationsString,
+            }
+          });
           navigation.navigate('ProfileView');
-          // Handle the case when there are no more steps
-          // For now, you can perform any final actions or navigate to another screen
+        } catch (error) {
+          console.error('Error posting data:', error);
         }
+      }
     };
 
     return (
@@ -101,8 +124,8 @@ const UserPreferencesView = () => {
                 style={[
                   styles.optionButton,
                   {
-                    backgroundColor: selectedOptions.includes(option.id) ? 'lightblue' : 'white',
-                    borderColor: selectedOptions.includes(option.id) ? 'white' : 'lightgrey',
+                    backgroundColor: (currentStep < 3 && selectedTopics.includes(option.label)) || (currentStep === 3 && selectedLocations.includes(option.label)) ? 'lightblue' : 'white',
+                    borderColor: (currentStep < 3 && selectedTopics.includes(option.label)) || (currentStep === 3 && selectedLocations.includes(option.label)) ? 'white' : 'lightgrey',
                   },
                 ]}
                 onPress={() => handleOptionToggle(option.id)}
@@ -117,11 +140,11 @@ const UserPreferencesView = () => {
             style={[
               styles.arrowButton,
               {
-                backgroundColor: selectedOptions.length >= requiredSelections[currentStep] ? 'lightblue' : 'grey',
+                backgroundColor: (currentStep < 3 && selectedTopics.length >= requiredSelections[currentStep]) || (currentStep === 3 && selectedLocations.length >= requiredSelections[currentStep]) ? 'lightblue' : 'grey',
               },
             ]}
             onPress={handleNextPage}
-            disabled={selectedOptions.length < requiredSelections[currentStep]}
+            disabled={ (currentStep < 3 && selectedTopics.length < requiredSelections[currentStep]) || (currentStep === 3 && selectedLocations.length < requiredSelections[currentStep])}
           >
             <Text style={styles.arrowText}>→</Text>
           </TouchableOpacity>

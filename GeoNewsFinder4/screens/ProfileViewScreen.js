@@ -4,24 +4,38 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { API } from 'aws-amplify';
 
-
-const handleButtonTap = async () => {
-    try {
-      const responseData = await API.get('userPrefsAPI', '/userPrefs');
-      console.log(responseData);
-    } catch (err) {
-      console.error(err.response.data);
-    }
-  }
-
 const ProfileView = () =>{
 const navigation = useNavigation();
 const user = useSelector(state => state.user);
+const [userInfo, setUserInfo] = React.useState({});
 
 const handleConfimation = () => {
     handleButtonTap();
     navigation.navigate('Home');
-  }
+}
+
+React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responseData = await API.get('testAPI', '/test');
+        const name = user.email; 
+        const itemsWithName = responseData.filter(item => item.name === name);
+        setUserInfo(itemsWithName[0]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
+
+
+const handleButtonTap = async () => {
+    try {
+        console.log(userInfo);
+    } catch (err) {
+        console.error(err.response.data);
+    }
+}
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
@@ -74,30 +88,25 @@ const handleConfimation = () => {
         </View>
       </View>
       <View style={styles.line}></View>
+      {userInfo && (
         <View style={styles.infoSection}>
             <Text style={styles.title}>Interests</Text>
             <View style={styles.infoItem}>
                 <View>
-                    <Text style={styles.label}>SPORTS</Text>
-                    <Text style={styles.text}>tennis, cheeseeating, golf, yapping</Text>
+                    <Text style={styles.label}>Topic Preferences</Text>
+                    <Text style={styles.text}>{userInfo.topicPrefs}</Text>
                 </View>
                 <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
             <View style={styles.infoItem}>
                 <View>
-                    <Text style={styles.label}>TECHNOLOGY</Text>
-                    <Text style={styles.text}>AI, ALGORITHMS</Text>
-                </View>
-                <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
-            </View>
-            <View style={styles.infoItem}>
-                <View>
-                    <Text style={styles.label}>OCCUPATION</Text>
-                    <Text style={styles.text}>cheese eater</Text>
+                    <Text style={styles.label}>Location Preferences</Text>
+                    <Text style={styles.text}>{userInfo.locationPrefs}</Text>
                 </View>
                 <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
         </View>
+      )}
     </View>
   );
 }
