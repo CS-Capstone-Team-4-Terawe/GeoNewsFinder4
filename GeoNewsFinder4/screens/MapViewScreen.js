@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
 import { Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
@@ -22,32 +23,72 @@ const INITIAL_LOCATION = {
 
 const MapViewScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-
   const [selectedHotspotId, setSelectedHotspotId] = useState(null);
+  const [hotspots, setHotspots] = useState([]);
 
-  const [hotspots, setHotspots] = useState([
-    {
-      _id: 'san diego',
-      radius: 200 * 1000, // radius parameters are in meters.
+  // temp articles 
+  // Assuming articles is an array containing the data
+  const articles_dict = [
+    { title: 'Article 1', location_tags: 'New York', topic_tags: ['technology', 'business'] },
+    { title: 'Article 2', location_tags: 'San Francisco', topic_tags: ['travel', 'culture'] },
+    { title: 'Article 3', location_tags: 'Miami', topic_tags: ['food', 'culture'] },
+    { title: 'Article 4', location_tags: 'Denver', topic_tags: ['travel', 'food'] },
+    { title: 'Article 5', location_tags: 'Denver', topic_tags: ['travel', 'food'] },
+    { title: 'Article 6', location_tags: 'New York', topic_tags: ['travel'] },
+    { title: 'Article 7', location_tags: 'New York', topic_tags: ['travel'] },
+    { title: 'Article 8', location_tags: 'Miami', topic_tags: ['food'] },
+    // Add more articles as needed
+  ];
+
+  // Count the frequency of location for all articles stored 
+  const countOccurences = (article_db) => {
+    const loc_count = {}; // dict storing all location + freq
+    article_db.forEach(article => {
+      const trimmedLocation = article.location_tags.trim().toLowerCase(); // extract loc
+      // if unseen loc, create new entry other inc count
+      if (loc_count[trimmedLocation]) {
+        loc_count[trimmedLocation]++;
+      } else {
+        loc_count[trimmedLocation] = 1;
+      }
+    });
+    console.log(loc_count);
+    return loc_count;
+  };
+
+    // Get coordinates for a given location [FUTURE: geocoding API call ]
+    const getCoordinatesForLocation = (loc) => {
+      // Placeholder coordinates for demo purposes (predetermined)
+      const coordMap = {
+        'new york': { latitude: 40.7128, longitude: -74.0060 },
+        'san francisco': { latitude: 37.7749, longitude: -122.4194 },
+        'los angeles': { latitude: 34.0522, longitude: -118.2437 },
+        'san diego': { latitude: 32.7157, longitude: -117.1611 },
+        'miami': { latitude: 25.7617, longitude: -80.1918 },
+        'denver': { latitude: 39.7392, longitude: -104.9903 },
+        'chicago': { latitude: 41.8781, longitude: -87.6298 },
+        // Add more as needed
+      };
+      return coordMap[loc] || { latitude: 0, longitude: 0 };
+    };
+  
+
+  // function to create hotspot object based on the location freequency
+  const generateHotspotObject = () => {
+    const location_freq = countOccurences(articles_dict); // articles is a dict object
+    const formattedHotspots = Object.entries(location_freq).map(([loc_name, count]) => ({
+      _id: loc_name.toLowerCase(),
+      radius: count * 100000,
       strokeWidth: 2,
-      latitude: 34.413,
-      longitude: -119.86
-    },
-    {
-      _id: 'nyc',
-      radius: 300 * 1000,
-      strokeWidth: 2,
-      latitude: 40.7486,
-      longitude: -73.986
-    },
-    {
-      _id: 'houston',
-      radius: 400 * 1000,
-      strokeWidth: 2,
-      latitude: 30.092,
-      longitude: -95.346
-    }
-  ]);
+      ...getCoordinatesForLocation(loc_name),
+    }));
+    setHotspots(formattedHotspots);
+    console.log(formattedHotspots)
+  };
+
+  useEffect(() => {
+    generateHotspotObject();
+  }, []);
 
   const toggleModal = (hotspotId) => {
     setSelectedHotspotId(hotspotId);
