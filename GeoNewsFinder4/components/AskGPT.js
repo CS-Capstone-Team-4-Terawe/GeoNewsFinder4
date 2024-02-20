@@ -13,7 +13,7 @@ const AskGPTRoute = () => {
     let question = GPTQuestion;
     try {
         // Example using fetch to call your API Gateway endpoint
-        const response = await fetch('https://m5a02eb6rj.execute-api.us-west-1.amazonaws.com', {
+        const response = await fetch('https://m5a02eb6rj.execute-api.us-west-1.amazonaws.com/dev/questions', {
             method: 'POST', // Or 'GET', depending on your setup
             headers: {
                 'Content-Type': 'application/json',
