@@ -20,7 +20,7 @@ const OverviewRoute = () => {
           try {
               // Replace this URL with your actual API Gateway URL
               // console.log("API Gateway try");
-              const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/test2';
+              const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
               const response = await axios.post(apiUrl, {
                 "title": "A potential Las Vegas workers strike could throw a wrench in the upcoming F1 race",
                 "date": "Monday, November 6, 2023 • 5:00 AM EST",
