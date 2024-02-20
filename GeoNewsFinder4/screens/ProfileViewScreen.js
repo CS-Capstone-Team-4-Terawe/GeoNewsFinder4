@@ -45,7 +45,7 @@ const handleButtonTap = async () => {
             <TouchableOpacity style={styles.button} 
             onPress={ handleConfimation }
             >
-                <Text style={styles.buttonText}>Manage your Google Account</Text>
+                <Text style={styles.buttonText}>Back to Map View</Text>
             </TouchableOpacity>
         </View>
       <View style={styles.line}></View>
