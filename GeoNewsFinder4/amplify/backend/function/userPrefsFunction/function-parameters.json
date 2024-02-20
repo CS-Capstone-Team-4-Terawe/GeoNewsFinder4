@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "auth": {
+      "geonewsfinder4": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "storage": {
+      "userPrefsDB": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

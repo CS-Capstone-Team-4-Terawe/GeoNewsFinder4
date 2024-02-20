@@ -1,9 +1,9 @@
 {
   "version": 1,
   "paths": {
-    "/articles": {
-      "name": "/articles",
-      "lambdaFunction": "getArticlesFunction",
+    "/userPrefs": {
+      "name": "/userPrefs",
+      "lambdaFunction": "userPrefsFunction",
       "permissions": {
         "setting": "open"
       }

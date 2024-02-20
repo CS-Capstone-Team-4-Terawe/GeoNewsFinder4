@@ -61,15 +61,17 @@ const MapViewScreen = () => {
     console.log(val.nativeEvent.text);
   };
 
-  const handleButtonTap = async () => {
+  const handleButtonTap = async (locTag, contentTag) => {
     try {
-      // fetches the entire Articles table - AWS dynamodb. view amplify/backend/function/ArticlesLambda
-      const responseData = await API.get('articlesApi', '/articles');
-      console.log(responseData);
-    } catch (e) {
-      console.error('error fetching articles:', e);
+      const queryString = new URLSearchParams({ LocTag: locTag, ContentTag: contentTag }).toString();
+      const response = await fetch(`https://4s8spn1646.execute-api.us-west-1.amazonaws.com/dev/articles/query?${queryString}`);
+      const data = await response.json();
+      console.log('Data from DynamoDB:', data);
+    } catch (error) {
+      console.error('Error fetching data', error);
     }
-  }
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -118,7 +120,7 @@ const MapViewScreen = () => {
       <View style={styles.loginButtonContainer}>
         <LoginButton></LoginButton>
       </View>
-      {/* <Button title="test" onPress={handleButtonTap}/> */}
+      <Button title="test" onPress={() => handleButtonTap("Los Angeles")}/>
 
       <Modal
         transparent={true}
