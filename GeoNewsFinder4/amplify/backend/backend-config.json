@@ -27,20 +27,6 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
-    },
-    "userPrefsAPI": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "function",
-          "resourceName": "userPrefsFunction"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "API Gateway"
     }
   },
   "auth": {
@@ -86,41 +72,6 @@
           ],
           "category": "storage",
           "resourceName": "testDB"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "userPrefsFunction": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributeEnvMap": {
-            "Arn": "TABLE_ARN",
-            "Name": "TABLE_NAME"
-          },
-          "attributes": [
-            "Name",
-            "Arn"
-          ],
-          "category": "storage",
-          "resourceName": "userPrefsDB"
-        },
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "geonewsfinder4"
-        },
-        {
-          "attributes": [
-            "Name",
-            "Arn",
-            "StreamArn"
-          ],
-          "category": "storage",
-          "resourceName": "userPrefsDB"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -399,10 +350,6 @@
       "serviceType": "imported"
     },
     "testDB": {
-      "providerPlugin": "awscloudformation",
-      "service": "DynamoDB"
-    },
-    "userPrefsDB": {
       "providerPlugin": "awscloudformation",
       "service": "DynamoDB"
     },
