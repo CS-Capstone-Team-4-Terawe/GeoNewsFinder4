@@ -17,16 +17,16 @@ const express = require('express')
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "Articles";
+let tableName = "";
 if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
 const userIdPresent = false; // TODO: update in case is required to use that definition
-const partitionKeyName = "articleId";
-const partitionKeyType = "N";
-const sortKeyName = "content";
-const sortKeyType = "S";
+const partitionKeyName = "";
+const partitionKeyType = "";
+const sortKeyName = "";
+const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
 const path = "/articles";
 const UNAUTH = 'UNAUTH';
@@ -108,6 +108,42 @@ app.get(path + hashKeyPath, async function(req, res) {
     res.json({error: 'Could not load items: ' + err.message});
   }
 });
+
+app.get(path + '/query', async function(req, res) {
+  // Extract query parameters
+  const locTag = req.query.LocTag;
+  const contentTag = req.query.ContentTag;
+
+  // Initialize the query parameters
+  let queryParams = {
+    TableName: tableName,
+    IndexName: 'ContentTag-index',
+    ExpressionAttributeNames: {},
+    ExpressionAttributeValues: {}
+  };
+  
+  // Adjust KeyConditionExpression and FilterExpression based on provided parameters
+  if (contentTag) {
+    queryParams.KeyConditionExpression = 'contains(#contentTag, :contentTagVal)';
+    queryParams.ExpressionAttributeNames['#contentTag'] = 'ContentTag';
+    queryParams.ExpressionAttributeValues[':contentTagVal'] = contentTag;
+  }
+
+  if (locTag) {
+    queryParams.FilterExpression = 'contains(#locTag, :locTagVal)';
+    queryParams.ExpressionAttributeNames['#locTag'] = 'LocTag';
+    queryParams.ExpressionAttributeValues[':locTagVal'] = locTag;
+  }
+
+  try {
+    const data = await ddbDocClient.send(new QueryCommand(queryParams));
+    res.json(data.Items);
+  } catch (err) {
+    res.statusCode = 500;
+    res.json({error: 'Could not load items: ' + err.message});
+  }
+});
+
 
 /*****************************************
  * HTTP Get method for get single object *

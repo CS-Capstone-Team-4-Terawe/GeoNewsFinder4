@@ -1,37 +1,63 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-geonewsfinder4-dev-115947-authRole",
-      "UnauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-authRole",
+      "AuthRoleName": "amplify-geonewsfinder4-dev-193331-authRole",
+      "UnauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-193331-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-193331-authRole",
       "Region": "us-west-1",
-      "DeploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-      "UnauthRoleName": "amplify-geonewsfinder4-dev-115947-unauthRole",
-      "StackName": "amplify-geonewsfinder4-dev-115947",
-      "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-115947/f5556470-bee0-11ee-88e0-06692e496f73",
-      "AmplifyAppId": "dbxh4hq7mcokm"
+      "DeploymentBucketName": "amplify-geonewsfinder4-dev-193331-deployment",
+      "UnauthRoleName": "amplify-geonewsfinder4-dev-193331-unauthRole",
+      "StackName": "amplify-geonewsfinder4-dev-193331",
+      "StackId": "arn:aws:cloudformation:us-west-1:730335238298:stack/amplify-geonewsfinder4-dev-193331/28ddf570-cc7c-11ee-b6b9-02878d265e89",
+      "AmplifyAppId": "drrp3ftghfdb9"
     },
     "categories": {
       "auth": {
-        "geonewsfinder4f33570c4": {},
-        "GeoNewsFinder4": {}
-      },
-      "function": {
-        "articlesLambda": {
-          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-          "s3Key": "amplify-builds/articlesLambda-48673251693043576932-build.zip"
-        },
-        "gptAPIFunctions": {
-          "openaiApiKey": "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",
-          "deploymentBucketName": "amplify-geonewsfinder4-dev-115947-deployment",
-          "s3Key": "amplify-builds/gptAPIFunctions-766f71534f727346752f-build.zip"
+        "geonewsfinder4": {
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-authRole",
+          "authRoleName": "amplify-geonewsfinder4-dev-115947-authRole",
+          "identityPoolId": "us-west-1:2e0fb141-995e-4c87-86ec-68de064fbaa0",
+          "identityPoolName": "testAuthIdentityPool__dev",
+          "nativeClientId": "2duh9a706o7v5050q6bojb3h4v",
+          "unauthRoleArn": "arn:aws:iam::730335238298:role/amplify-geonewsfinder4-dev-115947-unauthRole",
+          "unauthRoleName": "amplify-geonewsfinder4-dev-115947-unauthRole",
+          "userPoolId": "us-west-1_gMnjEsfqr",
+          "userPoolName": "GeoNewsFinder4-dev",
+          "webClientId": "3lmqhjg9tnli0i50uh27t3pj0f"
         }
       },
-      "api": {
-        "articlesApi": {}
-      },
       "storage": {
-        "geonewsDynamoDb": {}
+        "demoarticlescontent": {
+          "arn": "arn:aws:dynamodb:us-west-1:730335238298:table/demo-articles-content",
+          "partitionKeyName": "URL",
+          "partitionKeyType": "S",
+          "region": "us-west-1",
+          "streamArn": "arn:aws:dynamodb:us-west-1:730335238298:table/demo-articles-content/stream/2024-02-19T01:12:54.915",
+          "tableName": "demo-articles-content"
+        },
+        "geonewsfinder446f29e16": {
+          "bucketName": "articles-for-demo",
+          "region": "us-west-1"
+        },
+        "userprefs": {
+          "arn": "arn:aws:dynamodb:us-west-1:730335238298:table/user-prefs",
+          "partitionKeyName": "userId",
+          "partitionKeyType": "S",
+          "region": "us-west-1",
+          "tableName": "user-prefs"
+        },
+        "testDB": {}
+      },
+      "function": {
+        "getArticles": {
+          "deploymentBucketName": "amplify-geonewsfinder4-dev-193331-deployment",
+          "s3Key": "amplify-builds/getArticles-385a437878424a343743-build.zip"
+        },
+        "testFunction": {
+          "deploymentBucketName": "amplify-geonewsfinder4-dev-193331-deployment",
+          "s3Key": "amplify-builds/testFunction-48394e414d596b537a76-build.zip"
+        }
       }
     }
   }

@@ -1,9 +1,9 @@
 {
   "version": 1,
   "paths": {
-    "/articles": {
-      "name": "/articles",
-      "lambdaFunction": "getArticles",
+    "/test": {
+      "name": "/test",
+      "lambdaFunction": "testFunction",
       "permissions": {
         "setting": "open"
       }

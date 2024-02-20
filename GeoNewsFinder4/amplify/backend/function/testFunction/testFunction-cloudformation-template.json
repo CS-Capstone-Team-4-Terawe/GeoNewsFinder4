@@ -16,8 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "openaiApiKey": {
-      "Type": "String"
+    "storagetestDBName": {
+      "Type": "String",
+      "Default": "storagetestDBName"
+    },
+    "storagetestDBArn": {
+      "Type": "String",
+      "Default": "storagetestDBArn"
     }
   },
   "Conditions": {
@@ -50,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "gptAPIFunctions",
+            "testFunction",
             {
               "Fn::Join": [
                 "",
                 [
-                  "gptAPIFunctions",
+                  "testFunction",
                   "-",
                   {
                     "Ref": "env"
@@ -72,9 +77,6 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "OPENAI_API_KEY": {
-              "Ref": "openaiApiKey"
             }
           }
         },
@@ -95,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "geonewsfinder4LambdaRole485e353c",
+            "geonewsfinder4LambdaRolec61d67fb",
             {
               "Fn::Join": [
                 "",
                 [
-                  "geonewsfinder4LambdaRole485e353c",
+                  "geonewsfinder4LambdaRolec61d67fb",
                   "-",
                   {
                     "Ref": "env"
@@ -166,6 +168,34 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagetestDBArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagetestDBArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

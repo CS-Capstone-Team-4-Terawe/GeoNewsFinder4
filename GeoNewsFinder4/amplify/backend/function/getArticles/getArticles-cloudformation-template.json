@@ -16,13 +16,13 @@
     "s3Key": {
       "Type": "String"
     },
-    "storagegeonewsDynamoDbName": {
+    "storagedemoarticlescontentName": {
       "Type": "String",
-      "Default": "storagegeonewsDynamoDbName"
+      "Default": "storagedemoarticlescontentName"
     },
-    "storagegeonewsDynamoDbArn": {
+    "storagedemoarticlescontentArn": {
       "Type": "String",
-      "Default": "storagegeonewsDynamoDbArn"
+      "Default": "storagedemoarticlescontentArn"
     }
   },
   "Conditions": {
@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "articlesLambda",
+            "getArticles",
             {
               "Fn::Join": [
                 "",
                 [
-                  "articlesLambda",
+                  "getArticles",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "geonewsfinder4LambdaRolea46a5646",
+            "geonewsfinder4LambdaRole65a917fd",
             {
               "Fn::Join": [
                 "",
                 [
-                  "geonewsfinder4LambdaRolea46a5646",
+                  "geonewsfinder4LambdaRole65a917fd",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storagegeonewsDynamoDbArn"
+                  "Ref": "storagedemoarticlescontentArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storagegeonewsDynamoDbArn"
+                        "Ref": "storagedemoarticlescontentArn"
                       },
                       "index/*"
                     ]
