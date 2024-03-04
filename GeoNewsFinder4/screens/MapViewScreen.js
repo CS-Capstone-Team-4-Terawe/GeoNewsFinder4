@@ -54,22 +54,19 @@ const MapViewScreen = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const [searchText, setSearchText] = useState('');
-
   const handleSearchText = (val) => {
-    setSearchText(val.nativeEvent.text);
-    console.log(val.nativeEvent.text);
+    queryText = val.nativeEvent.text;
+    console.log("making request", queryText)
+    const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+    fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.hits.hits);
+    })
+  .catch(error => {
+    console.error('Error:', error);
+  }); 
   };
-
-  const handleButtonTap = async () => {
-    try {
-      // fetches the entire Articles table - AWS dynamodb. view amplify/backend/function/ArticlesLambda
-      const responseData = await API.get('articlesApi', '/articles');
-      console.log(responseData);
-    } catch (e) {
-      console.error('error fetching articles:', e);
-    }
-  }
 
   return (
     <View style={styles.container}>
@@ -118,8 +115,6 @@ const MapViewScreen = () => {
       <View style={styles.loginButtonContainer}>
         <LoginButton></LoginButton>
       </View>
-      {/* <Button title="test" onPress={handleButtonTap}/> */}
-
       <Modal
         transparent={true}
         animationType="slide"
@@ -160,7 +155,7 @@ const styles = StyleSheet.create({
     right: 30,
     alignItems: 'center', 
     justifyContent: 'center',
-  }
+  },
 });
 
 export default MapViewScreen;
