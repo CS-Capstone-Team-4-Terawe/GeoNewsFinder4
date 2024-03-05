@@ -33,7 +33,7 @@ const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
         renderItem={({ item }) => (
           <TouchableOpacity 
             onPress={ () => {
-              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url});
+              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url, searchArticles: articles});
               closeModal();
             }} 
             style={styles.container2}>
