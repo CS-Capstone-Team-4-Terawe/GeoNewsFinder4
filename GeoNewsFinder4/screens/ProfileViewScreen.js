@@ -9,9 +9,13 @@ const navigation = useNavigation();
 const user = useSelector(state => state.user);
 const [userInfo, setUserInfo] = React.useState({});
 
-const handleConfimation = () => {
-    handleButtonTap();
-    navigation.navigate('Home');
+const handleConfirmation = async () => {
+    try {
+        const dataFromApi = await handleButtonTap();
+        navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 React.useEffect(() => {
@@ -28,22 +32,35 @@ React.useEffect(() => {
     fetchData();
   }, []);
 
-const handleButtonTap = () => {
+const handleButtonTap = async () => {
     try {
-        queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs
+        const queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs;
         const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
-        fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.hits.hits);
-        })
-      .catch(error => {
-        console.error('Error:', error);
-      }); 
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        console.log(data.hits.hits);
+        return data; // Return the fetched data
     } catch (err) {
-        console.error(err);
+        console.error('Error:', err);
+        throw err; // It's a good practice to rethrow the error
     }
-}
+}  
+// const handleButtonTap = () => {
+//     try {
+//         queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs
+//         const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+//         fetch(apiUrl)
+//         .then(response => response.json())
+//         .then(data => {
+//           console.log(data.hits.hits);
+//         })
+//       .catch(error => {
+//         console.error('Error:', error);
+//       }); 
+//     } catch (err) {
+//         console.error(err);
+//     }
+// }
 
   return (
     <View style={styles.container}>
@@ -52,7 +69,7 @@ const handleButtonTap = () => {
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.email}>{user.email}</Text>
             <TouchableOpacity style={styles.button} 
-            onPress={ handleConfimation }
+            onPress={ handleConfirmation }
             >
                 <Text style={styles.buttonText}>Back to Map View</Text>
             </TouchableOpacity>
