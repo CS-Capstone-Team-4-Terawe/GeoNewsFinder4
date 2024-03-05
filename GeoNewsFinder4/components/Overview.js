@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Button, ScrollView } from 'react-native';
 import { ask, summarizeArticle, NewsArticle } from '../utils/openAIGPTFunctions.js'; 
 import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
 let news_article = new NewsArticle(
   "A potential Las Vegas workers strike could throw a wrench in the upcoming F1 race",
@@ -12,6 +13,8 @@ let news_article = new NewsArticle(
 );
 
 const OverviewRoute = () => {
+  const route = useRoute();
+  const articleUrl = route.params?.articleUrl; // Retrieve the articleUrl passed as a parameter
 	const [error, setError] = useState(null);
   const [summary, setSummary] = useState('Loading...');
     useEffect(() => {
@@ -22,7 +25,7 @@ const OverviewRoute = () => {
               console.log("API Gateway try");
               const apiUrl = 'https://5vfzo8wbu2.execute-api.us-west-1.amazonaws.com/testDBGPT1';
               const response = await axios.post(apiUrl, {
-                "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",
+                "article_url": articleUrl,
                 "isQuestion": false,
                 "question": "There is no question"
                 }
