@@ -4,20 +4,21 @@ import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import getAPIdata from '../utils/getAPIdata';
 
-const BottomSheet = ({ closeModal, hotspotId }) => {
+const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
 
     const navigation = useNavigation();
+    const articles = groupedLocations[hotspotId] || [];
 
-    const [newsData, setData] = useState([]);
+    // const [newsData, setData] = useState([]);
 
-    useEffect(() => {
-      const fetchData = async () => {
-        if (hotspotId) {
-          await getAPIdata(hotspotId, setData);
-        }
-      };
-      fetchData();
-    }, [hotspotId]);  
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     if (hotspotId) {
+    //       await getAPIdata(hotspotId, setData);
+    //     }
+    //   };
+    //   fetchData();
+    // }, [hotspotId]);  
 
   return (
     <View style={styles.bottomSheetContainer}>
@@ -26,7 +27,7 @@ const BottomSheet = ({ closeModal, hotspotId }) => {
       </TouchableOpacity>
       <FlatList
         style={styles.container2}
-        data={newsData}
+        data={articles}
         keyExtractor={(item) => item.url}
         numColumns={2}
         renderItem={({ item }) => (

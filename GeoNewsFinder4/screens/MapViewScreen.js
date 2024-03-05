@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
 import { Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
@@ -22,49 +22,93 @@ const INITIAL_LOCATION = {
 
 const MapViewScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-
   const [selectedHotspotId, setSelectedHotspotId] = useState(null);
+  const [hotspots, setHotspots] = useState([]);
+  const [articles, setArticles] = useState([]);
+  const [groupedLocations, setGroupedLocations] = useState({});
 
-  const [hotspots, setHotspots] = useState([
-    {
-      _id: 'san diego',
-      radius: 200 * 1000, // radius parameters are in meters.
-      strokeWidth: 2,
-      latitude: 34.413,
-      longitude: -119.86
-    },
-    {
-      _id: 'nyc',
-      radius: 300 * 1000,
-      strokeWidth: 2,
-      latitude: 40.7486,
-      longitude: -73.986
-    },
-    {
-      _id: 'houston',
-      radius: 400 * 1000,
-      strokeWidth: 2,
-      latitude: 30.092,
-      longitude: -95.346
-    }
-  ]);
 
-  const toggleModal = (hotspotId) => {
-    setSelectedHotspotId(hotspotId);
-    setModalVisible(!isModalVisible);
+  // Function to group articles based on their latitude and longitude
+  const groupArticlesByCoord = (articles) => {
+    const locations = {};
+    articles.forEach(article => {
+      const key = `${article.latitude},${article.longitude}`;
+      if (locations[key]) {
+        locations[key].push(article);
+      } else {
+        locations[key] = [article];
+      }
+    });
+    // console.log(locations)
+    // Print out the length of articles associated with each hotspot
+    Object.keys(locations).forEach(key => {
+      console.log(`Hotspot at coordinates ${key} has ${locations[key].length} articles.`);
+    });
+    return locations;
+  };
+
+  // Function to generate hotspots based on the grouped locations
+  const generateHotspotObject = (articles) => {
+    const groupedLocations = groupArticlesByCoord(articles); // grouping articles by coordinate
+    setGroupedLocations(groupedLocations); // setting all the grouped location so that can "import" articles in tile view
+    const formattedHotspots = Object.entries(groupedLocations).map(([location, articles]) => {
+      const [latitude, longitude] = location.split(',').map(parseFloat);
+      return {
+        _id: location,
+        latitude,
+        longitude,
+        radius: articles.length * 100000, // Adjust the radius calculation as needed
+        strokeWidth: 2,
+      };
+    });
+    setHotspots(formattedHotspots);
   };
 
   const handleSearchText = (val) => {
     queryText = val.nativeEvent.text;
-    const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+    const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/demo/articles?query_text=${encodeURIComponent(queryText)}`;
+
     fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      console.log(data.hits.hits);
-    })
+      // console.log(data.hits.hits);
+      //console.log(data);
+      const articlesFromApi = data.hits.hits.map(hit => {
+        // parsing coordinates from str to numbers
+        var coordinates = hit._source.Coordinates;
+        var [latStr, longStr] = coordinates.replace(/[()]/g, '').split(','); // Split the string by comma into seperate values
+        var lat_parse = parseFloat(latStr.trim());
+        var long_parse = parseFloat(longStr.trim());
+    
+        return {
+            coord: coordinates, //coordinates combined as (lat, long)
+            article_id: hit._id, // article id by open search
+            title: hit._source.Title, // title of article
+            urlToImage: hit._source.ImageURL, // image url
+            url: hit._source.URL, // article url 
+            latitude: lat_parse, // using parsed value of latitude
+            longitude: long_parse, // using parsed value of longtitude
+        };
+    });    
+    // console.log("created object")
+    console.log(articlesFromApi.length);
+    setArticles(articlesFromApi); // setting state with the article dictionary format
+    generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
+  })
   .catch(error => {
     console.error('Error:', error);
   }); 
+  };
+
+  useEffect(() => {
+    // Initial generation of hotspots based on existing articles (if any)
+    generateHotspotObject(articles);
+  }, [articles]);
+
+  const toggleModal = (hotspotId) => {
+    setSelectedHotspotId(hotspotId);
+    console.log("Selected Hotspot ID:", hotspotId); // testing purpose, verifying that hotspot id matches with the grouped articles
+    setModalVisible(!isModalVisible);
   };
 
   return (
@@ -120,7 +164,8 @@ const MapViewScreen = () => {
         visible={isModalVisible}
         onRequestClose={toggleModal}
       >
-        <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} />
+         <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} groupedLocations={groupedLocations} />
+        {/* <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} /> */}
       </Modal>
     </View>
   );
