@@ -41,9 +41,9 @@ const MapViewScreen = () => {
     });
     // console.log(locations)
     // Print out the length of articles associated with each hotspot
-    Object.keys(locations).forEach(key => {
-      console.log(`Hotspot at coordinates ${key} has ${locations[key].length} articles.`);
-    });
+    // Object.keys(locations).forEach(key => {
+    //   console.log(`Hotspot at coordinates ${key} has ${locations[key].length} articles.`);
+    // });
     return locations;
   };
 
@@ -91,7 +91,7 @@ const MapViewScreen = () => {
         };
     });    
     // console.log("created object")
-    console.log(articlesFromApi.length);
+    // console.log(articlesFromApi.length);
     setArticles(articlesFromApi); // setting state with the article dictionary format
     generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
   })
@@ -107,7 +107,7 @@ const MapViewScreen = () => {
 
   const toggleModal = (hotspotId) => {
     setSelectedHotspotId(hotspotId);
-    console.log("Selected Hotspot ID:", hotspotId); // testing purpose, verifying that hotspot id matches with the grouped articles
+    // console.log("Selected Hotspot ID:", hotspotId); // testing purpose, verifying that hotspot id matches with the grouped articles
     setModalVisible(!isModalVisible);
   };
 
