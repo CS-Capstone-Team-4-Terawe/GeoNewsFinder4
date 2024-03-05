@@ -56,7 +56,6 @@ const MapViewScreen = () => {
 
   const handleSearchText = (val) => {
     queryText = val.nativeEvent.text;
-    console.log("making request", queryText)
     const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
     fetch(apiUrl)
     .then(response => response.json())

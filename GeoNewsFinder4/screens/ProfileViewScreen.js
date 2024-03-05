@@ -30,8 +30,6 @@ React.useEffect(() => {
 
 const handleButtonTap = () => {
     try {
-        // console.log(userInfo);
-        console.log("making request", userInfo.locationPrefs, userInfo.topicPrefs);
         queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs
         const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
         fetch(apiUrl)
