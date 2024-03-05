@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
 import { Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
-import { API } from 'aws-amplify';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
@@ -20,13 +19,33 @@ const INITIAL_LOCATION = {
   longitudeDelta: 90 * ASPECT_RATIO
 }  
 
-const MapViewScreen = () => {
+const MapViewScreen = ({route, navigation}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedHotspotId, setSelectedHotspotId] = useState(null);
   const [hotspots, setHotspots] = useState([]);
   const [articles, setArticles] = useState([]);
   const [groupedLocations, setGroupedLocations] = useState({});
 
+  const createArticleObjects = (data) => {
+    const articlesObjects = data.hits.hits.map(hit => {
+      // parsing coordinates from str to numbers
+        var coordinates = hit._source.Coordinates;
+        var [latStr, longStr] = coordinates.replace(/[()]/g, '').split(','); // Split the string by comma into seperate values
+        var lat_parse = parseFloat(latStr.trim());
+        var long_parse = parseFloat(longStr.trim());
+    
+        return {
+            coord: coordinates, //coordinates combined as (lat, long)
+            article_id: hit._id, // article id by open search
+            title: hit._source.Title, // title of article
+            urlToImage: hit._source.ImageURL, // image url
+            url: hit._source.URL, // article url 
+            latitude: lat_parse, // using parsed value of latitude
+            longitude: long_parse, // using parsed value of longtitude
+        };
+      });
+    return articlesObjects
+  }
 
   // Function to group articles based on their latitude and longitude
   const groupArticlesByCoord = (articles) => {
@@ -39,11 +58,6 @@ const MapViewScreen = () => {
         locations[key] = [article];
       }
     });
-    // console.log(locations)
-    // Print out the length of articles associated with each hotspot
-    // Object.keys(locations).forEach(key => {
-    //   console.log(`Hotspot at coordinates ${key} has ${locations[key].length} articles.`);
-    // });
     return locations;
   };
 
@@ -71,29 +85,9 @@ const MapViewScreen = () => {
     fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      // console.log(data.hits.hits);
-      //console.log(data);
-      const articlesFromApi = data.hits.hits.map(hit => {
-        // parsing coordinates from str to numbers
-        var coordinates = hit._source.Coordinates;
-        var [latStr, longStr] = coordinates.replace(/[()]/g, '').split(','); // Split the string by comma into seperate values
-        var lat_parse = parseFloat(latStr.trim());
-        var long_parse = parseFloat(longStr.trim());
-    
-        return {
-            coord: coordinates, //coordinates combined as (lat, long)
-            article_id: hit._id, // article id by open search
-            title: hit._source.Title, // title of article
-            urlToImage: hit._source.ImageURL, // image url
-            url: hit._source.URL, // article url 
-            latitude: lat_parse, // using parsed value of latitude
-            longitude: long_parse, // using parsed value of longtitude
-        };
-    });    
-    // console.log("created object")
-    // console.log(articlesFromApi.length);
-    setArticles(articlesFromApi); // setting state with the article dictionary format
-    generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
+      const articlesFromApi = createArticleObjects(data)   
+      setArticles(articlesFromApi); // setting state with the article dictionary format
+      generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
   })
   .catch(error => {
     console.error('Error:', error);
@@ -101,13 +95,22 @@ const MapViewScreen = () => {
   };
 
   useEffect(() => {
-    // Initial generation of hotspots based on existing articles (if any)
-    generateHotspotObject(articles);
+    // Check if apiData is available and set articles
+    if (route.params?.apiData) {
+      const articlesObjects = createArticleObjects(route.params.apiData)
+      setArticles(articlesObjects);
+    }
+  }, [route.params?.apiData]);
+
+  useEffect(() => {
+    // Only generate hotspots if articles array is populated
+    if (articles.length > 0) {
+      generateHotspotObject(articles);
+    }
   }, [articles]);
 
   const toggleModal = (hotspotId) => {
     setSelectedHotspotId(hotspotId);
-    // console.log("Selected Hotspot ID:", hotspotId); // testing purpose, verifying that hotspot id matches with the grouped articles
     setModalVisible(!isModalVisible);
   };
 
@@ -165,7 +168,6 @@ const MapViewScreen = () => {
         onRequestClose={toggleModal}
       >
          <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} groupedLocations={groupedLocations} />
-        {/* <BottomSheet closeModal={toggleModal} hotspotId={selectedHotspotId} /> */}
       </Modal>
     </View>
   );
