@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView, Keyboard } from 'react-native';
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 
 
 const AskGPTRoute = () => {
+  const scrollViewRef = useRef();
   const route = useRoute();
   const articleUrl = route.params?.articleUrl; // Retrieve the articleUrl passed as a parameter
   const [GPTQuestion, setQuestion] = useState('');
@@ -51,14 +52,50 @@ const AskGPTRoute = () => {
 
   const askQuestion = async () => {
     console.log("Enter ask question");
-    await askGPT();
     setQuestion(''); // Consider keeping the question in the input until a new one is typed
+    await askGPT();
   };
+
+  
+  useEffect(() => {
+    // Delay scrolling to ensure the newly added message is rendered.
+    const timer = setTimeout(() => {
+      scrollViewRef.current.scrollToEnd({ animated: true });
+    }, 30); // Adjust the delay as needed, 100ms is usually enough
+  
+    return () => clearTimeout(timer); // Clean up the timer when the component unmounts or before re-running the effect
+  }, [chatHistory]);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      _keyboardDidShow,
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      _keyboardDidHide,
+    );
+  
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []); // This effect depends on no changing dependencies and thus runs once on mount.
+  
+  const _keyboardDidShow = () => {
+    scrollViewRef.current.scrollToEnd({ animated: true });
+  };
+  
+  const _keyboardDidHide = () => {
+    // Optional: Handle any action on keyboard hide if necessary
+  };
+
   return (
     <View style={styles.outerContainer}>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={[styles.scrollContainer, chatHistory.length > 0 ? {} : styles.flexGrow]}
-        automaticallyAdjustKeyboardInsets={true}
+        // automaticallyAdjustKeyboardInsets={true}
       >
         <View style={styles.chatTextView}>
           {chatHistory.map((msg, index) => (
@@ -82,7 +119,7 @@ const AskGPTRoute = () => {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Message ChatGPT..."
+          placeholder="Ask GeoNewsFinder..."
           onSubmitEditing={askQuestion}
           onChangeText={handleQuestionInput}
           value={GPTQuestion}
@@ -114,26 +151,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
+    flex: 1, 
     height: 45,
-    width: 300,
-    margin: 0,
     paddingLeft: 20,
+    paddingRight: 20,
     fontSize: 17,
     borderRadius: 20,
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
     backgroundColor: 'white',
     borderWidth: 1,
-    borderRightWidth: 0,
     borderColor: 'rgb(184,184,184)',
   },
   searchContainer: {
+    marginBottom: 19,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'space-around', 
     padding: 15,
-    backgroundColor: 'white',
-
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderColor: 'rgb(184,184,184)',
   },
   buttonView: {
     margin: 0,
@@ -146,6 +182,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderLeftWidth: 0,
     borderColor: 'rgb(184,184,184)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  submitButton: {
+    marginLeft: 10, 
     alignItems: 'center',
     justifyContent: 'center',
   },

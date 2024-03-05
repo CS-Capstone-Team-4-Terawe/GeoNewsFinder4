@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, useWindowDimensions, Text, Image } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Text, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import OverviewRoute from '../components/Overview';
 import AskGPTRoute from '../components/AskGPT';
@@ -42,25 +42,29 @@ function ArticleSynopsisView( {route, navigation} ) {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{route.params.name.title}</Text>
-        {/* TODO: this is hardcoded rn, need generate data somehow and replace */}
-        <Text style={styles.articleInfo}>10+ Articles · 4 Days ago</Text>
-        <Text style={styles.articleInfo}>Topics: College, Santa Barbara, Student</Text>
-        {/*  */}
-        <Image source={{ uri: route.params.name.urlToImage }} style={styles.image} />
+    <KeyboardAvoidingView 
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
+      <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{route.params.name.title}</Text>
+          <Text style={styles.articleInfo}>10+ Articles · 4 Days ago</Text>
+          <Text style={styles.articleInfo}>Topics: College, Santa Barbara, Student</Text>
+          <Image source={{ uri: route.params.name.urlToImage }} style={styles.image} />
+        </View>
+        <View style={styles.tabViewContainer}>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            renderTabBar={renderTabBar}
+          />
+        </View>
       </View>
-      <View style={styles.tabViewContainer}>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          renderTabBar={renderTabBar}
-        />
-      </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
@@ -73,8 +77,8 @@ const styles = StyleSheet.create({
     },
     title: {
       fontSize: 17,
-      marginBottom: 10,
-      height: '8%',
+      marginBottom: 5,
+      // height: '8%',
     },
     articleInfo: {
       color: 'rgb(184,184,184)',
