@@ -22,7 +22,7 @@ const OverviewRoute = () => {
               console.log("API Gateway try");
               const apiUrl = 'https://5vfzo8wbu2.execute-api.us-west-1.amazonaws.com/testDBGPT1';
               const response = await axios.post(apiUrl, {
-                "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",
+                "article_url": "https://www.cnn.com/politics/live-news/trump-legal-cases-court-02-28-24/index.html",
                 "isQuestion": false,
                 "question": "There is no question"
                 }

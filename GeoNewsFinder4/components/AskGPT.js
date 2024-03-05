@@ -22,7 +22,7 @@ const AskGPTRoute = () => {
         console.log("API Gateway try");
         const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
         const response = await axios.post(apiUrl, {
-          "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",         
+          "article_url": "https://www.cnn.com/politics/live-news/trump-legal-cases-court-02-28-24/index.html",         
           "isQuestion": true,
           "question": question
         });
@@ -51,7 +51,6 @@ const AskGPTRoute = () => {
     await askGPT();
     setQuestion(''); // Consider keeping the question in the input until a new one is typed
   };
-
   return (
     <View style={styles.outerContainer}>
       <ScrollView
@@ -60,9 +59,20 @@ const AskGPTRoute = () => {
       >
         <View style={styles.chatTextView}>
           {chatHistory.map((msg, index) => (
-            <Text key={index} style={msg.type === 'question' ? styles.questionText : styles.chatText}>
-              {msg.content}
-            </Text>
+            <View key={index} style={styles.messageContainer}>
+              <View style={styles.messageHeader}>
+                <Image 
+                  source={msg.type === 'question' ? require('../assets/mrCheddaPFP.png') : require('../assets/chatBotPFP.png')} 
+                  style={styles.profilePic} 
+                />
+                <Text style={styles.messageFrom}>{msg.type === 'question' ? 'User' : 'ChatBot'}</Text>
+              </View>
+              <View style={msg.type === 'question' ? styles.questionBubble : styles.answerBubble}>
+                <Text style={msg.type === 'question' ? styles.questionText : styles.chatText}>
+                  {msg.content}
+                </Text>
+              </View>
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around', 
-    padding: 10,
+    padding: 15,
     backgroundColor: 'white',
 
   },
@@ -157,10 +167,36 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 16,
     lineHeight: 25,
-    color: 'blue', 
   },
   flexGrow: {
     flexGrow: 1,
+  },
+  messageContainer: {
+    marginBottom: 10,
+  },
+  messageHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  profilePic: {
+    width: 40,
+    height: 40,
+    borderRadius: 20, 
+    marginRight: 10,
+  },
+  messageFrom: {
+    fontWeight: 'bold',
+  },
+  questionBubble: {
+    // backgroundColor: '#f0f0f0',
+    padding: 3,
+    borderRadius: 10,
+  },
+  answerBubble: {
+    // backgroundColor: '#e0e0e0',
+    padding: 3,
+    borderRadius: 10,
   },
 });
 
