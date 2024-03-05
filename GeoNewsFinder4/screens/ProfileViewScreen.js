@@ -28,14 +28,23 @@ React.useEffect(() => {
     fetchData();
   }, []);
 
-
-const handleButtonTap = async () => {
+const handleButtonTap = () => {
     try {
-        console.log(userInfo);
+        queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs
+        const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+        fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.hits.hits);
+        })
+      .catch(error => {
+        console.error('Error:', error);
+      }); 
     } catch (err) {
-        console.error(err.response.data);
+        console.error(err);
     }
 }
+
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
