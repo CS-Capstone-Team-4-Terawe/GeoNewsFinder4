@@ -3,82 +3,97 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView 
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 import axios from 'axios';
 
-const AskGPTRoute = () => {
 
-  const [GPTQuestion, setQuestion] = useState(''); 
+const AskGPTRoute = () => {
+  const [GPTQuestion, setQuestion] = useState('');
   const [error, setError] = useState(null);
-  const [answer, setAnswer] = useState('Feel free to ask any clarifying questions!');
+  // Updated: Use state to store chat history
+  const [chatHistory, setChatHistory] = useState([]);
 
   const askGPT = async () => {
     setError(null);
-    let question = GPTQuestion;
+    let question = GPTQuestion.trim();
 
-    try {
-      // Replace this URL with your actual API Gateway URL
-      console.log("API Gateway try");
-      const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
-      const response = await axios.post(apiUrl, {
-        "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",         
-        "isQuestion": true,
-        "question": question
-      });
-      console.log("API Gateway try after 2");
-      // console.log(response.data)
-      if (response.data) {
-          // Assuming your API returns the summary in the response's data
+    if (question) {
+      // Add question to chat history
+      setChatHistory(currentHistory => [...currentHistory, { type: 'question', content: question }]);
+
+      try {
+        console.log("API Gateway try");
+        const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
+        const response = await axios.post(apiUrl, {
+          "article_url": "https://www.investorsobserver.com/news/qm-pr/6083944843812377",         
+          "isQuestion": true,
+          "question": question
+        });
+        console.log("API Gateway try after 2");
+
+        if (response.data) {
           const responseBody = JSON.parse(response.data.body);
-          setAnswer(responseBody.responseContent);
+          // Add answer to chat history
+          setChatHistory(currentHistory => [...currentHistory, { type: 'answer', content: responseBody.responseContent }]);
           console.log(responseBody.responseContent);
-      } else {
-          // Handle case where API response does not contain expected data
+        } else {
           setError("Received unexpected response from the server");
+        }
+      } catch (e) {
+        setError(e?.message || "Something went wrong");
       }
-  } catch(e) {
-      // console.log("big oopsie error log");
-      setError(e?.message || "Something went wrong");
-  }
+    }
+  };
 
-};
-
-  const handlQuestionInput = (text) => {
-    setQuestion(text)
+  const handleQuestionInput = (text) => {
+    setQuestion(text);
   };
 
   const askQuestion = async () => {
     console.log("Enter ask question");
-    await askGPT()
-    setQuestion('')
+    await askGPT();
+    setQuestion(''); // Consider keeping the question in the input until a new one is typed
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container} 
-      automaticallyAdjustKeyboardInsets={true}>
-        
-      <View style={styles.chatTextView}>
-        <Text style={styles.chatText}>{answer}</Text>
-      </View>
-      
+    <View style={styles.outerContainer}>
+      <ScrollView
+        contentContainerStyle={[styles.scrollContainer, chatHistory.length > 0 ? {} : styles.flexGrow]}
+        automaticallyAdjustKeyboardInsets={true}
+      >
+        <View style={styles.chatTextView}>
+          {chatHistory.map((msg, index) => (
+            <Text key={index} style={msg.type === 'question' ? styles.questionText : styles.chatText}>
+              {msg.content}
+            </Text>
+          ))}
+        </View>
+      </ScrollView>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
           placeholder="Message ChatGPT..."
           onSubmitEditing={askQuestion}
-          onChangeText={handlQuestionInput}
+          onChangeText={handleQuestionInput}
           value={GPTQuestion}
         />
-        <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.submitButton} onPress={askQuestion}>
-            <Image source={require('../assets/upArrow.png')} style={styles.xImage} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.submitButton} onPress={askQuestion}>
+          <Image source={require('../assets/upArrow.png')} style={styles.xImage} />
+        </TouchableOpacity>
       </View>
-    </ScrollView>
-
+    </View>
   );
 };
 
+
+
+
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    justifyContent: 'space-between', // This ensures the search container stays at the bottom
+    backgroundColor: '#fff',
+  },
+  scrollContainer: {
+    paddingBottom: 10, // Adjust this value based on the height of your searchContainer
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -102,9 +117,10 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
-    position: 'absolute',
-    bottom: 50,
+    justifyContent: 'space-around', 
+    padding: 10,
+    backgroundColor: 'white',
+
   },
   buttonView: {
     margin: 0,
@@ -129,15 +145,22 @@ const styles = StyleSheet.create({
     lineHeight: 25,
   },
   chatTextView: {
-    flexDirection: 'row', 
+    flexDirection: 'column', 
     alignItems: 'start',  
-    position: 'absolute',
     top: 0,
     height: '75%',
     width: '100%',
     padding: 25,
     paddingTop: 15,
     paddingBottom: 15,
+  },
+  questionText: {
+    fontSize: 16,
+    lineHeight: 25,
+    color: 'blue', 
+  },
+  flexGrow: {
+    flexGrow: 1,
   },
 });
 
