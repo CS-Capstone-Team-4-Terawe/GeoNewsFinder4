@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
-import { Circle } from 'react-native-maps';
+import { Marker, Circle } from 'react-native-maps';
 import { getDistance } from 'geolib';
-import MapView from '../components/MapView';
+import MapView from "react-native-map-clustering";
+// import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
 import LoginButton from '../components/LoginButton';
@@ -120,35 +121,19 @@ const MapViewScreen = ({route, navigation}) => {
         style={styles.map} 
         provider={PROVIDER_GOOGLE} 
         region={INITIAL_LOCATION}
-        onPress={(event) => {
-          const coordinates = event.nativeEvent.coordinate;
-
-          // onPress for hot spots
-          // Workaround from issue where MapView.Circle cannot use onPress prop: 
-          //    https://github.com/react-native-maps/react-native-maps/issues/1409
-          hotspots.map(hotspot => {
-              const distance = getDistance(
-                  { latitude: coordinates.latitude, longitude: coordinates.longitude },
-                  { latitude: hotspot.latitude, longitude: hotspot.longitude }
-              );
-  
-              if (distance <= hotspot.radius) {
-                toggleModal(hotspot._id);
-              }
-          })
-      }}
+        onClusterPress={(event) => {
+          // should show info of what markers are in the cluster -- refer to react-native-map-clustering repo
+          console.log("event:" + event);
+        }} 
       >
         {hotspots.map(hotspot => (
-            <Circle  
+            <Marker  
+            // todo: make custom marker? (react-native-map-clustering only supports markers -- not circles)
               key={hotspot._id}
-              center={{
+              coordinate={{
                 latitude: hotspot.latitude,
                 longitude: hotspot.longitude
               }}
-              radius={ hotspot.radius }
-              strokeWidth={ hotspot.strokeWidth }
-              strokeColor='rgba(255, 0, 0, 0.4)'
-              fillColor='rgba(255, 0, 0, 0.4)'
             />
         ))
         }
