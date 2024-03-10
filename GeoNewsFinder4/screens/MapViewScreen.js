@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
-import { Marker, Circle } from 'react-native-maps';
-import { getDistance } from 'geolib';
-import MapView from "react-native-map-clustering";
-// import MapView from '../components/MapView';
+import { Marker } from 'react-native-maps';
+import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
 import LoginButton from '../components/LoginButton';
@@ -86,7 +84,7 @@ const MapViewScreen = ({route, navigation}) => {
     fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const articlesFromApi = createArticleObjects(data)   
+      const articlesFromApi = createArticleObjects(data)   ;
       setArticles(articlesFromApi); // setting state with the article dictionary format
       generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
   })
@@ -123,7 +121,6 @@ const MapViewScreen = ({route, navigation}) => {
         region={INITIAL_LOCATION}
         onClusterPress={(event) => {
           // should show info of what markers are in the cluster -- refer to react-native-map-clustering repo
-          console.log("event:" + event);
         }} 
       >
         {hotspots.map(hotspot => (
@@ -133,6 +130,9 @@ const MapViewScreen = ({route, navigation}) => {
               coordinate={{
                 latitude: hotspot.latitude,
                 longitude: hotspot.longitude
+              }}
+              onPress={() => {
+                toggleModal(hotspot._id);
               }}
             />
         ))

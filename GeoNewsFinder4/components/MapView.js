@@ -1,2 +1,2 @@
-import MapView from "react-native-maps";
+import MapView from "react-native-map-clustering";
 export default MapView
