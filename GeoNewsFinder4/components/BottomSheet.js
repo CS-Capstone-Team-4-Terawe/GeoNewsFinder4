@@ -8,18 +8,7 @@ const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
 
     const navigation = useNavigation();
     const articles = groupedLocations[hotspotId] || [];
-
-    // const [newsData, setData] = useState([]);
-
-    // useEffect(() => {
-    //   const fetchData = async () => {
-    //     if (hotspotId) {
-    //       await getAPIdata(hotspotId, setData);
-    //     }
-    //   };
-    //   fetchData();
-    // }, [hotspotId]);  
-
+    
   return (
     <View style={styles.bottomSheetContainer}>
       <TouchableOpacity onPress={closeModal} style={styles.closeButton}>

@@ -119,7 +119,11 @@ const MapViewScreen = ({route, navigation}) => {
         style={styles.map} 
         provider={PROVIDER_GOOGLE} 
         region={INITIAL_LOCATION}
-        onClusterPress={(event) => {
+        clusterColor="#FF0000"
+        clusterTextColor='#FF0000'
+        onClusterPress={(cluster, markers) => {
+          console.log("cluster:" + JSON.stringify(cluster))
+          console.log("markers" + JSON.stringify(markers))
           // should show info of what markers are in the cluster -- refer to react-native-map-clustering repo
         }} 
       >
