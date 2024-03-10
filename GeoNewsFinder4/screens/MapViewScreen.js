@@ -121,10 +121,24 @@ const MapViewScreen = ({route, navigation}) => {
         region={INITIAL_LOCATION}
         clusterColor="#FF0000"
         clusterTextColor='#FF0000'
+        preserveClusterPressBehavior={true} // cluster will not be zoomed in when tapped
         onClusterPress={(cluster, markers) => {
-          console.log("cluster:" + JSON.stringify(cluster))
-          console.log("markers" + JSON.stringify(markers))
-          // should show info of what markers are in the cluster -- refer to react-native-map-clustering repo
+          // Gets articles from all markers within cluster and show corresponding articles in bottom sheet
+
+          const markerCoords = markers.map(marker => ({
+            latitude: marker.geometry.coordinates[1],
+            longitude: marker.geometry.coordinates[0],
+          }));
+        
+          const associatedHotspots = markerCoords.map(coord => 
+            hotspots.find(hotspot => 
+              hotspot.latitude === coord.latitude && hotspot.longitude === coord.longitude
+            )
+          );
+
+          const associatedHotspotIds = associatedHotspots.map(hotspot => hotspot._id);
+
+          toggleModal(associatedHotspotIds)
         }} 
       >
         {hotspots.map(hotspot => (
@@ -136,7 +150,7 @@ const MapViewScreen = ({route, navigation}) => {
                 longitude: hotspot.longitude
               }}
               onPress={() => {
-                toggleModal(hotspot._id);
+                toggleModal([hotspot._id]);
               }}
             />
         ))
