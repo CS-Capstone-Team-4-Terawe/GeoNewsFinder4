@@ -49,7 +49,7 @@ const handleButtonTap = async () => {
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
-            <Image source={require('../assets/favicon.png')} style={styles.profilePic}/>
+            <Image source={require('../assets/person.png')} style={styles.profilePic}/>
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.email}>{user.email}</Text>
             <TouchableOpacity style={styles.button} 
@@ -171,10 +171,10 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     profilePic: {
-        height: 100,
-        width: 100,
-        borderWidth: 1,
-        borderRadius: 50,
+        height: 70,
+        width: 70,
+        // borderWidth: 1,
+        // borderRadius: 50,
     },
     name: {
         fontSize: 20,
