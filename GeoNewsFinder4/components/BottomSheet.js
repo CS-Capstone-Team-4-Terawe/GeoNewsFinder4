@@ -9,17 +9,6 @@ const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
     const navigation = useNavigation();
     const articles = groupedLocations[hotspotId] || [];
 
-    // const [newsData, setData] = useState([]);
-
-    // useEffect(() => {
-    //   const fetchData = async () => {
-    //     if (hotspotId) {
-    //       await getAPIdata(hotspotId, setData);
-    //     }
-    //   };
-    //   fetchData();
-    // }, [hotspotId]);  
-
   return (
     <View style={styles.bottomSheetContainer}>
       <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
@@ -33,7 +22,7 @@ const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
         renderItem={({ item }) => (
           <TouchableOpacity 
             onPress={ () => {
-              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url});
+              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url, searchArticles: articles});
               closeModal();
             }} 
             style={styles.container2}>
