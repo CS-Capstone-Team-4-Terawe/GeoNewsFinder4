@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView,
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux'; // Import useSelector
 
 
 const AskGPTRoute = () => {
@@ -13,6 +14,7 @@ const AskGPTRoute = () => {
   const [error, setError] = useState(null);
   // Updated: Use state to store chat history
   const [chatHistory, setChatHistory] = useState([]);
+  const user = useSelector(state => state.user); // Retrieve user information from Redux store
 
   const askGPT = async () => {
     setError(null);
@@ -24,11 +26,19 @@ const AskGPTRoute = () => {
 
       try {
         console.log("API Gateway try");
+        console.log(user);
         const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
         const response = await axios.post(apiUrl, {
           "article_url": articleUrl,         
           "isQuestion": true,
-          "question": question
+          "question": question,
+          "user_info": { 
+            "name": user.name,
+            "email": user.email,
+            "birthdate": user.birthdate,
+            "gender": user.gender,
+            "location": user.locale
+          }
         });
         console.log("API Gateway try after 2");
 
