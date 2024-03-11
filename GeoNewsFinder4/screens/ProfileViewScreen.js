@@ -52,11 +52,11 @@ const handleButtonTap = async () => {
             <Image source={require('../assets/person.png')} style={styles.profilePic}/>
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.email}>{user.email}</Text>
-            <TouchableOpacity style={styles.button} 
+            {/* <TouchableOpacity style={styles.button} 
             onPress={ handleConfirmation }
             >
                 <Text style={styles.buttonText}>Back to Map View</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
       <View style={styles.line}></View>
       <View style={styles.infoSection}>
