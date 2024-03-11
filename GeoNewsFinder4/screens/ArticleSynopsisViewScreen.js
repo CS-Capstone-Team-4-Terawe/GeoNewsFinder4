@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, useWindowDimensions, Text, Image, KeyboardAvoidingView, Platform, TouchableOpacity, Linking } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import OverviewRoute from '../components/Overview';
@@ -6,7 +6,7 @@ import AskGPTRoute from '../components/AskGPT';
 import RelatedArticlesRoute from '../components/RelatedArticles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons
 
-function ArticleSynopsisView( {route, navigation} ) {
+function ArticleSynopsisView( {route} ) {
   const layout = useWindowDimensions();
 
   const [index, setIndex] = React.useState(0);
@@ -17,10 +17,9 @@ function ArticleSynopsisView( {route, navigation} ) {
     { key: 'third', title: 'Related' },
   ]);
 
-  // Memoize the tab components to prevent re-creation
   const tabComponents = React.useMemo(() => ({
-    first: <OverviewRoute />,
-    second: <AskGPTRoute />,
+    first: <OverviewRoute route={route} />,
+    second: <AskGPTRoute route={route}/>,
     third: <RelatedArticlesRoute route={route} />,
   }), [route]);
 
@@ -41,6 +40,10 @@ function ArticleSynopsisView( {route, navigation} ) {
       )}
     />
   );
+
+  useEffect(() => {
+    setIndex(0);
+  }, [route]);
 
   return (
     <KeyboardAvoidingView 

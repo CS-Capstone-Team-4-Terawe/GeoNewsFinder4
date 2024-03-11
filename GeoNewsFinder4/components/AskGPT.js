@@ -8,35 +8,34 @@ import { useRoute } from '@react-navigation/native';
 const AskGPTRoute = () => {
   const scrollViewRef = useRef();
   const route = useRoute();
-  const articleUrl = route.params?.articleUrl; // Retrieve the articleUrl passed as a parameter
+  const articleUrl = route.params?.articleUrl;
   const [GPTQuestion, setQuestion] = useState('');
   const [error, setError] = useState(null);
-  // Updated: Use state to store chat history
   const [chatHistory, setChatHistory] = useState([]);
+
+  const resetChatHistory = () => {
+    setQuestion('');
+    setChatHistory([]);
+  };
 
   const askGPT = async () => {
     setError(null);
     let question = GPTQuestion.trim();
 
     if (question) {
-      // Add question to chat history
       setChatHistory(currentHistory => [...currentHistory, { type: 'question', content: question }]);
 
       try {
-        console.log("API Gateway try");
         const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
         const response = await axios.post(apiUrl, {
           "article_url": articleUrl,         
           "isQuestion": true,
           "question": question
         });
-        console.log("API Gateway try after 2");
 
         if (response.data) {
           const responseBody = JSON.parse(response.data.body);
-          // Add answer to chat history
           setChatHistory(currentHistory => [...currentHistory, { type: 'answer', content: responseBody.responseContent }]);
-          console.log(responseBody.responseContent);
         } else {
           setError("Received unexpected response from the server");
         }
@@ -51,19 +50,17 @@ const AskGPTRoute = () => {
   };
 
   const askQuestion = async () => {
-    console.log("Enter ask question");
-    setQuestion(''); // Consider keeping the question in the input until a new one is typed
+    setQuestion(''); 
     await askGPT();
   };
 
   
   useEffect(() => {
-    // Delay scrolling to ensure the newly added message is rendered.
     const timer = setTimeout(() => {
       scrollViewRef.current.scrollToEnd({ animated: true });
-    }, 30); // Adjust the delay as needed, 100ms is usually enough
+    }, 30); 
   
-    return () => clearTimeout(timer); // Clean up the timer when the component unmounts or before re-running the effect
+    return () => clearTimeout(timer); 
   }, [chatHistory]);
 
   useEffect(() => {
@@ -80,22 +77,24 @@ const AskGPTRoute = () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []); // This effect depends on no changing dependencies and thus runs once on mount.
+  }, []); 
   
   const _keyboardDidShow = () => {
     scrollViewRef.current.scrollToEnd({ animated: true });
   };
   
   const _keyboardDidHide = () => {
-    // Optional: Handle any action on keyboard hide if necessary
   };
+
+  useEffect(() => {
+    resetChatHistory();
+  }, [route]);
 
   return (
     <View style={styles.outerContainer}>
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={[styles.scrollContainer, chatHistory.length > 0 ? {} : styles.flexGrow]}
-        // automaticallyAdjustKeyboardInsets={true}
       >
         <View style={styles.chatTextView}>
           {chatHistory.map((msg, index) => (
@@ -138,11 +137,11 @@ const AskGPTRoute = () => {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    justifyContent: 'space-between', // This ensures the search container stays at the bottom
+    justifyContent: 'space-between', 
     backgroundColor: '#fff',
   },
   scrollContainer: {
-    paddingBottom: 10, // Adjust this value based on the height of your searchContainer
+    paddingBottom: 10,
   },
   container: {
     flex: 1,
