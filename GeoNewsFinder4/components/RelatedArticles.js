@@ -7,11 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 const RelatedArticlesRoute = ({ }) => {
 
   const route = useRoute();
-  console.log("route:", route);
   const navigation = useNavigation();
   const articles = route.params?.searchArticles;
   const articleURL = route.params?.articleUrl;
-  console.log("articles", articles);
   var index = articles.findIndex(obj => obj.url==articleURL);
 
   const relatedArticles = articles.slice(0, index).concat(articles.slice(index+1));
