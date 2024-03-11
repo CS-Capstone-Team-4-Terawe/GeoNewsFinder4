@@ -2,18 +2,19 @@ import { React, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const RelatedArticlesRoute = ({ }) => {
 
   const route = useRoute();
+  console.log("route:", route);
+  const navigation = useNavigation();
   const articles = route.params?.searchArticles;
   const articleURL = route.params?.articleUrl;
+  console.log("articles", articles);
   var index = articles.findIndex(obj => obj.url==articleURL);
 
   const relatedArticles = articles.slice(0, index).concat(articles.slice(index+1));
-  console.log("articles", articles);
-  console.log(index);
-  console.log("related", relatedArticles);
 
   return (
     <View style={styles.relatedArticlesContainer}>
@@ -23,17 +24,16 @@ const RelatedArticlesRoute = ({ }) => {
         keyExtractor={(item) => item.url}
         numColumns={2}
         renderItem={({ item }) => (
-          // <TouchableOpacity 
-          //   onPress={ () => {
-          //     navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url});
-          //     closeModal();
-          //   }} 
-            // style={styles.container2}>
+          <TouchableOpacity 
+            onPress={ () => {
+              navigation.navigate('ArticlePage', {name: item, hotspot: route.params?.hotspot, articleUrl: item.url, searchArticles: articles});
+            }} 
+            style={styles.container2}>
             <Card containerStyle={styles.card}>
               <Image source={{ uri: item.urlToImage }} style={styles.image} />
               <Text style={styles.title}>{item.title}</Text>
             </Card>
-          // </TouchableOpacity>
+          </TouchableOpacity>
         ) }
       />
     </View>
