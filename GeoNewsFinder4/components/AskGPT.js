@@ -4,9 +4,12 @@ import { ask } from '../utils/openAIGPTFunctions.js';
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux'; // Import useSelector
+import { API } from 'aws-amplify';
+
 
 
 const AskGPTRoute = () => {
+  const [userInfo, setUserInfo] = useState({});
   const scrollViewRef = useRef();
   const route = useRoute();
   const articleUrl = route.params?.articleUrl; // Retrieve the articleUrl passed as a parameter
@@ -26,7 +29,7 @@ const AskGPTRoute = () => {
 
       try {
         console.log("API Gateway try");
-        console.log(user);
+        console.log(userInfo);
         const apiUrl = 'https://etrpbogfh3.execute-api.us-west-1.amazonaws.com/testDB';
         const response = await axios.post(apiUrl, {
           "article_url": articleUrl,         
@@ -37,7 +40,9 @@ const AskGPTRoute = () => {
             "email": user.email,
             "birthdate": user.birthdate,
             "gender": user.gender,
-            "location": user.locale
+            "location": user.locale,
+            "locationPrefs": userInfo.locationPrefs,
+            "topicPrefs": userInfo.topicPrefs
           }
         });
         console.log("API Gateway try after 2");
@@ -75,6 +80,20 @@ const AskGPTRoute = () => {
   
     return () => clearTimeout(timer); // Clean up the timer when the component unmounts or before re-running the effect
   }, [chatHistory]);
+
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const responseData = await API.get('testAPI', '/test');
+      const name = user.email; 
+      const itemsWithName = responseData.filter(item => item.name === name);
+      setUserInfo(itemsWithName[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchData();
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
