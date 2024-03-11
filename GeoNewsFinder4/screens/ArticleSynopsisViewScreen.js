@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, useWindowDimensions, Text, Image, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, useWindowDimensions, Text, Image, KeyboardAvoidingView, Platform, TouchableOpacity, Linking } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import OverviewRoute from '../components/Overview';
 import AskGPTRoute from '../components/AskGPT';
 import RelatedArticlesRoute from '../components/RelatedArticles';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons
 
 function ArticleSynopsisView( {route, navigation} ) {
   const layout = useWindowDimensions();
@@ -48,12 +49,18 @@ function ArticleSynopsisView( {route, navigation} ) {
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{route.params.name.title}</Text>
-          <Text style={styles.articleInfo}>10+ Articles · 4 Days ago</Text>
-          <Text style={styles.articleInfo}>Topics: College, Santa Barbara, Student</Text>
-          <Image source={{ uri: route.params.name.urlToImage }} style={styles.image} />
-        </View>
+      <View style={styles.titleContainer}>
+        <TouchableOpacity onPress={() => Linking.openURL(route.params.name.url)}
+        style={{ flexDirection: 'row', alignItems: 'flex-start', width: '100%' }}>
+          <Text style={[styles.title, { flex: 9.5 }]}>{route.params.name.title}</Text>
+          <View style={{ flex: 0.5, justifyContent: 'flex-start' }}>
+            <MaterialIcons name="open-in-new" size={20} color="black" />
+          </View>
+        </TouchableOpacity>
+        {/* <Text style={styles.articleInfo}>{route.params.name.source} · {route.params.name.date2}</Text> */}
+        <Text style={styles.articleInfo}>{(route.params.name.location).trim()} · {route.params.name.date2}</Text>
+        <Image source={{ uri: route.params.name.urlToImage }} style={styles.image} />
+      </View>
         <View style={styles.tabViewContainer}>
           <TabView
             navigationState={{ index, routes }}
