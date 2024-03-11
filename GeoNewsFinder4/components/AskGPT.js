@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgb(184,184,184)',
   },
   searchContainer: {
-    marginBottom: 19,
+    marginBottom: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
