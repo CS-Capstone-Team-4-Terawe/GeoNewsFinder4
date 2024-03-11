@@ -44,6 +44,8 @@ function SignUpView() {
     const genderOptions = [
       { label: 'Male', value: 'male' },
       { label: 'Female', value: 'female' },
+      { label: 'Non-binary/Non-conforming', value: 'Nonbinary' },
+      { label: 'Prefer Not To Say', value: 'Unknown' },
     ];
 
   const handleSignUp = () => {
