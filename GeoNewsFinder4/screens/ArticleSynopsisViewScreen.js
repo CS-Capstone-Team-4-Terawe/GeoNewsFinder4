@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, useWindowDimensions, Text, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import OverviewRoute from '../components/Overview';
@@ -40,6 +40,11 @@ function ArticleSynopsisView( {route, navigation} ) {
       )}
     />
   );
+
+  useEffect(() => {
+    // Reset the tab index to the first tab when the route changes
+    setIndex(0);
+  }, [route]);
 
   return (
     <KeyboardAvoidingView 
