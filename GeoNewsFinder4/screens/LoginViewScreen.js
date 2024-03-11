@@ -27,13 +27,8 @@ function LoginView() {
       console.log('Signed in as: ', user.attributes.name);
       dispatch(logIn());
       dispatch(setUser(user.attributes));
-      console.log(1);
       await fetchData(user);
-      console.log(2);
       const dataFromApi = await fetchArticles();
-      console.log(3);
-      // navigation.navigate('Home');
-      
       navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
     } catch (error) {
       console.log('error signing in', error);

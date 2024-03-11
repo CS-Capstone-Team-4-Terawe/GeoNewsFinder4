@@ -1,22 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { API } from 'aws-amplify';
 
 const ProfileView = () =>{
-const navigation = useNavigation();
 const user = useSelector(state => state.user);
 const [userInfo, setUserInfo] = React.useState({});
-
-const handleConfirmation = async () => {
-    try {
-        const dataFromApi = await handleButtonTap();
-        navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 React.useEffect(() => {
     const fetchData = async () => {
@@ -32,31 +21,12 @@ React.useEffect(() => {
     fetchData();
   }, []);
 
-const handleButtonTap = async () => {
-    try {
-        const queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs;
-        const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        console.log(data.hits.hits);
-        return data; // Return the fetched data
-    } catch (err) {
-        console.error('Error:', err);
-        throw err; // It's a good practice to rethrow the error
-    }
-}  
-
   return (
     <View style={styles.container}>
         <View style={styles.headingSection}>
             <Image source={require('../assets/person.png')} style={styles.profilePic}/>
             <Text style={styles.name}>{user.name}</Text>
             <Text style={styles.email}>{user.email}</Text>
-            {/* <TouchableOpacity style={styles.button} 
-            onPress={ handleConfirmation }
-            >
-                <Text style={styles.buttonText}>Back to Map View</Text>
-            </TouchableOpacity> */}
         </View>
       <View style={styles.line}></View>
       <View style={styles.infoSection}>
