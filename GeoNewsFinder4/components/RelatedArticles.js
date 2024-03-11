@@ -1,33 +1,37 @@
 import { React, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { Card } from 'react-native-elements';
-import getAPIdata from '../utils/getAPIdata';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-const RelatedArticlesRoute = ({ route }) => {
+const RelatedArticlesRoute = ({ }) => {
 
-  const [newsData, setData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      if (route.params.hotspot) {
-        await getAPIdata(route.params.hotspot, setData);
-      }
-    };
-    fetchData();
-  }, [route.params.hotspot]);
+  const route = useRoute();
+  const navigation = useNavigation();
+  const articles = route.params?.searchArticles;
+  const articleURL = route.params?.articleUrl;
+  var index = articles.findIndex(obj => obj.url==articleURL);
+
+  const relatedArticles = articles.slice(0, index).concat(articles.slice(index+1));
 
   return (
     <View style={styles.relatedArticlesContainer}>
       <FlatList
         style={styles.container2}
-        data={newsData}
+        data={relatedArticles}
         keyExtractor={(item) => item.url}
         numColumns={2}
         renderItem={({ item }) => (
-          <Card containerStyle={styles.card}>
-            <Image source={{ uri: item.urlToImage }} style={styles.image} />
-            <Text style={styles.title}>{item.title}</Text>
-          </Card>
-          // TODO: when clicked, open the article in a chrome/safari
+          <TouchableOpacity 
+            onPress={ () => {
+              navigation.navigate('ArticlePage', {name: item, hotspot: route.params?.hotspot, articleUrl: item.url, searchArticles: articles});
+            }} 
+            style={styles.container2}>
+            <Card containerStyle={styles.card}>
+              <Image source={{ uri: item.urlToImage }} style={styles.image} />
+              <Text style={styles.title}>{item.title}</Text>
+            </Card>
+          </TouchableOpacity>
         ) }
       />
     </View>
