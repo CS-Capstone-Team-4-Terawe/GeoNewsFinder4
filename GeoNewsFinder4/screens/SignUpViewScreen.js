@@ -45,7 +45,7 @@ function SignUpView() {
       { label: 'Male', value: 'male' },
       { label: 'Female', value: 'female' },
       { label: 'Non-binary/Non-conforming', value: 'Nonbinary' },
-      { label: 'Prefer Not To Say', value: 'None' },
+      { label: 'Prefer Not To Say', value: 'Unknown' },
     ];
 
   const handleSignUp = () => {
