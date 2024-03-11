@@ -3,15 +3,20 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView,
 import { ask } from '../utils/openAIGPTFunctions.js'; 
 import axios from 'axios';
 import { useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux'; // Import useSelector
+import { API } from 'aws-amplify';
+
 
 
 const AskGPTRoute = () => {
+  const [userInfo, setUserInfo] = useState({});
   const scrollViewRef = useRef();
   const route = useRoute();
   const articleUrl = route.params?.articleUrl;
   const [GPTQuestion, setQuestion] = useState('');
   const [error, setError] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
+  const user = useSelector(state => state.user); // Retrieve user information from Redux store
 
   const resetChatHistory = () => {
     setQuestion('');
@@ -30,7 +35,16 @@ const AskGPTRoute = () => {
         const response = await axios.post(apiUrl, {
           "article_url": articleUrl,         
           "isQuestion": true,
-          "question": question
+          "question": question,
+          "user_info": { 
+            "name": user.name,
+            "email": user.email,
+            "birthdate": user.birthdate,
+            "gender": user.gender,
+            "location": user.locale,
+            "locationPrefs": userInfo.locationPrefs,
+            "topicPrefs": userInfo.topicPrefs
+          }
         });
 
         if (response.data) {
@@ -62,6 +76,20 @@ const AskGPTRoute = () => {
   
     return () => clearTimeout(timer); 
   }, [chatHistory]);
+
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const responseData = await API.get('testAPI', '/test');
+      const name = user.email; 
+      const itemsWithName = responseData.filter(item => item.name === name);
+      setUserInfo(itemsWithName[0]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  fetchData();
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
