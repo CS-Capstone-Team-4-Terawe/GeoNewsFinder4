@@ -34,17 +34,6 @@ const MapViewScreen = ({route, navigation}) => {
         var lat_parse = parseFloat(latStr.trim());
         var long_parse = parseFloat(longStr.trim());
     
-        // Formatting date
-        var publishedAtDate = new Date(hit._source.PublishedAt); // Convert the ISO string to a Date object
-        var parsedDate = publishedAtDate.toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
-        const dateObject = new Date(parsedDate);
-
-        // Options to control the output format
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-
-        // Locale 'en-US' is used here for English. You can adjust it as needed.
-        const formattedDate = dateObject.toLocaleDateString('en-US', options);
-
         return {
             coord: coordinates, //coordinates combined as (lat, long)
             article_id: hit._id, // article id by open search
@@ -53,9 +42,6 @@ const MapViewScreen = ({route, navigation}) => {
             url: hit._source.URL, // article url 
             latitude: lat_parse, // using parsed value of latitude
             longitude: long_parse, // using parsed value of longtitude
-            location: hit._source.Locations,
-            date2: formattedDate,
-            source: hit._source.SourceName
         };
       });
     return articlesObjects
