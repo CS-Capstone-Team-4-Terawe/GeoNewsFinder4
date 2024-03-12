@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Modal, Dimensions } from 'react-native';
-import { Circle } from 'react-native-maps';
-import { getDistance } from 'geolib';
+import { Marker } from 'react-native-maps';
 import MapView from '../components/MapView';
 import BottomSheet from '../components/BottomSheet'; 
 import SearchBar from '../components/SearchBar';
@@ -85,6 +84,7 @@ const MapViewScreen = ({route, navigation}) => {
         _id: location,
         latitude,
         longitude,
+        numArticles: articles.length,
         radius: articles.length * 100000, // Adjust the radius calculation as needed
         strokeWidth: 2,
       };
@@ -99,7 +99,7 @@ const MapViewScreen = ({route, navigation}) => {
     fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const articlesFromApi = createArticleObjects(data)   
+      const articlesFromApi = createArticleObjects(data);
       setArticles(articlesFromApi); // setting state with the article dictionary format
       generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
   })
@@ -107,6 +107,14 @@ const MapViewScreen = ({route, navigation}) => {
     console.error('Error:', error);
   }); 
   };
+
+  const getOpacity = (numArticles) => {
+    if (numArticles > 4) return 0.80;   // More than 4 articles: max opacity
+    if (numArticles === 4) return 0.7;
+    if (numArticles === 3) return 0.5;
+    if (numArticles === 2) return 0.4;
+    return 0.3;  // 1 or no articles
+  }
 
   useEffect(() => {
     // Check if apiData is available and set articles
@@ -134,35 +142,40 @@ const MapViewScreen = ({route, navigation}) => {
         style={styles.map} 
         provider={PROVIDER_GOOGLE} 
         region={INITIAL_LOCATION}
-        onPress={(event) => {
-          const coordinates = event.nativeEvent.coordinate;
+        clusterColor="#FF0000"
+        clusterTextColor='#FF0000'
+        preserveClusterPressBehavior={true} // cluster will not be zoomed in when tapped
+        onClusterPress={(cluster, markers) => {
+          // Gets articles from all markers within cluster and show corresponding articles in bottom sheet
 
-          // onPress for hot spots
-          // Workaround from issue where MapView.Circle cannot use onPress prop: 
-          //    https://github.com/react-native-maps/react-native-maps/issues/1409
-          hotspots.map(hotspot => {
-              const distance = getDistance(
-                  { latitude: coordinates.latitude, longitude: coordinates.longitude },
-                  { latitude: hotspot.latitude, longitude: hotspot.longitude }
-              );
-  
-              if (distance <= hotspot.radius) {
-                toggleModal(hotspot._id);
-              }
-          })
-      }}
+          const markerCoords = markers.map(marker => ({
+            latitude: marker.geometry.coordinates[1],
+            longitude: marker.geometry.coordinates[0],
+          }));
+        
+          const associatedHotspots = markerCoords.map(coord => 
+            hotspots.find(hotspot => 
+              hotspot.latitude === coord.latitude && hotspot.longitude === coord.longitude
+            )
+          );
+
+          const associatedHotspotIds = associatedHotspots.map(hotspot => hotspot._id);
+
+          toggleModal(associatedHotspotIds)
+        }} 
       >
         {hotspots.map(hotspot => (
-            <Circle  
+            <Marker  
               key={hotspot._id}
-              center={{
+              coordinate={{
                 latitude: hotspot.latitude,
                 longitude: hotspot.longitude
               }}
-              radius={ hotspot.radius }
-              strokeWidth={ hotspot.strokeWidth }
-              strokeColor='rgba(255, 0, 0, 0.4)'
-              fillColor='rgba(255, 0, 0, 0.4)'
+              image={require('../assets/hotspot.png')}
+              opacity={getOpacity(hotspot.numArticles)}
+              onPress={() => {
+                toggleModal([hotspot._id]);
+              }}
             />
         ))
         }

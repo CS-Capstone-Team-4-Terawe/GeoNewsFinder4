@@ -1,14 +1,21 @@
-import { React, useEffect, useState } from 'react';
+import { React } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import getAPIdata from '../utils/getAPIdata';
 
 const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
 
     const navigation = useNavigation();
-    const articles = groupedLocations[hotspotId] || [];
+    let articles = [];
 
+
+    // Get articles from each hotspot
+    hotspotId.forEach(id => {
+        if (groupedLocations[id]) {
+            articles = [...articles, ...groupedLocations[id]];
+        }
+    });
+  
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={closeModal} style={styles.closeArea}>
