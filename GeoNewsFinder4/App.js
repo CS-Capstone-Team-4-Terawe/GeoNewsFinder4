@@ -23,7 +23,7 @@ function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName='LoginView'
+          initialRouteName='Home'
           screenOptions={{
             headerShown: false,
             headerMode: 'screen',
