@@ -10,46 +10,41 @@ const BottomSheet = ({ closeModal, hotspotId, groupedLocations }) => {
     const articles = groupedLocations[hotspotId] || [];
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={closeModal} style={styles.closeArea}>
+    <View style={styles.bottomSheetContainer}>
+      <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+        <Text style={styles.closeButtonText}>Close Bottom Sheet</Text>
       </TouchableOpacity>
-      <View style={styles.bottomSheetContainer}>
-        <FlatList
-          style={styles.container2}
-          data={articles}
-          keyExtractor={(item) => item.url}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <TouchableOpacity 
-              onPress={ () => {
-                navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url});
-                closeModal();
-              }} 
-              style={styles.container2}>
-              <Card containerStyle={styles.card}>
-                <Image source={{ uri: item.urlToImage }} style={styles.image} />
-                <Text style={styles.title}>{item.title}</Text>
-              </Card>
-            </TouchableOpacity>
-          ) }
-        />
-      </View>
+      <FlatList
+        style={styles.container2}
+        data={articles}
+        keyExtractor={(item) => item.url}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <TouchableOpacity 
+            onPress={ () => {
+              navigation.navigate('ArticlePage', {name: item, hotspot: hotspotId, articleUrl: item.url, searchArticles: articles});
+              closeModal();
+            }} 
+            style={styles.container2}>
+            <Card containerStyle={styles.card}>
+              <Image source={{ uri: item.urlToImage }} style={styles.image} />
+              <Text style={styles.title}>{item.title}</Text>
+            </Card>
+          </TouchableOpacity>
+        ) }
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-  },
   bottomSheetContainer: {
     position: 'absolute',
     bottom: 0,
     backgroundColor: 'white',
     padding: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     alignItems: 'center',
     width: '100%',
     height: '75%',
@@ -57,6 +52,15 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 18,
     marginBottom: 10,
+  },
+  closeButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 15,
+  },
+  closeButtonText: {
+    color: 'white',
   },
   openPageButton: {
     backgroundColor: 'blue',
@@ -94,12 +98,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
   },
-  closeArea: {
-    height: '25%',
-    width: '100%',
-    position: 'absolute',
-    top: 0,
-  }
 });
 
 export default BottomSheet;
