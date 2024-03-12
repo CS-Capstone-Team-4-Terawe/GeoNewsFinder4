@@ -97,7 +97,7 @@ const UserPrefViewScreen4 = ({route, navigation}) => {
         style={[
           styles.arrowButton,
           {
-            backgroundColor: locations.length >= 1 ? 'lightblue' : 'grey',
+            backgroundColor: locations.length >= 1 ? 'dodgerblue' : 'grey',
           },
         ]}
         onPress={handleNextPage}
