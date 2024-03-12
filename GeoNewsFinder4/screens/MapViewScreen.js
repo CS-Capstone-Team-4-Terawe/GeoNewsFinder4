@@ -94,6 +94,14 @@ const MapViewScreen = ({route, navigation}) => {
   }); 
   };
 
+  const getOpacity = (numArticles) => {
+    if (numArticles > 4) return 0.80;   // More than 4 articles: max opacity
+    if (numArticles === 4) return 0.7;
+    if (numArticles === 3) return 0.5;
+    if (numArticles === 2) return 0.4;
+    return 0.3;  // 1 or no articles
+  }
+
   useEffect(() => {
     // Check if apiData is available and set articles
     if (route.params?.apiData) {
@@ -144,14 +152,13 @@ const MapViewScreen = ({route, navigation}) => {
       >
         {hotspots.map(hotspot => (
             <Marker  
-            // todo: make custom marker? (react-native-map-clustering only supports markers -- not circles)
               key={hotspot._id}
               coordinate={{
                 latitude: hotspot.latitude,
                 longitude: hotspot.longitude
               }}
-              // image={require('../assets/favicon.png')}
-              opacity={Math.min(hotspot.numArticles / 5, 1.0)}
+              image={require('../assets/hotspot.png')}
+              opacity={getOpacity(hotspot.numArticles)}
               onPress={() => {
                 toggleModal([hotspot._id]);
               }}
