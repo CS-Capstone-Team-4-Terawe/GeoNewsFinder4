@@ -36,35 +36,30 @@ React.useEffect(() => {
                 <Text style={styles.label}>NAME</Text>
                 <Text style={styles.text}>{user.name}</Text>
             </View>
-            <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>BIRTHDAY</Text>
                 <Text style={styles.text}>{user.birthdate}</Text>
             </View>
-            <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>GENDER</Text>
                 <Text style={styles.text}>{user.gender}</Text>
             </View>
-            <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>EMAIL</Text>
                 <Text style={styles.text}>{user.email}</Text>
             </View>
-            <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
         <View style={styles.infoItem}>
             <View>
                 <Text style={styles.label}>LOCATION</Text>
                 <Text style={styles.text}>{user.locale}</Text>
             </View>
-            <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
         </View>
       </View>
       <View style={styles.line}></View>
@@ -76,14 +71,12 @@ React.useEffect(() => {
                     <Text style={styles.label}>Topic Preferences</Text>
                     <Text style={styles.text}>{userInfo.topicPrefs}</Text>
                 </View>
-                <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
             <View style={styles.infoItem}>
                 <View>
                     <Text style={styles.label}>Location Preferences</Text>
                     <Text style={styles.text}>{userInfo.locationPrefs}</Text>
                 </View>
-                <Image source={require('../assets/rightArrow.png')} style={styles.arrow}/>
             </View>
         </View>
       )}
