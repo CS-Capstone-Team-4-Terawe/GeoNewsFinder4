@@ -108,11 +108,27 @@ const UserPreferencesView = () => {
             }
           });
           navigation.navigate('ProfileView');
+          dataFromApi = await fetchArticles(selectedTopicsString, selectedLocationsString)
+          navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
         } catch (error) {
           console.error('Error posting data:', error);
         }
       }
     };
+
+    const fetchArticles = async (topicPrefs, locationPrefs) => {
+      try {
+        const queryText = locationPrefs + " " + topicPrefs;
+        const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        console.log(data.hits.hits);
+        return data; // Return the fetched data
+    } catch (err) {
+        console.error('Error:', err);
+        throw err; // It's a good practice to rethrow the error
+    }
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
