@@ -25,7 +25,7 @@ async function confirmSignUp() {
     const user = await Auth.signIn(email, password);
     dispatch(logIn());
     dispatch(setUser(user.attributes));
-    navigation.navigate('UserPreferencesView');
+    navigation.navigate('UserPrefView1'); // changed to first pref 
   } catch (error) {
     console.log('error confirming sign up', error);
   }
