@@ -107,9 +107,8 @@ const UserPreferencesView = () => {
                 locationPrefs: selectedLocationsString,
             }
           });
-          navigation.navigate('ProfileView');
           dataFromApi = await fetchArticles(selectedTopicsString, selectedLocationsString)
-          navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
+          navigation.navigate('Home', { apiData: dataFromApi }); 
         } catch (error) {
           console.error('Error posting data:', error);
         }
