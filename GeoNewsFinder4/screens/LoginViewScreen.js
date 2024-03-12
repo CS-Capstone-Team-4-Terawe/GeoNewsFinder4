@@ -4,12 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { useDispatch } from 'react-redux';
 import { logIn, setUser } from '../redux/action';
-
+import { API } from 'aws-amplify';
 
 function LoginView() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [userInfo, setUserInfo] = React.useState({});
   const dispatch = useDispatch();
   
   const handleSignIn = () => {
@@ -26,10 +27,36 @@ function LoginView() {
       console.log('Signed in as: ', user.attributes.name);
       dispatch(logIn());
       dispatch(setUser(user.attributes));
-      navigation.navigate('ProfileView');
-      // navigation.navigate('UserPreferencesView');
+      await fetchData(user);
+      const dataFromApi = await fetchArticles();
+      navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
     } catch (error) {
       console.log('error signing in', error);
+    }
+  }
+
+  const fetchArticles = async () => {
+    try {
+      const queryText = userInfo.locationPrefs + " " + userInfo.topicPrefs;
+      const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      console.log(data.hits.hits);
+      return data; // Return the fetched data
+  } catch (err) {
+      console.error('Error:', err);
+      throw err; // It's a good practice to rethrow the error
+  }
+  }
+
+  const fetchData = async (user) => {
+    try {
+      const responseData = await API.get('testAPI', '/test');
+      const name = user.email; 
+      const itemsWithName = responseData.filter(item => item.name === name);
+      setUserInfo(itemsWithName[0]);
+    } catch (err) {
+      console.error(err);
     }
   }
   
