@@ -70,6 +70,7 @@ const MapViewScreen = ({route, navigation}) => {
         _id: location,
         latitude,
         longitude,
+        numArticles: articles.length,
         radius: articles.length * 100000, // Adjust the radius calculation as needed
         strokeWidth: 2,
       };
@@ -149,6 +150,8 @@ const MapViewScreen = ({route, navigation}) => {
                 latitude: hotspot.latitude,
                 longitude: hotspot.longitude
               }}
+              // image={require('../assets/favicon.png')}
+              opacity={Math.min(hotspot.numArticles / 5, 1.0)}
               onPress={() => {
                 toggleModal([hotspot._id]);
               }}
