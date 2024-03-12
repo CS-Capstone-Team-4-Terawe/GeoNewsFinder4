@@ -85,7 +85,7 @@ const MapViewScreen = ({route, navigation}) => {
     fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const articlesFromApi = createArticleObjects(data)   ;
+      const articlesFromApi = createArticleObjects(data);
       setArticles(articlesFromApi); // setting state with the article dictionary format
       generateHotspotObject(articlesFromApi); // Regenerate hotspots based on the new articles
   })
