@@ -7,6 +7,10 @@ import ArticleSynopsisView from './screens/ArticleSynopsisViewScreen';
 import LoginView from './screens/LoginViewScreen';
 import ProfileView from './screens/ProfileViewScreen';
 import UserPreferencesView from './screens/UserPreferencesViewScreen';
+import UserPrefView1 from './screens/UserPrefViewScreen1';
+import UserPrefView2 from './screens/UserPrefViewScreen2';
+import UserPrefView3 from './screens/UserPrefViewScreen3';
+import UserPrefView4 from './screens/UserPrefViewScreen4';
 import SignUpView from './screens/SignUpViewScreen';
 import ConfirmView from './screens/ConfirmViewScreen';
 import { Amplify } from 'aws-amplify';
@@ -69,15 +73,45 @@ function App() {
             }}
           />
           <Stack.Screen
-            name='UserPreferencesView'
-            component={ UserPreferencesView }
+            name='UserPrefView1'
+            component={ UserPrefView1 }
             options={{
               title: '',
               headerShown: true,
               headerTintColor: 'black',
               headerStyle: { backgroundColor: 'white' },
             }}
-          />
+          />    
+          <Stack.Screen
+            name='UserPrefView2'
+            component={ UserPrefView2 }
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: 'black',
+              headerStyle: { backgroundColor: 'white' },
+            }}
+          /> 
+          <Stack.Screen
+            name='UserPrefView3'
+            component={ UserPrefView3 }
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: 'black',
+              headerStyle: { backgroundColor: 'white' },
+            }}
+          />    
+          <Stack.Screen
+            name='UserPrefView4'
+            component={ UserPrefView4 }
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: 'black',
+              headerStyle: { backgroundColor: 'white' },
+            }}
+          />          
           <Stack.Screen
             name='SignUpView'
             component={ SignUpView }
