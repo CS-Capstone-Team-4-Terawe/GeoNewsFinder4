@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import { API } from 'aws-amplify';
 
 const UserPrefViewScreen4 = ({route, navigation}) => {
-//   const navigation = useNavigation();
-//   const route = useRoute();
   const user = useSelector(state => state.user);
   const selectedTopics = route.params?.selectedTopics;
   const selectedSports = route.params?.selectedSports;
@@ -51,7 +49,9 @@ const UserPrefViewScreen4 = ({route, navigation}) => {
                 locationPrefs: combinedLocStr,
             }
           });
-          navigation.navigate('ProfileView');
+          // navigation.navigate('ProfileView');
+          dataFromApi = await fetchArticles(combinedTopicStr, combinedLocStr);
+          navigation.navigate('Home', { apiData: dataFromApi }); 
         } catch (error) {
           console.error('Error posting data:', error);
         }
@@ -63,6 +63,20 @@ const UserPrefViewScreen4 = ({route, navigation}) => {
   const renderItem = ({ item }) => (
     <LocationItem location={item} onDelete={deleteLocation} />
   );
+
+  const fetchArticles = async (topicPrefs, locationPrefs) => {
+    try {
+      const queryText = locationPrefs + " " + topicPrefs;
+      const apiUrl = `https://2sn9j78km9.execute-api.us-west-1.amazonaws.com/test5/articles?query_text=${encodeURIComponent(queryText)}`;
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      console.log(data.hits.hits);
+      return data; // Return the fetched data
+  } catch (err) {
+      console.error('Error:', err);
+      throw err; // It's a good practice to rethrow the error
+  }
+  }
 
   return (
     <View style={styles.container}>
