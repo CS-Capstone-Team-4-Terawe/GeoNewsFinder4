@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Modal, ActivityIndicator, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { useDispatch } from 'react-redux';
@@ -11,9 +11,12 @@ function LoginView() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [userInfo, setUserInfo] = React.useState({});
+  const [isLoading, setIsLoading] = useState(false); // State to control the loading modal
   const dispatch = useDispatch();
   
   const handleSignIn = () => {
+    Keyboard.dismiss(); // Dismiss the keyboard to prevent animation warining
+    setIsLoading(true); // Show loading modal
     signIn();
   }
 
@@ -29,10 +32,30 @@ function LoginView() {
       dispatch(setUser(user.attributes));
       await fetchData(user);
       const dataFromApi = await fetchArticles();
+      setIsLoading(false); // Hide loading modal after both user and articles data are fetched
       navigation.navigate('Home', { apiData: dataFromApi }); // Pass data as a parameter
     } catch (error) {
-      console.log('error signing in', error);
-    }
+      setIsLoading(false); // Hide loading modal in case of error
+      // Incorrect password
+      if (error.code === 'NotAuthorizedException') {
+        console.log('Incorrect password:', error);
+        errorMessage = 'Incorrect password. Please try again.';
+      }
+      else if (error.code === 'UserNotFoundException') {
+        // User does not exist
+        console.log('User does not exist:', error);
+        errorMessage = 'User does not exist. Please register or try a different email.';
+      }
+      else {
+        console.log('error signing in', error);
+        errorMessage = 'An error occurred. Please try again later.';
+      }
+
+      // Display the error message after a delay otherwise animation error
+      setTimeout(() => {
+        alert(errorMessage);
+      }, 1000);
+    } 
   }
 
   const fetchArticles = async () => {
@@ -61,7 +84,7 @@ function LoginView() {
   }
   
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} >
       <Text style={styles.title}>GeoNewsFinder4</Text>
       <View style={styles.inputContainer}>
         <TextInput
@@ -92,6 +115,19 @@ function LoginView() {
             <Text style={styles.registerButtonText}>Register</Text>
         </TouchableOpacity>
       </View>
+      {/* Loading Modal */}
+      <Modal
+          transparent={true}
+          visible={isLoading}
+          animationType='fade'
+      >
+        <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+                <ActivityIndicator size="large" color="#3498db" />
+                <Text style={styles.loadingText}>Verifying User...</Text>
+            </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -149,7 +185,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     position: 'absolute',
     top: 150,
-  }
-  });
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+      backgroundColor: 'white',
+      borderRadius: 10,
+      padding: 20,
+      alignItems: 'center',
+  },
+  loadingText: {
+      marginTop: 20,
+      fontSize: 24,
+      color: '#555',
+  },
+});
 
 export default LoginView;
