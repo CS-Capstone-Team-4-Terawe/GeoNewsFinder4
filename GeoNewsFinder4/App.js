@@ -6,7 +6,6 @@ import MapViewScreen from './screens/MapViewScreen';
 import ArticleSynopsisView from './screens/ArticleSynopsisViewScreen';
 import LoginView from './screens/LoginViewScreen';
 import ProfileView from './screens/ProfileViewScreen';
-import UserPreferencesView from './screens/UserPreferencesViewScreen';
 import UserPrefView1 from './screens/UserPrefViewScreen1';
 import UserPrefView2 from './screens/UserPrefViewScreen2';
 import UserPrefView3 from './screens/UserPrefViewScreen3';

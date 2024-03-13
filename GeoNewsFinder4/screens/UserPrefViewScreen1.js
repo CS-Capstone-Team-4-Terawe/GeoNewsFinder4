@@ -64,7 +64,7 @@ const handleOptionToggle = (label) => {
         style={[
           styles.arrowButton,
           {
-            backgroundColor: selectedOptions.length >= 3 ? 'lightblue' : 'grey',
+            backgroundColor: selectedOptions.length >= 3 ? 'dodgerblue' : 'grey',
           },
         ]}
         onPress={handleNextPage}
