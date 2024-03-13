@@ -129,7 +129,7 @@ const AskGPTRoute = () => {
             <View key={index} style={styles.messageContainer}>
               <View style={styles.messageHeader}>
                 <Image 
-                  source={msg.type === 'question' ? require('../assets/mrCheddaPFP.png') : require('../assets/logoAvoidConflict.png')} 
+                  source={msg.type === 'question' ? require('../assets/userDefaultLogo.png') : require('../assets/logoAvoidConflict.png')} 
                   style={styles.profilePic} 
                 />
                 <Text style={styles.messageFrom}>{msg.type === 'question' ? 'You' : 'Atlas'}</Text>
