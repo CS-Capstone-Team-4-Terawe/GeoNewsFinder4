@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Modal, ActivityIndicator, Keyboard } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, TextInput, KeyboardAvoidingView, Modal, ActivityIndicator, Keyboard, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Auth } from 'aws-amplify';
 import { useDispatch } from 'react-redux';
@@ -85,7 +85,13 @@ function LoginView() {
   
   return (
     <KeyboardAvoidingView style={styles.container} >
-      <Text style={styles.title}>GeoNewsFinder4</Text>
+      <View style={styles.logoAndTitleContainer}>
+        <Image 
+          source={require('../assets/logo.png')} 
+          style={styles.logo}
+        />
+        <Text style={styles.title}>uNews</Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           placeholder='Email'
@@ -180,12 +186,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1C75CF',
   },
-  title: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    position: 'absolute',
-    top: 150,
-  },
+  // title: {
+  //   fontSize: 40,
+  //   fontWeight: 'bold',
+  //   position: 'absolute',
+  //   top: 150,
+  // },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -202,6 +208,21 @@ const styles = StyleSheet.create({
       marginTop: 20,
       fontSize: 24,
       color: '#555',
+  },
+  logoAndTitleContainer: {
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width: '100%',
+      marginTop: -150, // Adjust this value to position the container closer to the top
+      marginBottom: 20
+  },
+  logo: {
+    width: 150,
+    height: 167,
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
   },
 });
 
