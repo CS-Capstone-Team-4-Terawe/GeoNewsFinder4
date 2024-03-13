@@ -42,8 +42,6 @@ const OverviewRoute = () => {
   return (
     <View style={styles.overviewContainer}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
-        {/* <ActivityIndicator size="large" color="#0000ff" />
-        <Text style={styles.summaryText}>{summary}</Text> */}
         {loading && <ActivityIndicator style={styles.loadingIcon} size="large" color="#1C75CF" />} 
         {!loading && <Text style={styles.summaryText}>{summary}</Text>} 
       </ScrollView>
