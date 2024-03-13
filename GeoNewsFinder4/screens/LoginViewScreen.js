@@ -186,12 +186,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1C75CF',
   },
-  // title: {
-  //   fontSize: 40,
-  //   fontWeight: 'bold',
-  //   position: 'absolute',
-  //   top: 150,
-  // },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
