@@ -129,10 +129,10 @@ const AskGPTRoute = () => {
             <View key={index} style={styles.messageContainer}>
               <View style={styles.messageHeader}>
                 <Image 
-                  source={msg.type === 'question' ? require('../assets/mrCheddaPFP.png') : require('../assets/chatBotPFP.png')} 
+                  source={msg.type === 'question' ? require('../assets/mrCheddaPFP.png') : require('../assets/logoAvoidConflict.png')} 
                   style={styles.profilePic} 
                 />
-                <Text style={styles.messageFrom}>{msg.type === 'question' ? 'User' : 'ChatBot'}</Text>
+                <Text style={styles.messageFrom}>{msg.type === 'question' ? 'You' : 'Atlas'}</Text>
               </View>
               <View style={msg.type === 'question' ? styles.questionBubble : styles.answerBubble}>
                 <Text style={msg.type === 'question' ? styles.questionText : styles.chatText}>
@@ -146,7 +146,7 @@ const AskGPTRoute = () => {
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Ask GeoNewsFinder..."
+          placeholder="Ask Atlas..."
           onSubmitEditing={askQuestion}
           onChangeText={handleQuestionInput}
           value={GPTQuestion}
