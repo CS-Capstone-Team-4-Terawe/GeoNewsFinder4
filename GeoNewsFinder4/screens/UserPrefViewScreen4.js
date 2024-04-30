@@ -94,7 +94,7 @@ const UserPrefViewScreen4 = ({route, navigation}) => {
           }
         }}
         query={{
-          key: 'AIzaSyBmxjd5M80bFcbkZsV2v5Mo8ybU2V_EV4c',
+          key: 'INSERT KEY HERE',
           language: 'en',
         }}
         styles={autoCompleteStyles}
