@@ -1,6 +1,9 @@
 # GeoNewsFinder4
 Environment for CS Capstone Project
 
+# Demo Video
+https://youtu.be/EkVUpOiSkJw
+
 ## Set-up
 Using Expo Go
 - easy to set up.
